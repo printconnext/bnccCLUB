@@ -1,0 +1,5 @@
+# Local scratch and temporary files
+scratch_read_docx.py
+docx_content.txt
+*.log
+.gemini/

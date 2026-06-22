@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบทะเบียนสมาชิกและสวัสดิการ - ชมรมเพื่อน พ.น.</title>
+    <meta name="description" content="ระบบจัดการข้อมูลสมาชิก อาจารย์ การชำระค่าบำรุง และสวัสดิการกลาง ชมรมเพื่อน พ.น.">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS ของระบบ -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- หน้าจอ Login แบบ Glassmorphism -->
+    <div id="login-screen" class="login-overlay">
+        <div class="login-card">
+            <div class="login-logo">พ.น.</div>
+            <h2>ชมรมเพื่อน พ.น.</h2>
+            <p>ระบบงานทะเบียนสมาชิกและสวัสดิการหลังบ้าน</p>
+            
+            <form id="login-form">
+                <div class="form-group" style="text-align: left;">
+                    <label for="login-username">ชื่อผู้ใช้งาน (Username)</label>
+                    <input type="text" id="login-username" class="form-control" placeholder="ป้อนชื่อผู้ใช้..." required>
+                </div>
+                <div class="form-group" style="text-align: left; margin-bottom: 20px;">
+                    <label for="login-password">รหัสผ่าน (Password)</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="ป้อนรหัสผ่าน..." required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+                    <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบหลังบ้าน
+                </button>
+            </form>
+            
+            <div class="login-info-box" style="margin-top: 24px;">
+                <strong>บัญชีทดสอบระบบหลังบ้าน (สำหรับการรีวิว):</strong>
+                <ul style="padding-left:16px; margin-top:6px; font-size:0.75rem;">
+                    <li><strong>ผู้ดูแลทะเบียนสมาชิก</strong>:<br>admin.member / member123</li>
+                    <li><strong>ผู้ดูแลสวัสดิการ</strong>:<br>admin.welfare / welfare123</li>
+                    <li><strong>ผู้บริหาร / คณะกรรมการ</strong>:<br>executive / exec123</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ส่วนเนื้อหาแอปหลัก (ซ่อนไว้ก่อน Login สำเร็จ) -->
+    <div class="app-container" style="display: none;">
+        <!-- แถบเมนูด้านซ้าย (Sidebar) -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo">พ.น.</div>
+                <div class="brand-text">
+                    <h2>เพื่อน พ.น.</h2>
+                    <p>สวัสดิการ & ทะเบียนสมาชิก</p>
+                </div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="menu-item active" data-view="dashboard">
+                    <a href="#dashboard"><i class="fa-solid fa-chart-pie"></i><span>แผงควบคุม (Dashboard)</span></a>
+                </li>
+                <li class="menu-item" data-view="members">
+                    <a href="#members"><i class="fa-solid fa-users"></i><span>ทะเบียนสมาชิก</span></a>
+                </li>
+                <li class="menu-item" data-view="teachers">
+                    <a href="#teachers"><i class="fa-solid fa-chalkboard-user"></i><span>ทะเบียนอาจารย์</span></a>
+                </li>
+                <li class="menu-item" data-view="fees">
+                    <a href="#fees"><i class="fa-solid fa-hand-holding-dollar"></i><span>ระบบค่าบำรุงสมาชิก</span></a>
+                </li>
+                <li class="menu-item" data-view="welfare">
+                    <a href="#welfare"><i class="fa-solid fa-heart-pulse"></i><span>ระบบสวัสดิการ</span></a>
+                </li>
+                <li class="menu-item" data-view="reports">
+                    <a href="#reports"><i class="fa-solid fa-file-invoice-dollar"></i><span>รายงานประจำปี/พิมพ์</span></a>
+                </li>
+                <li class="menu-item" data-view="settings">
+                    <a href="#settings"><i class="fa-solid fa-database"></i><span>ตั้งค่า & จัดการข้อมูล</span></a>
+                </li>
+            </ul>
+            
+            <!-- ส่วนแสดงบทบาทผู้ใช้งานใน Sidebar -->
+            <div class="sidebar-user">
+                <div class="user-role-badge" id="sidebar-role-badge">ผู้ดูแลทะเบียนสมาชิก</div>
+                <div class="user-name" id="sidebar-user-name">คุณนารี ทะเบียนดี</div>
+                <button id="btn-logout" class="btn" style="width: 100%; margin-top: 10px; padding: 6px; font-size: 0.75rem; justify-content: center; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; font-family: inherit;">
+                    <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+                </button>
+            </div>
+        </aside>
+
+        <!-- พื้นที่ส่วนเนื้อหาหลักทางขวา (Main Content) -->
+        <main class="main-content">
+            <!-- Header แถบด้านบน -->
+            <header class="main-header">
+                <div class="header-title">
+                    <h1 id="header-view-title">แผงควบคุม (Dashboard)</h1>
+                </div>
+                
+                <!-- แถบควบคุมสถานการณ์จำลองสำหรับการสาธิต -->
+                <div class="header-controls">
+                    <!-- จำลองปฏิทินย้อนเวลา/ข้ามเวลา -->
+                    <div class="date-traveler-wrapper">
+                        <label for="system-date-input"><i class="fa-solid fa-clock-rotate-left"></i> วันที่จำลอง:</label>
+                        <input type="date" id="system-date-input" class="input-date" value="2026-06-22">
+                    </div>
+                    
+                    <!-- เครื่องมือสลับบทบาท -->
+                    <div class="role-selector-wrapper">
+                        <label for="user-role-select"><i class="fa-solid fa-user-gear"></i> สิทธิ์ผู้ใช้:</label>
+                        <select id="user-role-select" class="select-role">
+                            <option value="member_admin">ผู้ดูแลทะเบียนสมาชิก</option>
+                            <option value="welfare_admin">ผู้ดูแลสวัสดิการ</option>
+                            <option value="executive">ผู้บริหาร/คณะกรรมการ</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <!-- พื้นที่แสดงหน้าจอต่างๆ (Page Content Area) -->
+            <div class="content-wrapper">
+                
+                <!-- ==================== หน้า 1: DASHBOARD ==================== -->
+                <div id="view-dashboard" class="page-view active">
+                    <!-- การ์ดตัวชี้วัดสรุปผล -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+                            <div class="stat-info">
+                                <h3>สมาชิกทั้งหมด</h3>
+                                <div class="stat-number" id="stat-total-members">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i class="fa-solid fa-user-check"></i></div>
+                            <div class="stat-info">
+                                <h3>สมาชิกสถานะปกติ (Active)</h3>
+                                <div class="stat-number" id="stat-active-members">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon yellow"><i class="fa-solid fa-user-clock"></i></div>
+                            <div class="stat-info">
+                                <h3>ค้างชำระ/Grace Period</h3>
+                                <div class="stat-number" id="stat-grace-members">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red"><i class="fa-solid fa-user-slash"></i></div>
+                            <div class="stat-info">
+                                <h3>ระงับสิทธิ์/สิ้นสภาพ</h3>
+                                <div class="stat-number" id="stat-suspended-members">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                            <div class="stat-info">
+                                <h3>ยอดสวัสดิการสะสม (บาท)</h3>
+                                <div class="stat-number" id="stat-total-welfare">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- ส่วนแสดงกราฟสถานะและการสรุปยอดเงินชำระค่าบำรุง -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i class="fa-solid fa-chart-simple"></i> สถิติสมาชิกและโครงสร้างสมาคม</h3>
+                            </div>
+                            <div class="chart-container">
+                                <!-- ใช้ภาพวาด SVG เอนจินสร้างแผนภูมิวงกลมแบบไดนามิก -->
+                                <svg width="250" height="250" viewBox="0 0 250 250" id="dashboard-pie-chart" style="transform: rotate(-90deg); border-radius: 50%;">
+                                    <!-- Dynamic elements will be inserted by JS -->
+                                </svg>
+                                <div style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;" id="pie-chart-legend">
+                                    <!-- Legend elements will be inserted by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- แผงรายงานแจ้งเตือนเรื่องด่วนที่ระบบตรวจสอบพบ -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i class="fa-solid fa-bell"></i> รายการแจ้งเตือนจากระบบอัตโนมัติ</h3>
+                            </div>
+                            <div class="alert-list" id="dashboard-alerts">
+                                <!-- Alerts will be dynamically rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== หน้า 2: ทะเบียนสมาชิก ==================== -->
+                <div id="view-members" class="page-view">
+                    <div class="action-bar">
+                        <div class="search-filters">
+                            <div class="search-input-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="member-search-input" class="input-search" placeholder="ค้นหาโดย ชื่อ, นามสกุล, รหัสสมาชิก, หรือรุ่น...">
+                            </div>
+                            <select id="member-filter-status" class="filter-select">
+                                <option value="all">ทุกสถานะสมาชิก</option>
+                                <option value="active">Active</option>
+                                <option value="active_new">Active New (สมาชิกใหม่)</option>
+                                <option value="grace_period">Active (Grace Period)</option>
+                                <option value="suspended">Suspended (ระงับสิทธิ์ชั่วคราว)</option>
+                                <option value="terminated">Terminated (สิ้นสภาพสมาชิก)</option>
+                                <option value="deceased">Deceased (ถึงแก่กรรม)</option>
+                            </select>
+                            <select id="member-filter-gen" class="filter-select">
+                                <option value="all">ทุกรุ่นการศึกษา</option>
+                                <!-- รุ่นจะแสดงตามที่มีข้อมูลสมาชิกจริง -->
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="btn-add-member" style="display: none;">
+                            <i class="fa-solid fa-user-plus"></i> เพิ่มสมาชิกใหม่
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="custom-table" id="members-table">
+                            <thead>
+                                <tr>
+                                    <th>รูปถ่าย</th>
+                                    <th>รหัสสมาชิก</th>
+                                    <th>ชื่อ-นามสกุล (ชื่อเล่น)</th>
+                                    <th>รุ่น พ.น.</th>
+                                    <th>วันที่สมัคร</th>
+                                    <th>วันครบต่ออายุ</th>
+                                    <th>สถานะระบบ</th>
+                                    <th>จัดการข้อมูล</th>
+                                </tr>
+                            </thead>
+                            <tbody id="members-table-body">
+                                <!-- ข้อมูลสมาชิกจะแสดงตรงนี้โดย JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ==================== หน้า 3: ทะเบียนอาจารย์ ==================== -->
+                <div id="view-teachers" class="page-view">
+                    <div class="action-bar">
+                        <div class="search-filters">
+                            <div class="search-input-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="teacher-search-input" class="input-search" placeholder="ค้นหาชื่ออาจารย์...">
+                            </div>
+                            <select id="teacher-filter-status" class="filter-select">
+                                <option value="all">ทุกสถานะ</option>
+                                <option value="teaching">ปัจจุบันยังสอน</option>
+                                <option value="retired">เกษียณอายุ</option>
+                                <option value="deceased">ถึงแก่กรรม</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="btn-add-teacher" style="display: none;">
+                            <i class="fa-solid fa-plus"></i> เพิ่มข้อมูลอาจารย์
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="custom-table" id="teachers-table">
+                            <thead>
+                                <tr>
+                                    <th>รหัสอาจารย์</th>
+                                    <th>ชื่อ-นามสกุล</th>
+                                    <th>เบอร์โทรศัพท์</th>
+                                    <th>ที่อยู่ติดต่อ</th>
+                                    <th>สถานะ</th>
+                                    <th>บันทึกเพิ่มเติม</th>
+                                    <th>จัดการข้อมูล</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teachers-table-body">
+                                <!-- ข้อมูลอาจารย์จะแสดงตรงนี้โดย JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ==================== หน้า 4: ระบบชำระค่าบำรุงสมาชิก ==================== -->
+                <div id="view-fees" class="page-view">
+                    <div class="dashboard-grid" style="margin-bottom: 24px; grid-template-columns: 1fr 1fr;">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i class="fa-solid fa-circle-exclamation text-yellow"></i> สมาชิกค้างชำระค่าบำรุงประจำปี</h3>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">รายชื่อสมาชิกที่เลยกำหนดรอบการต่ออายุ (ค้างชำระตั้งแต่ 1 วันขึ้นไป)</p>
+                            <div style="max-height: 250px; overflow-y: auto;">
+                                <table class="custom-table" style="font-size: 0.8rem;" id="unpaid-members-table">
+                                    <thead>
+                                        <tr>
+                                            <th>รหัส</th>
+                                            <th>ชื่อ-นามสกุล</th>
+                                            <th>ครบกำหนดชำระ</th>
+                                            <th>เกินกำหนด (วัน)</th>
+                                            <th>การดำเนินการ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="unpaid-members-body">
+                                        <!-- ข้อมูลสมาชิกค้างชำระแสดงโดย JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i class="fa-solid fa-receipt"></i> ประวัติการชำระเงินล่าสุด</h3>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">รายการชำระค่าบำรุงของสมาชิกในฐานข้อมูล</p>
+                            <div style="max-height: 250px; overflow-y: auto;">
+                                <table class="custom-table" style="font-size: 0.8rem;" id="payment-logs-table">
+                                    <thead>
+                                        <tr>
+                                            <th>วันที่ชำระ</th>
+                                            <th>รหัสสมาชิก</th>
+                                            <th>ชื่อ-นามสกุล</th>
+                                            <th>ปีงวดชำระ</th>
+                                            <th>จำนวนเงิน</th>
+                                            <th>ผู้บันทึก</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="payment-logs-body">
+                                        <!-- ประวัติการชำระเงินแสดงโดย JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- แผงการค้นหาสำหรับชำระเงินด่วน -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title"><i class="fa-solid fa-money-bill-transfer"></i> ค้นหาสมาชิกด่วนเพื่อทำรายการชำระเงิน</h3>
+                        </div>
+                        <div class="search-filters" style="margin-bottom: 16px;">
+                            <div class="search-input-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="fee-member-search" class="input-search" placeholder="ค้นหาโดย ชื่อ, นามสกุล หรือ รหัสสมาชิกเพื่อบันทึกการชำระเงิน...">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="custom-table" id="fee-quick-pay-table">
+                                <thead>
+                                    <tr>
+                                        <th>รหัสสมาชิก</th>
+                                        <th>ชื่อ-นามสกุล</th>
+                                        <th>รุ่น พ.น.</th>
+                                        <th>วันชำระล่าสุด</th>
+                                        <th>วันครบกำหนดต่ออายุ</th>
+                                        <th>สถานะปัจจุบัน</th>
+                                        <th>การดำเนินการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fee-quick-pay-body">
+                                    <!-- สมาชิกสำหรับการกดจ่ายเงินด่วนจะแสดงที่นี่ -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== หน้า 5: ระบบสวัสดิการสมาชิกและอาจารย์ ==================== -->
+                <div id="view-welfare" class="page-view">
+                    <!-- การจดทะเบียนสวัสดิการใหม่ -->
+                    <div class="panel" style="margin-bottom: 30px;" id="welfare-claim-form-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title"><i class="fa-solid fa-heart-circle-plus"></i> บันทึกขออนุมัติจ่ายเงินสวัสดิการ (ทำเบิก)</h3>
+                        </div>
+                        
+                        <!-- 1. ค้นหาและระบุผู้รับผลประโยชน์ -->
+                        <div class="form-grid" style="margin-bottom: 20px;">
+                            <div class="form-group">
+                                <label for="welfare-search-recipient">1. ค้นหาผู้รับสวัสดิการ (สมาชิก / อาจารย์) <span>*</span></label>
+                                <div class="search-input-wrapper" style="width: 100%;">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <input type="text" id="welfare-search-recipient" class="form-control" style="padding-left:36px;" placeholder="ป้อนชื่อสมาชิก หรือ อาจารย์เพื่อเลือกเบิกสวัสดิการ...">
+                                </div>
+                                <div id="welfare-search-results" style="display:none; position:absolute; z-index:99; background:var(--bg-tertiary); border:1px solid var(--border-color); width:calc(50% - 30px); max-height:180px; overflow-y:auto; border-radius:4px; box-shadow: var(--box-shadow);">
+                                    <!-- ผลการค้นหาจะแสดงที่นี่เพื่อให้กดเลือก -->
+                                </div>
+                            </div>
+                            
+                            <!-- แสดงข้อมูลผู้เบิกสวัสดิการที่เลือกแล้ว -->
+                            <div class="form-group">
+                                <label>ข้อมูลผู้มีสิทธิ์ที่เลือก</label>
+                                <div id="selected-recipient-card" style="background:var(--bg-tertiary); border:1px solid var(--border-color); padding:10px 16px; border-radius:var(--border-radius-sm); font-size:0.85rem; min-height:60px;">
+                                    <span style="color:var(--text-muted);">ยังไม่ได้เลือกผู้ขอรับสวัสดิการ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- กล่องตรวจสอบสิทธิ์และสถานะการเคลมอัตโนมัติ (Welfare Engine Verification) -->
+                        <div id="welfare-verification-panel" class="eligibility-checker-box" style="display:none; margin-bottom: 20px;">
+                            <h4 style="font-size:0.9rem; font-weight:600;"><i class="fa-solid fa-shield-halved"></i> ผลการประเมินสิทธิ์และตรวจสอบประวัติจากระบบอัตโนมัติ:</h4>
+                            
+                            <div class="form-grid" style="margin-top: 12px; font-size: 0.85rem;">
+                                <div class="form-group">
+                                    <label for="welfare-type-select">2. เลือกประเภทสวัสดิการ <span>*</span></label>
+                                    <select id="welfare-type-select" class="form-control">
+                                        <!-- โหลดตัวเลือกตามประเภท สมาชิก/อาจารย์ -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>ตรวจสอบประวัติปฏิทินปีก่อนหน้า & วงเงินที่ใช้ได้</label>
+                                    <div id="welfare-history-check-info" style="color:var(--text-secondary); margin-top:8px;">
+                                        กรุณาเลือกประเภทสวัสดิการเพื่อตรวจสอบสิทธิ์
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="welfare-verdict-display" class="checker-status-display">
+                                <!-- ผลการประเมินอนุมัติสิทธิ์ (อนุมัติ / ไม่อนุมัติ) จะแสดงที่นี่ -->
+                            </div>
+                        </div>
+
+                        <!-- 2. ใส่จำนวนเงินและยืนยันประวัติการทำเบิก -->
+                        <div id="welfare-input-fields" style="display:none;">
+                            <form id="welfare-claim-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="welfare-amount-input">จำนวนเงินทำเบิกจ่าย (บาท) <span>*</span></label>
+                                        <input type="number" id="welfare-amount-input" class="form-control" required min="1" placeholder="ระบุจำนวนเงินที่ต้องการขอเบิก...">
+                                        <small id="welfare-amount-hint" style="color:var(--accent-cyan); display:block; margin-top:4px; font-size:0.75rem;"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="welfare-claim-date">วันที่ยื่นเรื่อง / วันเกิดเหตุ <span>*</span></label>
+                                        <input type="date" id="welfare-claim-date" class="form-control" required>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="welfare-details-input">รายละเอียดเพิ่มเติม / หมายเหตุภัยพิบัติหรือสาเหตุเจ็บป่วย <span>*</span></label>
+                                        <textarea id="welfare-details-input" class="form-control" rows="2" required placeholder="เช่น พักรักษาตัวจากโรค... ณ โรงพยาบาล... หรือ บิดาถึงแก่กรรม ณ วัด..."></textarea>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:10px;">
+                                    <button type="button" class="btn btn-secondary" id="welfare-form-cancel">ยกเลิก</button>
+                                    <button type="submit" class="btn btn-success" id="welfare-form-submit">อนุมัติจ่ายและบันทึกรายการ</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- รายการประวัติสวัสดิการที่ได้รับการจ่ายแล้วทั้งหมด -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title"><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการเบิกจ่ายสวัสดิการทั้งหมด</h3>
+                        </div>
+                        <div class="search-filters" style="margin-bottom: 16px;">
+                            <div class="search-input-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="welfare-log-search" class="input-search" placeholder="ค้นหาชื่อผู้ได้รับสวัสดิการในประวัติ...">
+                            </div>
+                            <select id="welfare-filter-type" class="filter-select">
+                                <option value="all">ทุกประเภทสวัสดิการ</option>
+                                <option value="member_deceased">สมาชิกถึงแก่กรรม</option>
+                                <option value="family_deceased">ครอบครัวถึงแก่กรรม</option>
+                                <option value="member_medical">สมาชิกเยี่ยมไข้</option>
+                                <option value="teacher_deceased">อาจารย์ถึงแก่กรรม</option>
+                                <option value="teacher_medical">อาจารย์เยี่ยมไข้</option>
+                            </select>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="custom-table" id="welfare-logs-table">
+                                <thead>
+                                    <tr>
+                                        <th>วันที่เบิกจ่าย</th>
+                                        <th>ผู้รับสวัสดิการ</th>
+                                        <th>ประเภทผู้รับ</th>
+                                        <th>ประเภทสวัสดิการ</th>
+                                        <th>จำนวนเงินที่จ่าย (บาท)</th>
+                                        <th>รายละเอียด / เหตุผล</th>
+                                        <th>ผู้ดำเนินการ</th>
+                                        <th class="no-print">การจัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="welfare-logs-body">
+                                    <!-- ข้อมูลประวัติการจ่ายสวัสดิการจะแสดงโดย JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== หน้า 6: รายงานประจำเดือน/ปี (PRINT/EXPORT) ==================== -->
+                <div id="view-reports" class="page-view">
+                    <div class="report-tabs no-print">
+                        <button class="report-tab-btn active" data-report="member_registry">รายงานทะเบียนสมาชิก</button>
+                        <button class="report-tab-btn" data-report="teacher_registry">รายงานทะเบียนอาจารย์</button>
+                        <button class="report-tab-btn" data-report="maintenance_fees">รายงานค่าบำรุงประจำปี</button>
+                        <button class="report-tab-btn" data-report="welfare_summary">รายงานการจ่ายสวัสดิการ</button>
+                    </div>
+
+                    <div class="action-bar no-print">
+                        <div class="search-filters" id="report-controls-container">
+                            <!-- ตัวกรองรายงานแบบเลือกจะปรับแต่งตามแท็บรายงานที่คลิกอยู่ -->
+                        </div>
+                        <button class="btn btn-primary" onclick="window.print();">
+                            <i class="fa-solid fa-print"></i> พิมพ์รายงานนี้ (Print/PDF)
+                        </button>
+                    </div>
+
+                    <!-- พื้นที่ตัวอย่างรายงานสำหรับการพิมพ์ (Report Print Preview Area) -->
+                    <div class="report-preview-panel show" id="report-print-area">
+                        <!-- โครงสร้างหัวข้อรายงานสำหรับสั่งพิมพ์ -->
+                        <div class="report-header-print">
+                            <h2 style="font-weight:700; font-size:1.4rem;">ชมรมเพื่อน พ.น. (ระบบงานทะเบียนและสวัสดิการ)</h2>
+                            <h3 id="report-print-title" style="font-weight:600; font-size:1.15rem; margin-top:5px;">รายงานสรุปข้อมูลสมาชิก</h3>
+                            <p style="font-size:0.8rem; color:#64748b; margin-top:4px;">วันที่พิมพ์ข้อมูลเอกสาร: <span id="report-print-date">22 มิถุนายน 2569</span></p>
+                        </div>
+                        
+                        <!-- ตารางแสดงข้อมูลจริงที่จะถูกแสดงผลตามฟิลเตอร์รายงานและสั่งพิมพ์ได้ทันที -->
+                        <div id="report-preview-content">
+                            <!-- Dynamic report tables go here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== หน้า 7: หน้าตั้งค่าและจัดการข้อมูล ==================== -->
+                <div id="view-settings" class="page-view">
+                    <div class="db-actions-grid">
+                        <!-- ส่วนของระบบ Google Cloud Sync Integration (จำลองตามข้อ 5 เทคโนโลยีที่ใช้) -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i class="fa-brands fa-google-drive text-blue"></i> การเชื่อมโยง Google Sheets / Cloud API</h3>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+                                ระบบสถาปัตยกรรมทำงานบนคลาวด์โดยมี <strong>Google Sheets เป็นฐานข้อมูลหลัก</strong> และประมวลผลผ่าน Apps Script คุณสามารถคัดลอกไฟล์สำรองข้อมูลดิบ (JSON Database) ไปทดสอบหรืออัปเดตเข้าระบบฐานข้อมูลคลาวด์ได้ที่นี่
+                            </p>
+                            
+                            <div class="form-group">
+                                <label for="db-raw-json">ฐานข้อมูลดิบในปัจจุบัน (RAW JSON Database)</label>
+                                <textarea id="db-raw-json" class="form-control" style="font-family: monospace; font-size:0.75rem; background-color:var(--bg-primary);" rows="10" readonly></textarea>
+                            </div>
+                            
+                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+                                <button class="btn btn-secondary" id="btn-export-db">
+                                    <i class="fa-solid fa-file-export"></i> ส่งออกข้อมูลดิบ
+                                </button>
+                                <button class="btn btn-secondary" id="btn-import-db">
+                                    <i class="fa-solid fa-file-import"></i> นำเข้าข้อมูลดิบ (จาก JSON)
+                                </button>
+                                <button class="btn btn-secondary" id="btn-reset-db" style="background-color:rgba(239, 68, 68, 0.1); border-color:rgba(239, 68, 68, 0.2); color:#fca5a5;">
+                                    <i class="fa-solid fa-trash-arrow-up"></i> ล้างข้อมูลกลับเป็นค่าเริ่มต้น
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- คำแนะนำสถาปัตยกรรมการต่อเข้าระบบ Google Sheets (Developer Guide) -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title"><i class="fa-solid fa-code"></i> สรุปขั้นตอนสำหรับผู้พัฒนาระบบ (Developer Info)</h3>
+                            </div>
+                            <div style="font-size:0.85rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:12px;">
+                                <p>
+                                    ในระบบการใช้งานจริง คุณสามารถผูกฟังก์ชัน JavaScript เหล่านี้ไปยัง Google Apps Script (GAS) โดยใช้ Web App API:
+                                </p>
+                                <ol style="padding-left:18px; display:flex; flex-direction:column; gap:6px;">
+                                    <li>นำเข้าไลบรารีสคริปต์นี้ไปยังโครงการ Google Apps Script</li>
+                                    <li>เขียนฟังก์ชัน <code>doGet(e)</code> และ <code>doPost(e)</code> เพื่อเปิด API endpoint บน Google Cloud</li>
+                                    <li>เชื่อมโยงตารางข้อมูลของ Google Sheets กับ JSON ในเครื่องของเบราว์เซอร์ โดยการเขียนคำสั่งอ่าน-เขียนข้อมูลเซลล์ของชีต เช่น <code>SpreadsheetApp.getActiveSpreadsheet().getSheetByName("members")</code></li>
+                                    <li>ระบบทะเบียนสมาชิกและสวัสดิการนี้จะส่งคำขอ fetch ไปยังปลายทาง GAS เพื่อให้ผู้ใช้งานทุกคนเข้าข้อมูลพร้อมกันเรียลไทม์</li>
+                                </ol>
+                                <div style="background:var(--bg-primary); padding:10px; border-radius:6px; border:1px solid var(--border-color); font-size:0.75rem;">
+                                    <strong style="color:var(--accent-cyan);"><i class="fa-solid fa-lightbulb"></i> ข้อดีของการทำงานบน Cloud (Serverless):</strong><br>
+                                    ไม่ต้องจัดเตรียมเซิร์ฟเวอร์, ประหยัดค่าใช้จ่าย, มีประวัติการทำงานย้อนหลังผ่าน Google Drive, และบำรุงรักษาโดยคณะกรรมการได้ง่ายด้วยตนเอง
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ==========================================================================
+       ป๊อปอัพฟอร์มแก้ไขข้อมูลและดูรายละเอียด (MODALS & POPUPS)
+       ========================================================================== -->
+
+    <!-- 1. โมดอลเพิ่ม/แก้ไขสมาชิก (Member Add/Edit Modal) -->
+    <div id="modal-member-form" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="member-modal-title">เพิ่มสมาชิกใหม่</h3>
+                <button class="modal-close" onclick="closeModal('modal-member-form')">&times;</button>
+            </div>
+            <form id="member-form">
+                <input type="hidden" id="member-form-id-hidden">
+                <input type="hidden" id="member-form-mode" value="add"> <!-- add หรือ edit -->
+                
+                <div class="modal-body">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>รูปถ่ายสมาชิก</label>
+                            <div class="photo-uploader">
+                                <div class="photo-preview-box" id="member-photo-preview">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <input type="file" id="member-photo-input" accept="image/*" class="form-control" style="font-size:0.75rem;">
+                                    <small style="color:var(--text-muted); display:block; margin-top:4px;">เลือกไฟล์รูปถ่ายขนาดสี่เหลี่ยมจตุรัส (ระบบจะบันทึกเป็น Base64)</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member-input-id">รหัสสมาชิก <span>*</span></label>
+                            <input type="text" id="member-input-id" class="form-control" required placeholder="เช่น M69003 (M + รุ่น + ลำดับ)">
+                        </div>
+                        <div class="form-group">
+                            <label for="member-input-gen">รุ่น พ.น. <span>*</span></label>
+                            <input type="number" id="member-input-gen" class="form-control" required min="1" max="150" placeholder="เช่น 69">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member-input-name">ชื่อ-นามสกุล <span>*</span></label>
+                            <input type="text" id="member-input-name" class="form-control" required placeholder="นาย/นาง/นางสาว...">
+                        </div>
+                        <div class="form-group">
+                            <label for="member-input-nickname">ชื่อเล่น <span>*</span></label>
+                            <input type="text" id="member-input-nickname" class="form-control" required placeholder="ชื่อเรียกเล่น...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member-input-apply-date">วันที่สมัครเข้าชมรม <span>*</span></label>
+                            <input type="date" id="member-input-apply-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="member-input-birth-date">วัน/เดือน/ปี เกิด <span>*</span></label>
+                            <input type="date" id="member-input-birth-date" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member-input-phone">เบอร์โทรศัพท์ <span>*</span></label>
+                            <input type="text" id="member-input-phone" class="form-control" required placeholder="เช่น 081-234-5678">
+                        </div>
+                        <div class="form-group">
+                            <label for="member-input-line">Line ID</label>
+                            <input type="text" id="member-input-line" class="form-control" placeholder="ไอดีไลน์...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="member-input-facebook">Facebook</label>
+                            <input type="text" id="member-input-facebook" class="form-control" placeholder="ชื่อเฟซบุ๊ก...">
+                        </div>
+                        <div class="form-group">
+                            <label for="member-input-occupation">อาชีพปัจจุบัน</label>
+                            <input type="text" id="member-input-occupation" class="form-control" placeholder="ระบุอาชีพปัจจุบัน...">
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="member-input-address">ที่อยู่ปัจจุบันสำหรับการจัดส่งเอกสาร</label>
+                            <textarea id="member-input-address" class="form-control" rows="2" placeholder="เลขที่ ถนน แขวง เขต จังหวัด รหัสไปรษณีย์..."></textarea>
+                        </div>
+
+                        <!-- รายละเอียดการศึกษา -->
+                        <div class="form-group">
+                            <label for="member-input-edu-faculty">คณะ / สาขาวิชาที่เรียน</label>
+                            <input type="text" id="member-input-edu-faculty" class="form-control" placeholder="เช่น คณะวิศวกรรมศาสตร์ สาขาคอมพิวเตอร์">
+                        </div>
+                        <div class="form-group">
+                            <label for="member-input-last-payment">วันที่จ่ายค่าบำรุงล่าสุด <span>*</span></label>
+                            <input type="date" id="member-input-last-payment" class="form-control" required>
+                        </div>
+                        
+                        <!-- ผู้ติดต่อกรณีฉุกเฉิน -->
+                        <div class="form-group">
+                            <label for="member-input-emergency-name">ชื่อผู้ติดต่อกรณีฉุกเฉิน <span>*</span></label>
+                            <input type="text" id="member-input-emergency-name" class="form-control" required placeholder="ชื่อ-นามสกุล...">
+                        </div>
+                        <div class="form-group">
+                            <label for="member-input-emergency-rel">ความสัมพันธ์ <span>*</span></label>
+                            <input type="text" id="member-input-emergency-rel" class="form-control" required placeholder="เช่น บิดา, มารดา, บุตร, คู่สมรส">
+                        </div>
+                        <div class="form-group">
+                            <label for="member-input-emergency-phone">เบอร์ติดต่อกรณีฉุกเฉิน <span>*</span></label>
+                            <input type="text" id="member-input-emergency-phone" class="form-control" required placeholder="เบอร์โทรศัพท์...">
+                        </div>
+                        
+                        <div class="form-group" style="display:flex; align-items:center; margin-top:28px;">
+                            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                                <input type="checkbox" id="member-input-reapplied" style="width:18px; height:18px;">
+                                <span>เป็นสมาชิกสมัครใหม่หลังสิ้นสภาพ (เงื่อนไขรอสิทธิ์ 30 วัน)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-member-form')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. โมดอลเพิ่ม/แก้ไขอาจารย์ (Teacher Add/Edit Modal) -->
+    <div id="modal-teacher-form" class="modal-backdrop">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="teacher-modal-title">เพิ่มข้อมูลอาจารย์</h3>
+                <button class="modal-close" onclick="closeModal('modal-teacher-form')">&times;</button>
+            </div>
+            <form id="teacher-form">
+                <input type="hidden" id="teacher-form-id-hidden">
+                <input type="hidden" id="teacher-form-mode" value="add">
+                
+                <div class="modal-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="teacher-input-id">รหัสอาจารย์ <span>*</span></label>
+                            <input type="text" id="teacher-input-id" class="form-control" required placeholder="เช่น T004">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-input-name">ชื่อ-นามสกุล <span>*</span></label>
+                            <input type="text" id="teacher-input-name" class="form-control" required placeholder="ชื่อ-นามสกุลของอาจารย์...">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-input-phone">เบอร์โทรศัพท์</label>
+                            <input type="text" id="teacher-input-phone" class="form-control" placeholder="เบอร์โทรศัพท์ของอาจารย์...">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-input-status">สถานะอาจารย์ <span>*</span></label>
+                            <select id="teacher-input-status" class="form-control" required>
+                                <option value="teaching">ปัจจุบันยังสอน</option>
+                                <option value="retired">เกษียณอายุ</option>
+                                <option value="deceased">ถึงแก่กรรม</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="teacher-input-address">ที่อยู่สำหรับติดต่อ</label>
+                            <textarea id="teacher-input-address" class="form-control" rows="2" placeholder="ที่อยู่ติดต่ออาจารย์..."></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="teacher-input-notes">บันทึกเพิ่มเติม / หมายเหตุ</label>
+                            <textarea id="teacher-input-notes" class="form-control" rows="2" placeholder="ประวัติย่อหรือบันทึกเพิ่มเติม..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-teacher-form')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. โมดอลดูรายละเอียดสมาชิกครบถ้วน (Member Detail View Modal) -->
+    <div id="modal-member-detail" class="modal-backdrop">
+        <div class="modal-content" style="max-width: 750px;">
+            <div class="modal-header">
+                <h3>ข้อมูลทะเบียนสมาชิกโดยละเอียด</h3>
+                <button class="modal-close" onclick="closeModal('modal-member-detail')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-layout">
+                    <div class="profile-sidebar">
+                        <div id="detail-photo-container">
+                            <!-- จะแสดงรูปภาพหรือตัวอักษรย่อโดย JS -->
+                        </div>
+                        <h2 class="profile-name" id="detail-display-name">สมชาย รักดี</h2>
+                        <p class="profile-id" id="detail-display-id">M69001</p>
+                        <div id="detail-display-status-badge">
+                            <!-- Badge สถานะจะแสดงโดย JS -->
+                        </div>
+                        
+                        <!-- ปุ่มด่วนทำบันทึกชำระค่าบำรุง -->
+                        <div style="margin-top:20px; width:100%; display:flex; flex-direction:column; gap:8px;" class="no-print">
+                            <button class="btn btn-success" id="btn-detail-pay-fee" style="width:100%; justify-content:center;">
+                                <i class="fa-solid fa-money-bill-wave"></i> จ่ายค่าบำรุง (300 บาท)
+                            </button>
+                            <button class="btn btn-secondary" id="btn-detail-edit-info" style="width:100%; justify-content:center;">
+                                <i class="fa-solid fa-user-gear"></i> แก้ไขข้อมูลสมาชิก
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details-content">
+                        <!-- หมวดหมู่: ข้อมูลส่วนตัว -->
+                        <div class="detail-section">
+                            <h3 class="detail-section-title">ข้อมูลส่วนตัวทั่วไป</h3>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <h4>ชื่อเล่น</h4>
+                                    <p id="detail-val-nickname">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>วัน/เดือน/ปีเกิด (อายุ)</h4>
+                                    <p id="detail-val-birth">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>เบอร์โทรศัพท์</h4>
+                                    <p id="detail-val-phone">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>รุ่นการศึกษา (รุ่น พ.น.)</h4>
+                                    <p id="detail-val-gen">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>Line ID</h4>
+                                    <p id="detail-val-line">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>Facebook</h4>
+                                    <p id="detail-val-facebook">-</p>
+                                </div>
+                                <div class="detail-item full-width" style="grid-column: span 2;">
+                                    <h4>ที่อยู่ปัจจุบัน</h4>
+                                    <p id="detail-val-address">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>การศึกษา (คณะ/สาขา)</h4>
+                                    <p id="detail-val-education">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>อาชีพปัจจุบัน</h4>
+                                    <p id="detail-val-occupation">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- หมวดหมู่: ข้อมูลการเงินสมาชิกภาพ -->
+                        <div class="detail-section">
+                            <h3 class="detail-section-title">ข้อมูลรอบสมาชิกภาพและสิทธิ์สวัสดิการ</h3>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <h4>วันที่สมัครสมาชิก</h4>
+                                    <p id="detail-val-apply-date">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>วันที่จ่ายค่าบำรุงล่าสุด</h4>
+                                    <p id="detail-val-last-payment">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>วันหมดอายุสมาชิกภาพ/ครบต่ออายุ</h4>
+                                    <p id="detail-val-renewal-date" style="font-weight:600; color:var(--status-grace);">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>จำนวนวันเกินกำหนดชำระ (Overdue)</h4>
+                                    <p id="detail-val-overdue-days">-</p>
+                                </div>
+                                <div class="detail-item full-width" style="grid-column: span 2; background:rgba(255,255,255,0.02); padding:10px; border-radius:6px; border:1px solid var(--border-color);">
+                                    <h4 style="color:var(--accent-cyan); font-weight:600;">ความเห็นสิทธิ์สวัสดิการของระบบ:</h4>
+                                    <p id="detail-val-eligibility-reason" style="font-size:0.85rem; margin-top:2px;">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- หมวดหมู่: ผู้ติดต่อกรณีฉุกเฉิน -->
+                        <div class="detail-section">
+                            <h3 class="detail-section-title">ข้อมูลผู้ติดต่อกรณีฉุกเฉิน</h3>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <h4>ชื่อผู้ติดต่อ</h4>
+                                    <p id="detail-val-emergency-name">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>ความสัมพันธ์</h4>
+                                    <p id="detail-val-emergency-rel">-</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h4>เบอร์โทรศัพท์ติดต่อฉุกเฉิน</h4>
+                                    <p id="detail-val-emergency-phone">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('modal-member-detail')">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. โมดอลยืนยันบันทึกการชำระเงิน (Confirm Payment Modal) -->
+    <div id="modal-confirm-payment" class="modal-backdrop">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <h3>บันทึกชำระค่าบำรุงประจำปี</h3>
+                <button class="modal-close" onclick="closeModal('modal-confirm-payment')">&times;</button>
+            </div>
+            <form id="payment-confirm-form">
+                <input type="hidden" id="payment-form-member-id">
+                <div class="modal-body">
+                    <p style="margin-bottom: 12px;">คุณกำลังจะทำรายการบันทึกการชำระเงินค่าบำรุงสมาชิก:</p>
+                    <div style="background:var(--bg-tertiary); border:1px solid var(--border-color); padding:14px; border-radius:var(--border-radius-sm); margin-bottom:16px;">
+                        <h4 id="payment-confirm-member-name" style="font-weight:600; font-size:1rem;">นายสมชาย รักดี</h4>
+                        <p id="payment-confirm-member-id-display" style="font-size:0.8rem; color:var(--text-secondary); margin-top:2px;">รหัสสมาชิก: M69001</p>
+                        <p id="payment-confirm-current-renewal" style="font-size:0.8rem; color:var(--text-secondary); margin-top:2px;">รอบต่ออายุเดิม: 2026-06-20</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="payment-input-amount">จำนวนเงินค่าบำรุง (บาท)</label>
+                        <input type="number" id="payment-input-amount" class="form-control" value="300" readonly disabled>
+                    </div>
+                    
+                    <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+                        <div class="form-group">
+                            <label for="payment-input-date">วันที่ชำระเงิน <span>*</span></label>
+                            <input type="date" id="payment-input-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment-input-year">ปีงวดการชำระ <span>*</span></label>
+                            <input type="number" id="payment-input-year" class="form-control" required min="2020" max="2100">
+                        </div>
+                    </div>
+                    
+                    <div style="background:rgba(16, 185, 129, 0.05); border:1px solid rgba(16, 185, 129, 0.15); padding:10px; border-radius:6px; font-size:0.75rem; color:var(--status-active);">
+                        <i class="fa-solid fa-circle-check"></i> ระบบจะเลื่อนกำหนดอายุการเป็นสมาชิกเพิ่มขึ้น 1 ปีโดยอัตโนมัติ นับจากรอบการชำระ
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-confirm-payment')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-success">ยืนยันการรับเงิน</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- เรียกใช้สคริปต์การคำนวณและประมวลผลระบบ -->
+    <script src="js/db.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
