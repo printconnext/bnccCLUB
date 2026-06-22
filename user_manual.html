@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คู่มือการใช้งาน - ระบบงานทะเบียนสมาชิกและสวัสดิการ ชมรมเพื่อน พ.น.</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #06b6d4;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --bg-light: #f8fafc;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', 'Prompt', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            line-height: 1.7;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* เมนูสารบัญด้านข้าง (Sidebar TOC) */
+        .manual-sidebar {
+            width: 280px;
+            background-color: var(--secondary);
+            color: #f8fafc;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 30px 20px;
+            overflow-y: auto;
+            z-index: 100;
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sidebar-header {
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+        }
+
+        .sidebar-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 auto 12px auto;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: white;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .sidebar-header p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .toc-menu {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin-bottom: 8px;
+        }
+
+        .toc-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .toc-link:hover, .toc-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .toc-link.active {
+            background-color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* ส่วนพื้นที่เนื้อหาขวา */
+        .manual-container {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 50px;
+            max-width: 1000px;
+            background-color: white;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.02);
+            min-height: 100vh;
+        }
+
+        /* สไตล์เนื้อหาคู่มือ */
+        header.manual-header {
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 24px;
+        }
+
+        .doc-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        h1 {
+            font-family: 'Prompt', sans-serif;
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        h2 {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-top: 40px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h3 {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.15rem;
+            color: var(--text-dark);
+            margin-top: 24px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* กล่องแจ้งเตือนพิเศษ */
+        .box-info {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+
+        .box-info strong {
+            color: var(--primary-dark);
+        }
+
+        .box-warning {
+            background-color: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+
+        .box-warning strong {
+            color: #b45309;
+        }
+
+        .box-danger {
+            background-color: #fef2f2;
+            border-left: 4px solid var(--danger);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+
+        .box-danger strong {
+            color: #b91c1c;
+        }
+
+        /* ตารางสรุป */
+        .manual-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.9rem;
+        }
+
+        .manual-table th {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+            font-weight: 600;
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        .manual-table td {
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            color: var(--text-main);
+        }
+
+        .manual-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* สไตล์ปุ่มเดโม */
+        .print-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .print-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* สไตล์จำลองคีย์บอร์ดหรือโค้ด */
+        code {
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #0f172a;
+        }
+
+        pre {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        /* CSS สำหรับสั่งพิมพ์คู่มือ */
+        @media print {
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            .manual-sidebar, .print-btn {
+                display: none !important;
+            }
+            .manual-container {
+                margin-left: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                max-width: 100% !important;
+            }
+            h2 {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- สารบัญเมนูด้านซ้าย (Sidebar) -->
+    <nav class="manual-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">พ.น.</div>
+            <h2>คู่มือการใช้งานระบบ</h2>
+            <p>เวอร์ชัน 1.0 · มิถุนายน 2026</p>
+        </div>
+        <ul class="toc-menu">
+            <li class="toc-item">
+                <a href="#intro" class="toc-link active"><i class="fa-solid fa-book-open"></i> 1. บทนำระบบงาน</a>
+            </li>
+            <li class="toc-item">
+                <a href="#roles" class="toc-link"><i class="fa-solid fa-users-gear"></i> 2. บัญชีและบทบาทผู้ใช้</a>
+            </li>
+            <li class="toc-item">
+                <a href="#status-engine" class="toc-link"><i class="fa-solid fa-gears"></i> 3. เอนจินคำนวณสถานะ</a>
+            </li>
+            <li class="toc-item">
+                <a href="#welfare-rules" class="toc-link"><i class="fa-solid fa-shield-heart"></i> 4. สิทธิ์และโควต้าสวัสดิการ</a>
+            </li>
+            <li class="toc-item">
+                <a href="#workflow-member" class="toc-link"><i class="fa-solid fa-address-book"></i> 5. ขั้นตอนบันทึกทะเบียน</a>
+            </li>
+            <li class="toc-item">
+                <a href="#workflow-fee" class="toc-link"><i class="fa-solid fa-dollar-sign"></i> 6. ขั้นตอนรับชำระค่าบำรุง</a>
+            </li>
+            <li class="toc-item">
+                <a href="#workflow-welfare" class="toc-link"><i class="fa-solid fa-hand-holding-dollar"></i> 7. ขั้นตอนการเบิกจ่ายสวัสดิการ</a>
+            </li>
+            <li class="toc-item">
+                <a href="#reports" class="toc-link"><i class="fa-solid fa-print"></i> 8. การออกรายงาน/สั่งพิมพ์</a>
+            </li>
+            <li class="toc-item">
+                <a href="#cloud-sync" class="toc-link"><i class="fa-brands fa-google-drive"></i> 9. การเชื่อมคลาวด์ Sheets</a>
+            </li>
+            <li class="toc-item">
+                <a href="#demo-date" class="toc-link"><i class="fa-solid fa-clock-rotate-left"></i> 10. กลไกย้อนเวลาเดโม</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- พื้นที่เนื้อหาคู่มือการใช้งาน -->
+    <article class="manual-container">
+        <button class="print-btn" onclick="window.print();"><i class="fa-solid fa-print"></i> พิมพ์คู่มือฉบับนี้ (Print / PDF)</button>
+        
+        <header class="manual-header">
+            <h1>คู่มือการใช้งานระบบงานทะเบียนสมาชิกและสวัสดิการ</h1>
+            <p style="font-size: 1.2rem; color: #64748b; margin-top: 6px;">ระบบฐานข้อมูลกลางและตรวจสอบสิทธิ์อัตโนมัติ ชมรมเพื่อน พ.น.</p>
+            <div class="doc-meta">
+                <span><i class="fa-solid fa-user"></i> ผู้จัดทำ: PRODEV Team</span>
+                <span><i class="fa-solid fa-calendar"></i> เผยแพร่: มิถุนายน 2569</span>
+                <span><i class="fa-solid fa-file-pdf"></i> รูปแบบ: เว็บแอปพลิเคชัน & พิมพ์รายงานสรุป</span>
+            </div>
+        </header>
+
+        <!-- หัวข้อที่ 1 -->
+        <section id="intro">
+            <h2>1. บทนำระบบงานทะเบียนสมาชิกและสวัสดิการ</h2>
+            <p>ระบบงานทะเบียนสมาชิกและสวัสดิการของ <strong>ชมรมเพื่อน พ.น.</strong> พัฒนาขึ้นเพื่อทดแทนการจัดเก็บเอกสารด้วยกระดาษและการคำนวณวันต่ออายุและการเบิกจ่ายสวัสดิการด้วยมือ ป้องกันความเสี่ยงจากการทำจ่ายสวัสดิการที่ค้างต่ออายุ หรือเบิกจ่ายทับซ้อนเกินข้อกำหนดประจำปีของชมรม</p>
+            
+            <div class="box-info">
+                <strong>💡 ปัญหาที่ระบบนี้แก้ไขได้:</strong>
+                <ul style="margin-top: 6px; padding-left: 20px;">
+                    <li>แก้ไขข้อมูลที่กระจัดกระจายและสูญหาย ให้ถูกรวมศูนย์บนฐานข้อมูล Google Cloud (Google Sheets) ปลอดภัยและเรียกดูพร้อมกันได้แบบเรียลไทม์</li>
+                    <li>ตัดวงจรการคำนวณวันผ่อนปรน (Grace Period) และวันสิ้นสภาพ (Terminated) โดยใช้ระบบประเมินผลอัตโนมัติของคอมพิวเตอร์</li>
+                    <li>ป้องกันภัยจากการจ่ายเงินช่วยเหลือสวัสดิการผิดเกณฑ์ โดยใช้กลไกการคำนวณโควต้าเบิกจ่ายต่อปีปฏิทินที่รวดเร็ว</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- หัวข้อที่ 2 -->
+        <section id="roles">
+            <h2>2. บัญชีและบทบาทการใช้งานสิทธิ์หลังบ้าน</h2>
+            <p>เพื่อตอบสนองการรีวิวระบบงานจริงหลังบ้านอย่างมีประสิทธิภาพ ระบบจึงแบ่งสิทธิ์การทำงานและการเข้าถึงเมนูเป็น 3 บทบาทหลัก โดยมีบัญชี Username และ Password จำลองสำหรับการลงชื่อเข้าสู่ระบบ ดังนี้:</p>
+            
+            <table class="manual-table">
+                <thead>
+                    <tr>
+                        <th>บทบาทการทำงาน</th>
+                        <th>บัญชีผู้ใช้งาน (Username)</th>
+                        <th>รหัสผ่าน (Password)</th>
+                        <th>ขอบเขตอำนาจหน้าที่ในระบบ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ผู้ดูแลทะเบียนสมาชิก</strong><br>(Member Admin)</td>
+                        <td><code>admin.member</code></td>
+                        <td><code>member123</code></td>
+                        <td>เพิ่ม ลบ และปรับปรุงข้อมูลสมาชิก-อาจารย์ และทำบันทึกรับเงินชำระค่าบำรุงประจำปี</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ผู้ดูแลสวัสดิการ</strong><br>(Welfare Admin)</td>
+                        <td><code>admin.welfare</code></td>
+                        <td><code>welfare123</code></td>
+                        <td>ประเมินสิทธิ์และทำเรื่องอนุมัติบันทึกคำเบิกจ่ายเงินสวัสดิการของสมาชิกและอาจารย์</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ผู้บริหาร / คณะกรรมการ</strong><br>(Executive / Committee)</td>
+                        <td><code>executive</code></td>
+                        <td><code>exec123</code></td>
+                        <td>อ่านวิเคราะห์ Dashboard สรุปความคืบหน้าภาพรวม และสั่งส่งออกพิมพ์รายงานสรุปผลประจำปีส่งที่ประชุม</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- หัวข้อที่ 3 -->
+        <section id="status-engine">
+            <h2>3. เอนจินคำนวณสถานะสมาชิกอัตโนมัติ</h2>
+            <p>ระบบทะเบียนสมาชิกใช้ระบบอัตโนมัติในการคำนวณสถานะสมาชิกภาพของทุกคนโดยเชื่อมโยง **"วันที่ชำระค่าบำรุงล่าสุด"** เข้ากับปฏิทินปีกำหนด ซึ่งมีกฎกติกาการสลับสถานะอัตโนมัติ 5 กรณีหลัก ดังนี้:</p>
+            
+            <table class="manual-table">
+                <thead>
+                    <tr>
+                        <th>ชื่อสถานะในระบบ</th>
+                        <th>เกณฑ์เงื่อนไขในการพิจารณา</th>
+                        <th>ความเห็นของสิทธิ์สวัสดิการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span style="color:var(--accent); font-weight:600;">Active New</span></td>
+                        <td>สมาชิกสมัครใหม่ ที่มีระยะเวลาจัดตั้งสมาชิกภาพยังไม่ครบ 90 วันทั่วไป (หรือ 30 วันสำหรับกรณีสมัครใหม่หลังสิ้นสภาพ)</td>
+                        <td style="color:var(--danger); font-weight:500;">ยังไม่ได้รับสิทธิ์เบิกจ่ายสวัสดิการทั่วไป</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:var(--success); font-weight:600;">Active</span></td>
+                        <td>สมาชิกชำระค่าบำรุงเรียบร้อย และประวัติการจ่ายเงินล่าสุดยังไม่เกินระยะเวลา 1 ปีปฏิทิน</td>
+                        <td style="color:var(--success); font-weight:500;">ได้รับสิทธิ์ตามสวัสดิการปกติ</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:var(--warning); font-weight:600;">Active (Grace Period)</span></td>
+                        <td>เลยรอบต่ออายุสมาชิกประจำปีมาแล้ว แต่ยังอยู่ภายในช่วงผ่อนผันไม่เกิน 30 วัน</td>
+                        <td style="color:var(--success); font-weight:500;">อนุโลมให้สิทธิ์เบิกจ่ายและเยี่ยมไข้ได้ตามกติกา</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:var(--danger); font-weight:600;">Suspended (ระงับสิทธิ์)</span></td>
+                        <td>เลยรอบต่ออายุสมาชิกมาแล้วตั้งแต่ 31 วันขึ้นไป แต่อยู่ไม่เกิน 90 วัน</td>
+                        <td style="color:var(--danger); font-weight:500;">ระงับสิทธิ์การรับสวัสดิการชั่วคราว (จะคืนสิทธิ์ทันทีเมื่อจ่ายเงินค่าบำรุง)</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:#7f1d1d; font-weight:600;">Terminated (สิ้นสภาพ)</span></td>
+                        <td>ขาดต่ออายุสมาชิกเกินรอบครบกำหนดตั้งแต่ 91 วันขึ้นไป</td>
+                        <td style="color:var(--danger); font-weight:500;">พ้นสภาพการเป็นสมาชิกชมรมถาวร (ต้องสมัครใหม่และรอสิทธิ์ใหม่ 30 วัน)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- หัวข้อที่ 4 -->
+        <section id="welfare-rules">
+            <h2>4. สิทธิ์และวงเงินโควต้าการช่วยเหลือสวัสดิการ</h2>
+            <p>ระบบเบิกจ่ายสวัสดิการควบคุมและป้องกันความเสี่ยงในการคำนวณโควต้าและวงเงินเบิกจ่ายต่อปีปฏิทินอย่างเข้มงวด โดยจำแนกตามประเภทผู้รับผลประโยชน์ดังนี้:</p>
+            
+            <h3><i class="fa-solid fa-user-graduate" style="color:var(--primary);"></i> สิทธิ์สำหรับสมาชิกชมรม</h3>
+            <ul>
+                <li><strong>กรณีสมาชิกถึงแก่กรรม</strong>: เบิกจ่ายงวดเดียวได้สูงสุดไม่เกิน <code>5,000 บาท</code> (ระบบจะปิดประวัติต่ออายุของสมาชิกผู้นั้นและปรับปรุงสถานะเป็นถึงแก่กรรมโดยอัตโนมัติหลังจากบันทึกอนุมัติสำเร็จ)</li>
+                <li><strong>กรณีครอบครัวสมาชิกถึงแก่กรรม</strong>: เบิกจ่ายสวัสดิการช่วยเหลือภัยจัดงานพิธีไม่เกิน <code>2,000 บาท</code> ต่อกรณีเหตุการณ์</li>
+                <li><strong>กรณีสมาชิกเจ็บป่วยพักรักษาตัว (3 วันขึ้นไป)</strong>: วงเงินสวัสดิการเยี่ยมไข้ไม่เกินครั้งละ <code>1,500 บาท</code> และใช้สิทธิ์จำกัดได้ไม่เกิน <strong>2 ครั้ง ต่อปีปฏิทิน</strong></li>
+            </ul>
+
+            <h3><i class="fa-solid fa-chalkboard-user" style="color:var(--accent);"></i> สิทธิ์สำหรับอาจารย์ชมรม</h3>
+            <ul>
+                <li><strong>กรณีถึงแก่กรรม</strong>: เบิกจ่ายสนับสนุนเพื่อร่วมไว้อาลัยไม่เกิน <code>2,000 บาท</code> (พร้อมระบบปรับเปลี่ยนสถานะเป็นถึงแก่กรรม)</li>
+                <li><strong>กรณีเจ็บป่วยพักรักษาตัว (3 วันขึ้นไป)</strong>: วงเงินเยี่ยมไข้ไม่เกินครั้งละ <code>2,000 บาท</code> และใช้สิทธิ์จำกัดได้ไม่เกิน <strong>1 ครั้ง ต่อปีปฏิทิน</strong></li>
+            </ul>
+
+            <div class="box-danger">
+                <strong>⚠️ กฎเหล็กของเอนจินป้องกันสวัสดิการ:</strong>
+                <p style="margin-top:4px; font-size:0.9rem;">ระบบจะบล็อกปุ่มการอนุมัติและไม่ให้ป้อนข้อมูลทันทีหากตัวเอนจินประเมินแล้วพบว่าผู้ขอเบิกมีสถานะไม่ตรงตามสิทธิ์ (เช่น สมาชิกใหม่ที่ยังรอวันครบกำหนด หรือสมาชิกในสถานะ Suspended และ Terminated) หรือเมื่อตรวจพบว่าใช้สิทธิ์เยี่ยมไข้เกินโควต้าในปีปฏิทินปัจจุบันแล้ว</p>
+            </div>
+        </section>
+
+        <!-- หัวข้อที่ 5 -->
+        <section id="workflow-member">
+            <h2>5. ขั้นตอนการลงทะเบียนสมาชิกและอาจารย์ใหม่</h2>
+            <div class="box-info">
+                <strong>📝 บทบาทที่ทำงานได้:</strong> <code>ผู้ดูแลทะเบียนสมาชิก (admin.member)</code>
+            </div>
+            
+            <h3>ขั้นตอนการลงทะเบียนสมาชิกใหม่ (Workflow 1):</h3>
+            <ol>
+                <li>เข้าสู่ระบบหลังบ้านด้วยบัญชี <code>admin.member</code></li>
+                <li>คลิกเมนูแถบซ้าย <strong>"ทะเบียนสมาชิก"</strong> จากนั้นกดปุ่มสีฟ้าด้านขวาบน <strong>"+ เพิ่มสมาชิกใหม่"</strong></li>
+                <li>ป้อนข้อมูลสมาชิกในหน้าฟอร์มป๊อปอัพให้ครบถ้วน รวมถึงข้อมูลผู้ติดต่อฉุกเฉิน และอัปโหลดภาพถ่ายส่วนบุคคล (หรือปล่อยว่างเพื่อใช้สัญลักษณ์ย่ออัตโนมัติ)</li>
+                <li>ตรวจสอบช่อง <strong>"เป็นสมาชิกสมัครใหม่หลังสิ้นสภาพ"</strong> หากสมาชิกท่านนี้เคยถูกระบบปรับเป็นสิ้นสภาพ (Terminated) และประสงค์จะเขียนใบสมัครใหม่ (จะทำให้ระยะเวลาในการรอรับสิทธิ์เบิกจ่ายลดเหลือ 30 วัน แทนที่จะเป็น 90 วันของสมาชิกทั่วไป)</li>
+                <li>ป้อนช่อง <strong>"วันที่จ่ายค่าบำรุงล่าสุด"</strong> (เป็นวันที่เริ่มต้นของการเก็บรอบเงินต่ออายุสมาชิก) และกด <strong>"บันทึกข้อมูล"</strong></li>
+            </ol>
+            
+            <h3>ขั้นตอนการปรับปรุงแก้ไขทะเบียนประวัติ:</h3>
+            <ul>
+                <li><strong>ปุ่มดูข้อมูลละเอียด</strong>: กดสัญลักษณ์ไอคอนรูปวงกลมตัว <code>i</code> สีน้ำเงิน เพื่อตรวจสอบข้อมูลรอบสมาชิกภาพ วันเวลาหมดอายุ และผู้ติดต่อฉุกเฉินแบบละเอียด</li>
+                <li><strong>ปุ่มแก้ไขข้อมูล</strong>: กดไอคอนรูปดินสอเขียนเพื่อปรับปรุงเบอร์โทรศัพท์ ที่อยู่ หรือประวัติส่วนบุคคล</li>
+            </ul>
+        </section>
+
+        <!-- หัวข้อที่ 6 -->
+        <section id="workflow-fee">
+            <h2>6. ขั้นตอนการบันทึกการรับเงินชำระค่าบำรุงประจำปี</h2>
+            <div class="box-info">
+                <strong>📝 บทบาทที่ทำงานได้:</strong> <code>ผู้ดูแลทะเบียนสมาชิก (admin.member)</code>
+            </div>
+            
+            <p>ค่าบำรุงชมรมกำหนดจำนวนเก็บที่อัตรา 300 บาทต่อปี สมาชิกทุกคนต้องทำการต่ออายุประจำปีเพื่อรักษาสิทธิ์สวัสดิการของตนเองอย่างต่อเนื่อง ขั้นตอนการชำระเงินค่าบำรุงด่วนมีดังนี้:</p>
+            
+            <ol>
+                <li>ไปที่หน้าเมนู <strong>"ระบบค่าบำรุงสมาชิก"</strong></li>
+                <li>ตรวจสอบแผงด้านซ้าย <strong>"สมาชิกค้างชำระค่าบำรุงประจำปี"</strong> เพื่อวิเคราะห์หาเป้าหมายรายชื่อสมาชิกค้างเงิน</li>
+                <li>คุณสามารถกดปุ่มสีเขียวด่วน <strong>"ชำระเงิน"</strong> ที่ท้ายชื่อเป้าหมายค้างชำระได้ทันที หรือค้นหาประชากรคนอื่นที่ช่อง <strong>"ค้นหาสมาชิกด่วนเพื่อทำรายการชำระเงิน"</strong> บริเวณแผงด้านล่าง</li>
+                <li>ตรวจสอบความถูกต้องของชื่อ-สกุล และรอบต่ออายุเดิมในป๊อปอัพการชำระเงิน</li>
+                <li>กำหนด <strong>"วันที่ชำระเงิน"</strong> และ <strong>"ปีงวดการชำระ"</strong> (เช่น ปีงวดชำระ 2026)</li>
+                <li>กดปุ่ม <strong>"ยืนยันการรับเงิน"</strong> เพื่อบันทึกเสร็จสิ้น</li>
+            </ol>
+
+            <div class="box-info">
+                <strong>✨ ผลลัพธ์จากการบันทึกชำระค่าบำรุง:</strong>
+                <p style="margin-top: 4px; font-size: 0.9rem;">ระบบจะต่อเวลารอบการเงินออกไป 1 ปีโดยอัตโนมัติ สถานะสมาชิกจะสลับกลับมาเป็น <strong>Active</strong> ทันที และยอดธุรกรรมรายรับเงิน 300 บาทจะปรากฏบันทึกในตารางประวัติธุรกรรมเพื่อใช้สรุปยอดบัญชีปลายปี</p>
+            </div>
+        </section>
+
+        <!-- หัวข้อที่ 7 -->
+        <section id="workflow-welfare">
+            <h2>7. ขั้นตอนการเบิกจ่ายจ่ายสวัสดิการชมรม</h2>
+            <div class="box-info">
+                <strong>📝 บทบาทที่ทำงานได้:</strong> <code>ผู้ดูแลสวัสดิการ (admin.welfare)</code>
+            </div>
+            
+            <p>ระบบจะตรวจวิเคราะห์ความถูกต้องและสถานะสมาชิกภาพรวมถึงประวัติประชากรทั้งหมดเรียลไทม์เพื่อสกัดการเบิกจ่ายที่ผิดกติกาชมรม:</p>
+            
+            <ol>
+                <li>เข้าระบบด้วยบัญชี <code>admin.welfare</code> และไปที่หน้า <strong>"ระบบสวัสดิการ"</strong></li>
+                <li>ในหัวข้อแรก <strong>"1. ค้นหาผู้รับสวัสดิการ"</strong> ให้เริ่มป้อนชื่อสมาชิกหรืออาจารย์ จากนั้นเลือกบุคคลที่ถูกต้องจากรายการที่ปรากฏขึ้นมา</li>
+                <li>ระบบจะดึงประวัติขึ้นมาโชว์ในกล่องข้อมูลสีฟ้า</li>
+                <li>ในหัวข้อถัดไปเลือก <strong>"2. เลือกประเภทสวัสดิการ"</strong> ที่ต้องการทำเรื่องขอเบิกจ่าย</li>
+                <li>ระบบจะนำข้อมูลของบุคคลนั้นไปประเมินกับเอนจินของระบบทันที:
+                   <ul>
+                       <li>หากผ่านสิทธิ์: หน้าจอแสดงสีเขียว <code>"ผ่านการประเมิน"</code> และระบุวงเงินสูงสุดที่ทำเบิกได้ พร้อมปลดล็อกฟอร์มให้กรอกตัวเลข</li>
+                       <li>หากไม่เข้าเกณฑ์: หน้าจอจะแสดงสีแดง <code>"ถูกปฏิเสธ/ระงับอนุมัติ"</code> และชี้แจงสาเหตุ (เช่น อยู่ระหว่างช่วงค้างชำระค่าบำรุง) และทำการบล็อกไม่ให้กดปุ่มทำรายการเด็ดขาด</li>
+                   </ul>
+                </li>
+                <li>ในกรณีที่ผ่านสิทธิ์ ป้อนข้อมูลจำนวนเงิน วันเกิดเหตุ และบันทึกหมายเหตุรายละเอียด เช่น สถานที่ตั้งฌาปนกิจ หรือชื่อสถานพยาบาลที่ผู้ป่วยพักรักษาตัวอยู่</li>
+                <li>กดปุ่มสีเขียว <strong>"อนุมัติจ่ายและบันทึกรายการ"</strong> เพื่อบันทึกประวัติการเบิกจ่ายเข้าสู่ฐานข้อมูลประวัติชมรมทันที</li>
+            </ol>
+        </section>
+
+        <!-- หัวข้อที่ 8 -->
+        <section id="reports">
+            <h2>8. การคัดกรองพิมพ์รายงานเพื่อนำส่งคณะกรรมการชมรมประจำปี</h2>
+            <div class="box-info">
+                <strong>📝 บทบาทที่ทำงานได้:</strong> ทุกสิทธิ์การใช้งาน (ผู้บริหารแนะนำให้ใช้งานหน้านี้เป็นหลัก)
+            </div>
+            
+            <p>เมื่อคณะกรรมการต้องการออกกระดาษรายงานประจำปีสำหรับใช้ประชุมสรุปข้อมูล สามารถดำเนินการง่ายๆ ที่หน้ารายงานดังนี้:</p>
+            
+            <ol>
+                <li>ไปที่หน้าเมนู <strong>"รายงานประจำปี/พิมพ์"</strong></li>
+                <li>เลือกแถบประเภทรายงานที่ต้องการจัดพิมพ์ ได้แก่:
+                    <ul>
+                        <li><strong>รายงานทะเบียนสมาชิก</strong>: รายชื่อ ทุ่นการศึกษา และสถานะทั้งหมด</li>
+                        <li><strong>รายงานทะเบียนอาจารย์</strong>: ประวัติทำเนียบและเบอร์โทรครูอาจารย์</li>
+                        <li><strong>รายงานค่าบำรุงประจำปี</strong>: สรุปงบประมาณรายรับ ยอดธุรกรรมค่าบำรุงประจำปี</li>
+                        <li><strong>รายงานการจ่ายสวัสดิการ</strong>: สรุปงบประมาณค่าใช้จ่ายสวัสดิการรวม ยอดจำแนกแต่ละราย</li>
+                    </ul>
+                </li>
+                <li>ใช้ตัวเลือกฟิลเตอร์คัดกรองข้อมูลตามหัวข้อเพื่อสรุปประเด็น เช่น เลือกคัดเฉพาะประชากรรุ่นการศึกษา พ.น. ที่กำหนด หรือเลือกเจาะจงดูเฉพาะสมาชิกค้างชำระเงิน</li>
+                <li>ตรวจสอบความสมบูรณ์และถูกต้องของหน้าตารางสรุปรายงานในหน้าจอ</li>
+                <li>กดปุ่มสีฟ้า <strong>"พิมพ์รายงานนี้ (Print/PDF)"</strong></li>
+                <li>หน้าเว็บเบราว์เซอร์จะจำลองการสลับหน้าต่างงานพิมพ์เอกสาร โดยการซ่อนส่วนเมนูแถบข้าง คอนโทรลบาร์ และหัวเรื่องเว็บแอปพลิเคชันออกทิ้งทั้งหมดโดยอัตโนมัติ เหลือเพียงหน้าตารางรายงานตัวหนังสือสีดำบนพื้นหลังสีขาวขนาดมาตรฐานเพื่อส่งมอบเข้าสู่ระบบเครื่องปริ้นท์หรือกดบันทึกเซฟเป็นไฟล์ PDF ได้ทันที</li>
+            </ol>
+        </section>
+
+        <!-- หัวข้อที่ 9 -->
+        <section id="cloud-sync">
+            <h2>9. แนวทางเชื่อมโยงฐานข้อมูลเข้ากับ Google Sheets ออนไลน์</h2>
+            <p>เพื่อทำตามสถาปัตยกรรมคลาวด์แบบ Serverless ที่ผู้ใช้งานหลายคนสามารถเปิดเข้าข้อมูลและแก้ไขไปพร้อมกันได้แบบเรียลไทม์ ผู้พัฒนาสามารถนำสคริปต์นี้ไปสร้างเป็น Web App บนโครงการ Google Apps Script ที่เชื่อมโยงเข้ากับบัญชี Google Sheets ของคุณ:</p>
+            
+            <pre><code>// โค้ดสำหรับวางในโครงการ Google Apps Script (GAS)
+function doGet(e) {
+  var action = e.parameter.action;
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  
+  if (action === "getMembers") {
+    var dataSheet = sheet.getSheetByName("members");
+    var rows = dataSheet.getDataRange().getValues();
+    var headers = rows[0];
+    var list = [];
+    
+    for (var i = 1; i < rows.length; i++) {
+      var row = rows[i];
+      var record = {};
+      for (var j = 0; j < headers.length; j++) {
+        record[headers[j]] = row[j];
+      }
+      list.push(record);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(list))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doPost(e) {
+  var params = JSON.parse(e.postData.contents);
+  var action = params.action;
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  
+  if (action === "recordPayment") {
+    var feeSheet = sheet.getSheetByName("fees");
+    feeSheet.appendRow([
+      params.id,
+      params.memberId,
+      params.paymentDate,
+      params.amount,
+      params.year,
+      params.recordedBy
+    ]);
+    
+    // อัปเดตตารางหลักสมาชิก
+    var memberSheet = sheet.getSheetByName("members");
+    var membersData = memberSheet.getDataRange().getValues();
+    for (var i = 1; i < membersData.length; i++) {
+      if (membersData[i][0] === params.memberId) {
+        memberSheet.getRange(i + 1, 15).setValue(params.paymentDate); // อัปเดต LastPaymentDate
+        break;
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify({success: true}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</code></pre>
+            
+            <div class="box-info">
+                <strong>🔗 การสลับจาก LocalStorage สู่ระบบคลาวด์จริง:</strong>
+                <p style="margin-top: 4px; font-size: 0.9rem;">ในตัวโครงการจริง ไฟล์สคริปต์ <code>js/db.js</code> จะทำหน้าที่เชื่อมอ่าน-เขียนใน LocalStorage ของเครื่องเบราว์เซอร์ ซึ่งคุณสามารถแก้สคริปต์ดังกล่าวให้ยิง <code>fetch(WEB_APP_URL)</code> ไปยังปลายทาง URL ของคลาวด์ Google Apps Script เพียงเท่านี้ข้อมูลของสมาชิกทุกคนก็จะแสดงตรงกันเรียลไทม์โดยที่ไม่จำเป็นต้องเช่าโฮสติ้งเซิร์ฟเวอร์ฐานข้อมูลภายนอกราคาแพง</p>
+            </div>
+        </section>
+
+        <!-- หัวข้อที่ 10 -->
+        <section id="demo-date">
+            <h2>10. กลไกจำลองเวลาสำหรับการสาธิต (System Date Traveler)</h2>
+            <div class="box-warning">
+                <strong>💡 คำแนะนำสำหรับการทดลองนำเสนอระบบ (Demo Day):</strong>
+                <p style="margin-top: 4px; font-size: 0.9rem;">เพื่อให้ท่านกรรมการสามารถเห็นภาพกลไกการเปลี่ยนผ่านสถานะสมาชิกภาพอัตโนมัติเมื่อครบกำหนดรอบปีชำระค่าบำรุง โดยที่ไม่ต้องรอเวลาข้ามปีจริงๆ ทางทีมพัฒนาจึงได้เขียนกล่อง **"วันที่จำลองระบบ (System Date)"** ไว้ที่ด้านบนขวาของระบบเพื่อการนำเสนอ</p>
+            </div>
+            
+            <h3>เทคนิคการสาธิตเปลี่ยนสถานะของสมาชิก:</h3>
+            <ol>
+                <li>เข้าสู่ระบบหลังบ้าน ไปที่เมนู <strong>"ทะเบียนสมาชิก"</strong> เพื่อจดบันทึกวันชำระล่าสุดของสมาชิกเป้าหมาย (เช่น สมาชิกชื่อ สมชาย รอบชำระล่าสุดเป็นวันที่ <code>2025-06-20</code> ซึ่งหมายความว่าจะหมดอายุและครบกำหนดต่ออายุในวันที่ <code>2026-06-20</code>)</li>
+                <li>ทดลองข้ามเวลาระบบโดยเปลี่ยนที่กล่อง **"วันที่จำลอง"** บนแถบเมนูบาร์ด้านบน:
+                    <ul>
+                        <li>หากเลือกตั้งเป็นวันที่ <code>2026-06-22</code> (ระบบเริ่มต้น) -> สมาชิกจะเลยกำหนดมา 2 วัน สถานะสมาชิกจะแสดงเป็น <span class="badge badge-grace">Active (Grace Period)</span> และยังเบิกสวัสดิการได้</li>
+                        <li>หากข้ามเวลาไปเป็นวันที่ <code>2026-07-25</code> (เลยกำหนดมา 35 วัน) -> สถานะจะเปลี่ยนเป้น <span class="badge badge-suspended">Suspended</span> อัตโนมัติในทุกแผงตาราง และปฏิเสธการขอเบิกสวัสดิการรักษาพยาบาลทันที</li>
+                        <li>หากข้ามเวลาไปไกลขึ้นเป็นวันที่ <code>2026-10-01</code> (เลยกำหนดเกิน 90 วัน) -> สมาชิกท่านนั้นจะเปลี่ยนเป็นสถานะ <span class="badge badge-terminated">Terminated (สิ้นสภาพ)</span> ทันที</li>
+                    </ul>
+                </li>
+                <li>คุณสามารถสลับเป็นบทบาทผู้ดูแลทะเบียนสมาชิก และทำบันทึกชำระค่าบำรุง 300 บาทให้กับสมาชิกท่านนั้น แล้วเฝ้าสังเกตสถานะที่สลับกลับคืนมาเป็น <span class="badge badge-active">Active</span> ปลดระงับสิทธิ์ให้อัตโนมัติเพื่อประกอบการสาธิตได้ทันที</li>
+            </ol>
+        </section>
+    </article>
+
+    <!-- สคริปต์สั้นช่วยเลื่อนหน้าจอตามเมนูและไฮไลต์สารบัญเมนูด้านซ้ายอัตโนมัติ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('.toc-link');
+            const sections = document.querySelectorAll('section');
+
+            // เลื่อนหน้าจอแบบนุ่มนวล
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // ตรวจสอบไฮไลต์ลิงก์สารบัญตามระยะการเลื่อนหน้าจอ (Scroll Spy)
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    // หักลบระยะเผื่อระยะห่างขอบด้านบนเล็กน้อย
+                    if (pageYOffset >= (sectionTop - 80)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
