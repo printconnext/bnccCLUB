@@ -1512,7 +1512,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // รันไอดีถัดไปของรุ่นโดยประมาณ
         const members = db.getMembers();
         const nextIdNum = members.length + 1;
-        document.getElementById('member-input-id').value = `M75${String(nextIdNum).padStart(3, '0')}`;
+        document.getElementById('member-input-id').value = `75${String(nextIdNum).padStart(3, '0')}`;
         document.getElementById('member-input-gen').value = 75;
 
         openModal('modal-member-form');
@@ -1792,8 +1792,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // รันไอดีถัดไปของอาจารย์
         const teachers = db.getTeachers();
-        const nextIdNum = teachers.length + 1;
-        document.getElementById('teacher-input-id').value = `T${String(nextIdNum).padStart(3, '0')}`;
+        const nextIdNum = Math.max(...teachers.map(t => parseInt(t.id.replace(/\D/g, '')) || 0), 0) + 1;
+        document.getElementById('teacher-input-id').value = `A${String(nextIdNum).padStart(4, '0')}`;
 
         openModal('modal-teacher-form');
     });
@@ -1873,6 +1873,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // 0. ระบบการเข้าสู่ระบบหลังบ้าน (Login / Logout Control)
     // ==========================================================================
     function initLogin() {
+        const rememberedUser = localStorage.getItem('bncc_remembered_username');
+        const rememberedPass = localStorage.getItem('bncc_remembered_password');
+        if (rememberedUser && rememberedPass) {
+            const userEl = document.getElementById('login-username');
+            const passEl = document.getElementById('login-password');
+            if (userEl) userEl.value = rememberedUser;
+            if (passEl) passEl.value = rememberedPass;
+            const rememberCheck = document.getElementById('login-remember');
+            if (rememberCheck) rememberCheck.checked = true;
+        }
+
         DOM.loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const username = document.getElementById('login-username').value.trim();
@@ -1902,6 +1913,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // บันทึกสถานะ Login
             state.isLoggedIn = true;
+            
+            const rememberCheck = document.getElementById('login-remember');
+            if (rememberCheck && rememberCheck.checked) {
+                localStorage.setItem('bncc_remembered_username', username);
+                localStorage.setItem('bncc_remembered_password', password);
+            } else {
+                localStorage.removeItem('bncc_remembered_username');
+                localStorage.removeItem('bncc_remembered_password');
+            }
             state.currentRole = role;
             sessionStorage.setItem('bncc_logged_in', 'true');
             sessionStorage.setItem('bncc_user_role', role);

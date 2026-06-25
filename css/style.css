@@ -102,14 +102,9 @@ body {
 .sidebar-logo {
     width: 40px;
     height: 40px;
-    background: var(--accent-gradient);
+    background-color: #ffffff;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    font-size: 1.2rem;
+    object-fit: cover;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
@@ -1119,14 +1114,9 @@ body {
 .login-logo {
     width: 70px;
     height: 70px;
-    background: var(--accent-gradient);
+    background-color: #ffffff;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    color: white;
-    font-size: 1.6rem;
+    object-fit: cover;
     margin: 0 auto 20px auto;
     box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
 }

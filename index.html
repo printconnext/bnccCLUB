@@ -14,7 +14,7 @@
     <!-- หน้าจอ Login แบบ Glassmorphism -->
     <div id="login-screen" class="login-overlay">
         <div class="login-card">
-            <div class="login-logo">พ.น.</div>
+            <img src="logo.jpg" alt="Logo" class="login-logo">
             <h2>ชมรมเพื่อน พ.น.</h2>
             <p>ระบบงานทะเบียนสมาชิกและสวัสดิการหลังบ้าน</p>
             
@@ -26,6 +26,12 @@
                 <div class="form-group" style="text-align: left; margin-bottom: 20px;">
                     <label for="login-password">รหัสผ่าน (Password)</label>
                     <input type="password" id="login-password" class="form-control" placeholder="ป้อนรหัสผ่าน..." required>
+                </div>
+                <div class="form-group" style="text-align: left; margin-bottom: 20px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; font-size: 0.875rem; cursor: pointer;">
+                        <input type="checkbox" id="login-remember" style="width: auto; margin: 0; cursor: pointer;">
+                        จดจำฉัน (Remember Me)
+                    </label>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
                     <i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบหลังบ้าน
@@ -48,7 +54,7 @@
         <!-- แถบเมนูด้านซ้าย (Sidebar) -->
         <aside class="sidebar">
             <div class="sidebar-brand">
-                <div class="sidebar-logo">พ.น.</div>
+                <img src="logo.jpg" alt="Logo" class="sidebar-logo">
                 <div class="brand-text">
                     <h2>เพื่อน พ.น.</h2>
                     <p>สวัสดิการ & ทะเบียนสมาชิก</p>
@@ -709,7 +715,7 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="teacher-input-id">รหัสอาจารย์ <span>*</span></label>
-                            <input type="text" id="teacher-input-id" class="form-control" required placeholder="เช่น T004">
+                            <input type="text" id="teacher-input-id" class="form-control" required placeholder="เช่น A0136">
                         </div>
                         <div class="form-group">
                             <label for="teacher-input-name">ชื่อ-นามสกุล <span>*</span></label>
