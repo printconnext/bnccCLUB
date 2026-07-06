@@ -450,8 +450,12 @@
                                         <small id="welfare-amount-hint" style="color:var(--accent-cyan); display:block; margin-top:4px; font-size:0.75rem;"></small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="welfare-claim-date">วันที่ยื่นเรื่อง / วันเกิดเหตุ <span>*</span></label>
-                                        <input type="date" id="welfare-claim-date" class="form-control" required>
+                                        <label>วันที่ยื่นเรื่อง / วันเกิดเหตุ <span>*</span></label>
+                                        <div class="date-dropdowns-group">
+                                            <select id="welfare-claim-day"></select>
+                                            <select id="welfare-claim-month"></select>
+                                            <select id="welfare-claim-year"></select>
+                                        </div>
                                     </div>
                                     <div class="form-group full-width">
                                         <label for="welfare-details-input">รายละเอียดเพิ่มเติม / หมายเหตุภัยพิบัติหรือสาเหตุเจ็บป่วย <span>*</span></label>
@@ -638,12 +642,20 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="member-input-apply-date">วันที่สมัครเข้าชมรม <span>*</span></label>
-                            <input type="date" id="member-input-apply-date" class="form-control" required>
+                            <label>วันที่สมัครเข้าชมรม (พ.ศ.) <span>*</span></label>
+                            <div class="date-dropdowns-group">
+                                <select id="member-apply-day"></select>
+                                <select id="member-apply-month"></select>
+                                <select id="member-apply-year"></select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="member-input-birth-date">วัน/เดือน/ปี เกิด <span>*</span></label>
-                            <input type="date" id="member-input-birth-date" class="form-control" required>
+                            <label>วัน/เดือน/ปี เกิด (พ.ศ.) <span>*</span></label>
+                            <div class="date-dropdowns-group">
+                                <select id="member-birth-day"></select>
+                                <select id="member-birth-month"></select>
+                                <select id="member-birth-year"></select>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -675,8 +687,12 @@
                             <input type="text" id="member-input-edu-faculty" class="form-control" placeholder="เช่น คณะวิศวกรรมศาสตร์ สาขาคอมพิวเตอร์">
                         </div>
                         <div class="form-group">
-                            <label for="member-input-last-payment">วันที่จ่ายค่าบำรุงล่าสุด <span>*</span></label>
-                            <input type="date" id="member-input-last-payment" class="form-control" required>
+                            <label>วันที่จ่ายค่าบำรุงล่าสุด (พ.ศ.) <span>*</span></label>
+                            <div class="date-dropdowns-group">
+                                <select id="member-last-pay-day"></select>
+                                <select id="member-last-pay-month"></select>
+                                <select id="member-last-pay-year"></select>
+                            </div>
                         </div>
                         
                         <!-- ผู้ติดต่อกรณีฉุกเฉิน -->
@@ -912,8 +928,12 @@
                     
                     <div class="form-grid" style="grid-template-columns:1fr 1fr;">
                         <div class="form-group">
-                            <label for="payment-input-date">วันที่ชำระเงิน <span>*</span></label>
-                            <input type="date" id="payment-input-date" class="form-control" required>
+                            <label>วันที่ชำระเงิน (พ.ศ.) <span>*</span></label>
+                            <div class="date-dropdowns-group">
+                                <select id="payment-day"></select>
+                                <select id="payment-month"></select>
+                                <select id="payment-year"></select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="payment-input-year">ปีงวดการชำระ (พ.ศ.) <span>*</span></label>

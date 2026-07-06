@@ -813,6 +813,41 @@ body {
     cursor: not-allowed;
 }
 
+/* Date Dropdowns Group — แสดงวัน/เดือน/ปี พ.ศ. แบบ 3 ช่องเรียงแนวนอน */
+.date-dropdowns-group {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    width: 100%;
+}
+.date-dropdowns-group select {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    padding: 10px 8px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    flex: 1;
+}
+.date-dropdowns-group select:first-child { flex: 0 0 64px; }   /* วัน */
+.date-dropdowns-group select:nth-child(2) { flex: 0 0 76px; }  /* เดือน */
+.date-dropdowns-group select:last-child { flex: 1; }            /* ปี พ.ศ. */
+.date-dropdowns-group select:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+body.light-theme .date-dropdowns-group select {
+    background-color: #f1f5f9;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+
+
 /* ส่วนจำลองอัปโหลดรูปภาพ */
 .photo-uploader {
     display: flex;

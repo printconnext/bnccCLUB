@@ -925,7 +925,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const systemDateStr = state.systemDate;
         
         // ตั้งค่าวันที่เคลมสวัสดิการเริ่มต้นเป็นวันที่จำลองในวันนี้
-        document.getElementById('welfare-claim-date').value = systemDateStr;
+        setDateDropdowns('welfare-claim', systemDateStr);
 
         const welfaresList = db.getWelfares();
         const recipient = state.selectedWelfareRecipient.original;
@@ -988,7 +988,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const recipientType = state.selectedWelfareRecipient.type;
         const welfareType = welfareTypeSelect.value;
         const amount = parseInt(welfareAmountInput.value);
-        const claimDate = document.getElementById('welfare-claim-date').value;
+        const claimDate = getDateFromDropdowns('welfare-claim');
         const details = document.getElementById('welfare-details-input').value;
 
         // ดึงขีดจำกัดความเหมาะสมสูงสุดอีกครั้งเพื่อความปลอดภัย
@@ -1714,8 +1714,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ปุ่มเปิดฟอร์มเพิ่มสมาชิกใหม่
-    
-    
+
+    // ==========================================================================
+    // UTILITY: Date Dropdown Helpers (สำหรับแสดงวันที่เป็น พ.ศ. ในฟอร์ม)
+    // ==========================================================================
+    const THAI_MONTHS_SHORT = [
+        { val: '01', name: 'ม.ค.' }, { val: '02', name: 'ก.พ.' },
+        { val: '03', name: 'มี.ค.' }, { val: '04', name: 'เม.ย.' },
+        { val: '05', name: 'พ.ค.' }, { val: '06', name: 'มิ.ย.' },
+        { val: '07', name: 'ก.ค.' }, { val: '08', name: 'ส.ค.' },
+        { val: '09', name: 'ก.ย.' }, { val: '10', name: 'ต.ค.' },
+        { val: '11', name: 'พ.ย.' }, { val: '12', name: 'ธ.ค.' }
+    ];
+
+    function initDateDropdowns(prefix, yearMinBE, yearMaxBE) {
+        const dayEl   = document.getElementById(`${prefix}-day`);
+        const monthEl = document.getElementById(`${prefix}-month`);
+        const yearEl  = document.getElementById(`${prefix}-year`);
+        if (!dayEl || !monthEl || !yearEl) return;
+
+        dayEl.innerHTML = '';
+        for (let d = 1; d <= 31; d++) {
+            dayEl.innerHTML += `<option value="${String(d).padStart(2,'0')}">${d}</option>`;
+        }
+        monthEl.innerHTML = THAI_MONTHS_SHORT.map(m => `<option value="${m.val}">${m.name}</option>`).join('');
+        yearEl.innerHTML = '';
+        for (let y = yearMinBE; y <= yearMaxBE; y++) {
+            yearEl.innerHTML += `<option value="${y}">${y}</option>`;
+        }
+    }
+
+    function setDateDropdowns(prefix, ceDateStr) {
+        const dayEl   = document.getElementById(`${prefix}-day`);
+        const monthEl = document.getElementById(`${prefix}-month`);
+        const yearEl  = document.getElementById(`${prefix}-year`);
+        if (!dayEl || !monthEl || !yearEl || !ceDateStr) return;
+        const parts = ceDateStr.split('-');
+        if (parts.length !== 3) return;
+        const yearBE = parseInt(parts[0], 10) + 543;
+        dayEl.value   = parts[2];
+        monthEl.value = parts[1];
+        yearEl.value  = String(yearBE);
+    }
+
+    function getDateFromDropdowns(prefix) {
+        const dayEl   = document.getElementById(`${prefix}-day`);
+        const monthEl = document.getElementById(`${prefix}-month`);
+        const yearEl  = document.getElementById(`${prefix}-year`);
+        if (!dayEl || !monthEl || !yearEl) return '';
+        const yearCE = parseInt(yearEl.value, 10) - 543;
+        return `${yearCE}-${monthEl.value}-${dayEl.value}`;
+    }
+
     function formatCEToBEDate(dateStr) {
         if (!dateStr) return '-';
         const parts = dateStr.split('-');
@@ -1728,6 +1778,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return dateStr;
     }
+
 
     function getNextMemberId(generation) {
         const members = db.getMembers();
@@ -1791,8 +1842,9 @@ document.addEventListener('DOMContentLoaded', () => {
         state.currentEditingMember = null;
         
         // กำหนดวันที่เริ่มต้น
-        document.getElementById('member-input-apply-date').value = state.systemDate;
-        document.getElementById('member-input-last-payment').value = state.systemDate;
+        setDateDropdowns('member-apply', state.systemDate);
+        setDateDropdowns('member-birth', state.systemDate);
+        setDateDropdowns('member-last-pay', state.systemDate);
         
         // รันไอดีถัดไปของรุ่น
         const defaultGen = 75;
@@ -1827,15 +1879,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('member-input-gen').value = m.generation;
         document.getElementById('member-input-name').value = m.name;
         document.getElementById('member-input-nickname').value = m.nickname;
-        document.getElementById('member-input-apply-date').value = m.applyDate;
-        document.getElementById('member-input-birth-date').value = m.birthDate;
+        setDateDropdowns('member-apply', m.applyDate);
+        setDateDropdowns('member-birth', m.birthDate);
         document.getElementById('member-input-phone').value = m.phone;
         document.getElementById('member-input-line').value = m.lineId || '';
         document.getElementById('member-input-facebook').value = m.facebook || '';
         document.getElementById('member-input-occupation').value = m.occupation || '';
         document.getElementById('member-input-address').value = m.address || '';
         document.getElementById('member-input-edu-faculty').value = m.education ? `${m.education.faculty || ''}` : '';
-        document.getElementById('member-input-last-payment').value = m.lastPaymentDate || '';
+        setDateDropdowns('member-last-pay', m.lastPaymentDate || state.systemDate);
         
         document.getElementById('member-input-emergency-name').value = m.emergencyContact ? m.emergencyContact.name : '';
         document.getElementById('member-input-emergency-rel').value = m.emergencyContact ? m.emergencyContact.relationship : '';
@@ -1854,15 +1906,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const gen = parseInt(document.getElementById('member-input-gen').value);
         const name = document.getElementById('member-input-name').value.trim();
         const nickname = document.getElementById('member-input-nickname').value.trim();
-        const applyDate = document.getElementById('member-input-apply-date').value;
-        const birthDate = document.getElementById('member-input-birth-date').value;
+        const applyDate   = getDateFromDropdowns('member-apply');
+        const birthDate   = getDateFromDropdowns('member-birth');
         const phone = document.getElementById('member-input-phone').value.trim();
         const line = document.getElementById('member-input-line').value.trim();
         const facebook = document.getElementById('member-input-facebook').value.trim();
         const occupation = document.getElementById('member-input-occupation').value.trim();
         const address = document.getElementById('member-input-address').value.trim();
         const eduFaculty = document.getElementById('member-input-edu-faculty').value.trim();
-        const lastPayment = document.getElementById('member-input-last-payment').value;
+        const lastPayment = getDateFromDropdowns('member-last-pay');
         const reapplied = document.getElementById('member-input-reapplied').checked;
 
         const emName = document.getElementById('member-input-emergency-name').value.trim();
@@ -2033,7 +2085,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('payment-confirm-current-renewal').innerText = `รอบต่ออายุเดิม: ${statusInfo.renewalDueDate ? formatCEToBEDate(statusInfo.renewalDueDate) : 'ยังไม่มีรอบชำระเงิน'}`;
 
         // ตั้งวันจ่ายเป็นวันที่จำลองในวันนี้
-        document.getElementById('payment-input-date').value = state.systemDate;
+        setDateDropdowns('payment', state.systemDate);
         
         // ตั้งงวดปีตามปีของวันที่จำลองชำระเงิน
         document.getElementById('payment-input-year').value = new Date(state.systemDate).getFullYear() + 543;
@@ -2045,7 +2097,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         
         const memberId = document.getElementById('payment-form-member-id').value;
-        const date = document.getElementById('payment-input-date').value;
+        const date = getDateFromDropdowns('payment');
         const yearBE = parseInt(document.getElementById('payment-input-year').value);
         const yearCE = yearBE - 543;
         const amount = 300;
@@ -2418,7 +2470,22 @@ document.addEventListener('DOMContentLoaded', () => {
     initRoleAndDateControls();
     initDashboardCardClicks();
     initThemeToggle();
-    
+
+    // เริ่มต้น Date Dropdowns ทุกฟอร์ม (พ.ศ.)
+    initDateDropdowns('member-apply',    2500, 2580);
+    initDateDropdowns('member-birth',    2430, 2580);
+    initDateDropdowns('member-last-pay', 2550, 2580);
+    initDateDropdowns('welfare-claim',   2550, 2580);
+    initDateDropdowns('payment',         2550, 2580);
+
+    // ตั้งค่าวันเริ่มต้นทุกฟอร์มเป็นวันที่จำลองปัจจุบัน
+    setDateDropdowns('member-apply',    state.systemDate);
+    setDateDropdowns('member-birth',    state.systemDate);
+    setDateDropdowns('member-last-pay', state.systemDate);
+    setDateDropdowns('welfare-claim',   state.systemDate);
+    setDateDropdowns('payment',         state.systemDate);
+
+
     // อัปเดตเริ่มต้นกรณีเข้าใช้งานค้างเซสชันไว้
     if (state.isLoggedIn) {
         applyRolePermissions();
