@@ -44,6 +44,11 @@
                     <li><strong>ผู้ดูแลทะเบียนสมาชิก</strong>:<br>admin.member / member123</li>
                     <li><strong>ผู้ดูแลสวัสดิการ</strong>:<br>admin.welfare / welfare123</li>
                     <li><strong>ผู้บริหาร / คณะกรรมการ</strong>:<br>executive / exec123</li>
+                    <li style="margin-top: 4px; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 4px;"><strong>บัญชีเพิ่มเติม (อีเมล / เบอร์โทร):</strong></li>
+                    <li>mdplanner11@gmail.com / 06 2462 4888</li>
+                    <li>0840258242.gm@gmail.com / 08 4025 8242</li>
+                    <li>anchalee.rung@gmail.com / 08 1255 8440</li>
+                    <li>boonmay2012@gmail.com / 08 6310 5785</li>
                 </ul>
             </div>
         </div>
@@ -106,9 +111,11 @@
                 <!-- แถบควบคุมสถานการณ์จำลองสำหรับการสาธิต -->
                 <div class="header-controls">
                     <!-- จำลองปฏิทินย้อนเวลา/ข้ามเวลา -->
-                    <div class="date-traveler-wrapper">
-                        <label for="system-date-input"><i class="fa-solid fa-clock-rotate-left"></i> วันที่จำลอง:</label>
-                        <input type="date" id="system-date-input" class="input-date" value="2026-06-22">
+                    <div class="date-traveler-wrapper" style="gap: 6px;">
+                        <label><i class="fa-solid fa-clock-rotate-left"></i> วันที่จำลอง (พ.ศ.):</label>
+                        <select id="system-date-day" class="input-date" style="width: 55px; padding: 4px; text-align: center;"></select>
+                        <select id="system-date-month" class="input-date" style="width: 95px; padding: 4px;"></select>
+                        <select id="system-date-year" class="input-date" style="width: 80px; padding: 4px;"></select>
                     </div>
                     
                     <!-- เครื่องมือสลับบทบาท -->
@@ -120,6 +127,11 @@
                             <option value="executive">ผู้บริหาร/คณะกรรมการ</option>
                         </select>
                     </div>
+
+                    <!-- เครื่องมือสลับธีม -->
+                    <button id="theme-toggle-btn" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.85rem; height: 38px; display: inline-flex; align-items: center; gap: 6px;" title="สลับโหมดมืด/สว่าง">
+                        <i class="fa-solid fa-sun"></i> โหมดสว่าง
+                    </button>
                 </div>
             </header>
 
@@ -130,35 +142,42 @@
                 <div id="view-dashboard" class="page-view active">
                     <!-- การ์ดตัวชี้วัดสรุปผล -->
                     <div class="stats-grid">
-                        <div class="stat-card">
+                        <div class="stat-card" id="card-total-members">
                             <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
                             <div class="stat-info">
                                 <h3>สมาชิกทั้งหมด</h3>
                                 <div class="stat-number" id="stat-total-members">0</div>
                             </div>
                         </div>
-                        <div class="stat-card">
+                        <div class="stat-card" id="card-active-members">
                             <div class="stat-icon green"><i class="fa-solid fa-user-check"></i></div>
                             <div class="stat-info">
                                 <h3>สมาชิกสถานะปกติ (Active)</h3>
                                 <div class="stat-number" id="stat-active-members">0</div>
                             </div>
                         </div>
-                        <div class="stat-card">
+                        <div class="stat-card" id="card-grace-members">
                             <div class="stat-icon yellow"><i class="fa-solid fa-user-clock"></i></div>
                             <div class="stat-info">
                                 <h3>ค้างชำระ/Grace Period</h3>
                                 <div class="stat-number" id="stat-grace-members">0</div>
                             </div>
                         </div>
-                        <div class="stat-card">
+                        <div class="stat-card" id="card-suspended-members">
                             <div class="stat-icon red"><i class="fa-solid fa-user-slash"></i></div>
                             <div class="stat-info">
                                 <h3>ระงับสิทธิ์/สิ้นสภาพ</h3>
                                 <div class="stat-number" id="stat-suspended-members">0</div>
                             </div>
                         </div>
-                        <div class="stat-card">
+                        <div class="stat-card" id="card-total-teachers">
+                            <div class="stat-icon teal"><i class="fa-solid fa-chalkboard-user"></i></div>
+                            <div class="stat-info">
+                                <h3>ทะเบียนอาจารย์</h3>
+                                <div class="stat-number" id="stat-total-teachers">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card" id="card-total-welfare">
                             <div class="stat-icon purple"><i class="fa-solid fa-hand-holding-heart"></i></div>
                             <div class="stat-info">
                                 <h3>ยอดสวัสดิการสะสม (บาท)</h3>
@@ -501,6 +520,9 @@
                         <div class="search-filters" id="report-controls-container">
                             <!-- ตัวกรองรายงานแบบเลือกจะปรับแต่งตามแท็บรายงานที่คลิกอยู่ -->
                         </div>
+                        <button class="btn btn-success" onclick="exportReportToExcel();">
+                            <i class="fa-solid fa-file-excel"></i> ส่งออกเป็น Excel
+                        </button>
                         <button class="btn btn-primary" onclick="window.print();">
                             <i class="fa-solid fa-print"></i> พิมพ์รายงานนี้ (Print/PDF)
                         </button>
@@ -525,54 +547,41 @@
                 <!-- ==================== หน้า 7: หน้าตั้งค่าและจัดการข้อมูล ==================== -->
                 <div id="view-settings" class="page-view">
                     <div class="db-actions-grid">
-                        <!-- ส่วนของระบบ Google Cloud Sync Integration (จำลองตามข้อ 5 เทคโนโลยีที่ใช้) -->
+                        <!-- ส่วนของระบบจัดการฐานข้อมูล Excel -->
                         <div class="panel">
                             <div class="panel-header">
-                                <h3 class="panel-title"><i class="fa-brands fa-google-drive text-blue"></i> การเชื่อมโยง Google Sheets / Cloud API</h3>
+                                <h3 class="panel-title"><i class="fa-solid fa-file-excel" style="color: var(--status-active);"></i> การสำรองและนำเข้าฐานข้อมูลด้วยไฟล์ Excel</h3>
                             </div>
                             <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
-                                ระบบสถาปัตยกรรมทำงานบนคลาวด์โดยมี <strong>Google Sheets เป็นฐานข้อมูลหลัก</strong> และประมวลผลผ่าน Apps Script คุณสามารถคัดลอกไฟล์สำรองข้อมูลดิบ (JSON Database) ไปทดสอบหรืออัปเดตเข้าระบบฐานข้อมูลคลาวด์ได้ที่นี่
+                                คุณสามารถสำรองข้อมูลชมรมทั้งหมด (ข้อมูลสมาชิก, ทะเบียนอาจารย์, ประวัติค่าบำรุง, และประวัติการจ่ายสวัสดิการ) เป็นไฟล์ Excel (.xlsx) และนำมาอัปโหลดคืนระบบเพื่อทำงานต่อได้ทันทีโดยไม่ต้องตั้งค่าคลาวด์ให้ยุ่งยาก
                             </p>
                             
                             <div class="form-group">
-                                <label for="db-raw-json">ฐานข้อมูลดิบในปัจจุบัน (RAW JSON Database)</label>
-                                <textarea id="db-raw-json" class="form-control" style="font-family: monospace; font-size:0.75rem; background-color:var(--bg-primary);" rows="10" readonly></textarea>
+                                <label>สรุปจำนวนข้อมูลปัจจุบันในระบบ:</label>
+                                <div id="db-summary-info" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); padding: 14px; border-radius: var(--border-radius-sm); font-size: 0.85rem; line-height: 1.8;">
+                                    กำลังดึงข้อมูลสรุป...
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 16px;">
+                                <label for="db-import-file">เลือกไฟล์ Excel (.xlsx) เพื่อเตรียมนำเข้าข้อมูล <span>*</span></label>
+                                <input type="file" id="db-import-file" class="form-control" accept=".xlsx" style="background-color: var(--bg-primary);">
                             </div>
                             
-                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
-                                <button class="btn btn-secondary" id="btn-export-db">
-                                    <i class="fa-solid fa-file-export"></i> ส่งออกข้อมูลดิบ
+                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+                                <button class="btn btn-success" id="btn-export-db">
+                                    <i class="fa-solid fa-file-export"></i> ส่งออกฐานข้อมูลเป็น Excel
                                 </button>
                                 <button class="btn btn-secondary" id="btn-import-db">
-                                    <i class="fa-solid fa-file-import"></i> นำเข้าข้อมูลดิบ (จาก JSON)
+                                    <i class="fa-solid fa-file-import"></i> นำเข้าฐานข้อมูลจาก Excel
                                 </button>
-                                <button class="btn btn-secondary" id="btn-reset-db" style="background-color:rgba(239, 68, 68, 0.1); border-color:rgba(239, 68, 68, 0.2); color:#fca5a5;">
-                                    <i class="fa-solid fa-trash-arrow-up"></i> ล้างข้อมูลกลับเป็นค่าเริ่มต้น
+                                <button class="btn btn-secondary" id="btn-reset-db" style="background-color: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.2); color: var(--accent-blue);">
+                                    <i class="fa-solid fa-arrows-rotate"></i> Update ฐานข้อมูล
                                 </button>
                             </div>
                         </div>
 
-                        <!-- คำแนะนำสถาปัตยกรรมการต่อเข้าระบบ Google Sheets (Developer Guide) -->
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3 class="panel-title"><i class="fa-solid fa-code"></i> สรุปขั้นตอนสำหรับผู้พัฒนาระบบ (Developer Info)</h3>
-                            </div>
-                            <div style="font-size:0.85rem; color:var(--text-secondary); display:flex; flex-direction:column; gap:12px;">
-                                <p>
-                                    ในระบบการใช้งานจริง คุณสามารถผูกฟังก์ชัน JavaScript เหล่านี้ไปยัง Google Apps Script (GAS) โดยใช้ Web App API:
-                                </p>
-                                <ol style="padding-left:18px; display:flex; flex-direction:column; gap:6px;">
-                                    <li>นำเข้าไลบรารีสคริปต์นี้ไปยังโครงการ Google Apps Script</li>
-                                    <li>เขียนฟังก์ชัน <code>doGet(e)</code> และ <code>doPost(e)</code> เพื่อเปิด API endpoint บน Google Cloud</li>
-                                    <li>เชื่อมโยงตารางข้อมูลของ Google Sheets กับ JSON ในเครื่องของเบราว์เซอร์ โดยการเขียนคำสั่งอ่าน-เขียนข้อมูลเซลล์ของชีต เช่น <code>SpreadsheetApp.getActiveSpreadsheet().getSheetByName("members")</code></li>
-                                    <li>ระบบทะเบียนสมาชิกและสวัสดิการนี้จะส่งคำขอ fetch ไปยังปลายทาง GAS เพื่อให้ผู้ใช้งานทุกคนเข้าข้อมูลพร้อมกันเรียลไทม์</li>
-                                </ol>
-                                <div style="background:var(--bg-primary); padding:10px; border-radius:6px; border:1px solid var(--border-color); font-size:0.75rem;">
-                                    <strong style="color:var(--accent-cyan);"><i class="fa-solid fa-lightbulb"></i> ข้อดีของการทำงานบน Cloud (Serverless):</strong><br>
-                                    ไม่ต้องจัดเตรียมเซิร์ฟเวอร์, ประหยัดค่าใช้จ่าย, มีประวัติการทำงานย้อนหลังผ่าน Google Drive, และบำรุงรักษาโดยคณะกรรมการได้ง่ายด้วยตนเอง
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
 
@@ -907,8 +916,8 @@
                             <input type="date" id="payment-input-date" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="payment-input-year">ปีงวดการชำระ <span>*</span></label>
-                            <input type="number" id="payment-input-year" class="form-control" required min="2020" max="2100">
+                            <label for="payment-input-year">ปีงวดการชำระ (พ.ศ.) <span>*</span></label>
+                            <input type="number" id="payment-input-year" class="form-control" required min="2560" max="2660">
                         </div>
                     </div>
                     
@@ -925,6 +934,7 @@
     </div>
 
     <!-- เรียกใช้สคริปต์การคำนวณและประมวลผลระบบ -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="js/db.js"></script>
     <script src="js/engine.js"></script>
     <script src="js/app.js"></script>

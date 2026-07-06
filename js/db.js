@@ -20008,7 +20008,9 @@ class Database {
 
     // ส่วนของ Members
     getMembers() {
-        return JSON.parse(localStorage.getItem(DB_KEYS.MEMBERS)) || [];
+        const list = JSON.parse(localStorage.getItem(DB_KEYS.MEMBERS)) || [];
+        list.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base' }));
+        return list;
     }
 
     saveMembers(members) {

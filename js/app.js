@@ -8,21 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
         currentView: 'dashboard',
         currentRole: 'member_admin', // member_admin, welfare_admin, executive
         systemDate: '2026-06-22',     // วันที่จำลองระบบ
-        selectedWelfareRecipient: null, // เก็บข้อมูลผู้มีสิทธิ์ที่เลือกตอนทำเรื่องสวัสดิการ { id, type, name, status }
+        selectedWelfareRecipient: null,
+        currentEditingMember: null, // เก็บข้อมูลผู้มีสิทธิ์ที่เลือกตอนทำเรื่องสวัสดิการ { id, type, name, status }
         currentReportTab: 'member_registry'
     };
 
     // โหลดการตั้งค่าตั้งต้นจากฐานข้อมูล
     const settings = db.getSettings();
     state.systemDate = settings.systemDate;
-    document.getElementById('system-date-input').value = state.systemDate;
 
     // ลิงก์ส่วนประกอบหลักใน DOM
     const DOM = {
         menuItems: document.querySelectorAll('.sidebar-menu .menu-item'),
         pageViews: document.querySelectorAll('.page-view'),
         roleSelect: document.getElementById('user-role-select'),
-        dateInput: document.getElementById('system-date-input'),
+        dateDaySelect: document.getElementById('system-date-day'),
+        dateMonthSelect: document.getElementById('system-date-month'),
+        dateYearSelect: document.getElementById('system-date-year'),
         headerTitle: document.getElementById('header-view-title'),
         sidebarRole: document.getElementById('sidebar-role-badge'),
         sidebarUser: document.getElementById('sidebar-user-name'),
@@ -163,17 +165,83 @@ document.addEventListener('DOMContentLoaded', () => {
             refreshCurrentView();
         });
 
-        // จัดการเมื่อสลับเปลี่ยนวันเวลาจำลองในระบบ
-        DOM.dateInput.addEventListener('change', (e) => {
-            const newDate = e.target.value;
-            if (newDate) {
-                state.systemDate = newDate;
+        // ฟังก์ชันสร้างตัวเลือกใน dropdown ของระบบจำลองวัน (พ.ศ.)
+        function initSystemDateDropdowns() {
+            const daySelect = DOM.dateDaySelect;
+            const monthSelect = DOM.dateMonthSelect;
+            const yearSelect = DOM.dateYearSelect;
+            
+            if (!daySelect || !monthSelect || !yearSelect) return;
+
+            // ใส่ข้อมูลวัน 1-31
+            daySelect.innerHTML = '';
+            for (let d = 1; d <= 31; d++) {
+                daySelect.innerHTML += `<option value="${String(d).padStart(2, '0')}">${d}</option>`;
+            }
+
+            // ใส่ข้อมูลเดือน
+            const thaiMonths = [
+                { val: '01', name: 'ม.ค.' }, { val: '02', name: 'ก.พ.' },
+                { val: '03', name: 'มี.ค.' }, { val: '04', name: 'เม.ย.' },
+                { val: '05', name: 'พ.ค.' }, { val: '06', name: 'มิ.ย.' },
+                { val: '07', name: 'ก.ค.' }, { val: '08', name: 'ส.ค.' },
+                { val: '09', name: 'ก.ย.' }, { val: '10', name: 'ต.ค.' },
+                { val: '11', name: 'พ.ย.' }, { val: '12', name: 'ธ.ค.' }
+            ];
+            monthSelect.innerHTML = thaiMonths.map(m => `<option value="${m.val}">${m.name}</option>`).join('');
+
+            // ใส่ข้อมูลปี พ.ศ. (2560 - 2660)
+            yearSelect.innerHTML = '';
+            for (let y = 2560; y <= 2660; y++) {
+                yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
+            }
+
+            // ฟังก์ชันตั้งค่าให้ dropdown ตรงกับวันที่ระบบในปัจจุบัน (state.systemDate ในรูป YYYY-MM-DD)
+            window.syncDateDropdownsFromState = function() {
+                const parts = state.systemDate.split('-');
+                if (parts.length !== 3) return;
+                const yearCE = parseInt(parts[0], 10);
+                const yearBE = yearCE + 543;
+                
+                daySelect.value = parts[2];
+                monthSelect.value = parts[1];
+                yearSelect.value = yearBE.toString();
+            };
+
+            function handleDropdownDateChange() {
+                const day = daySelect.value;
+                const month = monthSelect.value;
+                const yearBE = parseInt(yearSelect.value, 10);
+                const yearCE = yearBE - 543;
+                
+                const newDateStr = `${yearCE}-${month}-${day}`;
+                
+                // ตรวจสอบวันที่มีจริง (เช่น ปัดวันที่ 31 ก.พ. เป็นวันสุดท้ายของเดือน)
+                const testDate = new Date(yearCE, parseInt(month, 10) - 1, parseInt(day, 10));
+                if (testDate.getMonth() + 1 !== parseInt(month, 10)) {
+                    const lastDay = new Date(yearCE, parseInt(month, 10), 0).getDate();
+                    daySelect.value = String(lastDay).padStart(2, '0');
+                    state.systemDate = `${yearCE}-${month}-${String(lastDay).padStart(2, '0')}`;
+                } else {
+                    state.systemDate = newDateStr;
+                }
+
                 // บันทึกวันที่จำลองลงฐานข้อมูลการตั้งค่า
                 const settings = db.getSettings();
-                settings.systemDate = newDate;
+                settings.systemDate = state.systemDate;
                 db.saveSettings(settings);
+
+                refreshCurrentView();
             }
-        });
+
+            daySelect.addEventListener('change', handleDropdownDateChange);
+            monthSelect.addEventListener('change', handleDropdownDateChange);
+            yearSelect.addEventListener('change', handleDropdownDateChange);
+            
+            syncDateDropdownsFromState();
+        }
+
+        initSystemDateDropdowns();
 
         // ดักฟังการอัปเดต DB เพื่อสั่งวาดข้อมูลใหม่เสมอ
         window.addEventListener('db_updated', () => {
@@ -199,12 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
             btnAddTeacher.style.display = 'none';
         }
 
-        // 2. การควบคุมสิทธิ์เบิกสวัสดิการ (เฉพาะ welfare_admin เท่านั้นที่กดบันทึกได้)
+        // 2. การควบคุมสิทธิ์เบิกสวัสดิการ (เฉพาะ welfare_admin และ member_admin ที่สามารถบันทึกได้)
         const welfareClaimPanel = document.getElementById('welfare-claim-form-panel');
-        if (role === 'welfare_admin') {
+        if (role === 'welfare_admin' || role === 'member_admin') {
             welfareClaimPanel.style.display = 'block';
         } else {
-            // ซ่อนหรือปิดฟังก์ชันบันทึกเคลมสวัสดิการถ้าไม่ใช่ผู้ดูแลสวัสดิการ
+            // ซ่อนหรือปิดฟังก์ชันบันทึกเคลมสวัสดิการถ้าไม่ใช่ผู้ดูแลสวัสดิการ/ผู้ดูแลทะเบียน
             welfareClaimPanel.style.display = 'none';
         }
     }
@@ -249,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('stat-active-members').innerText = activeCount + activeNewCount;
         document.getElementById('stat-grace-members').innerText = unpaidCount;
         document.getElementById('stat-suspended-members').innerText = suspendedCount + terminatedCount;
+        document.getElementById('stat-total-teachers').innerText = teachers.length;
         
         // ยอดรวมสวัสดิการสะสม
         const totalWelfareAmount = welfares.reduce((sum, item) => sum + item.amount, 0);
@@ -325,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
         innerCircle.setAttribute("cx", "125");
         innerCircle.setAttribute("cy", "125");
         innerCircle.setAttribute("r", "56");
-        innerCircle.setAttribute("fill", "#131a26");
+        innerCircle.setAttribute("fill", "var(--bg-secondary)");
         pieSvg.appendChild(innerCircle);
 
         // ข้อความสรุปตรงกลาง
@@ -333,7 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
         textCount.setAttribute("x", "125");
         textCount.setAttribute("y", "120");
         textCount.setAttribute("text-anchor", "middle");
-        textCount.setAttribute("fill", "#f0f3f8");
+        textCount.setAttribute("fill", "var(--text-primary)");
         textCount.setAttribute("font-size", "22");
         textCount.setAttribute("font-weight", "bold");
         textCount.setAttribute("transform", "rotate(90, 125, 125)");
@@ -344,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
         textLabel.setAttribute("x", "125");
         textLabel.setAttribute("y", "142");
         textLabel.setAttribute("text-anchor", "middle");
-        textLabel.setAttribute("fill", "#94a3b8");
+        textLabel.setAttribute("fill", "var(--text-secondary)");
         textLabel.setAttribute("font-size", "10");
         textLabel.setAttribute("transform", "rotate(90, 125, 125)");
         textLabel.innerText = "สมาชิกทั้งหมด";
@@ -452,7 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const body = document.getElementById('members-table-body');
         body.innerHTML = '';
 
-        const searchVal = memberSearch.value.toLowerCase().strip ? memberSearch.value.toLowerCase().trim() : '';
+        const searchVal = memberSearch.value ? memberSearch.value.toLowerCase().trim() : '';
         const statusFilter = memberFilterStatus.value;
         const genFilter = memberFilterGen.value;
 
@@ -514,8 +583,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><strong>${m.id}</strong></td>
                 <td>${m.name} ${m.nickname ? `(${m.nickname})` : ''}</td>
                 <td>รุ่น พ.น. ${m.generation}</td>
-                <td>${m.applyDate}</td>
-                <td>${statusInfo.renewalDueDate || '-'}</td>
+                <td>${formatCEToBEDate(m.applyDate)}</td>
+                <td>${formatCEToBEDate(statusInfo.renewalDueDate)}</td>
                 <td><span class="badge ${badgeClass}">${statusInfo.statusText}</span></td>
                 <td>
                     <div class="actions-cell">
@@ -623,7 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tr.innerHTML = `
                     <td><strong>${m.id}</strong></td>
                     <td>${m.name}</td>
-                    <td><span style="color:var(--status-grace); font-weight:500;">${statusInfo.renewalDueDate}</span></td>
+                    <td><span style="color:var(--status-grace); font-weight:500;">${formatCEToBEDate(statusInfo.renewalDueDate)}</span></td>
                     <td><span style="color:var(--status-suspended); font-weight:600;">${statusInfo.overdueDays}</span></td>
                     <td>${btnPayHtml}</td>
                 `;
@@ -650,10 +719,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const memberName = member ? member.name : 'ไม่พบชื่อในระบบ';
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${log.paymentDate}</td>
+                    <td>${formatCEToBEDate(log.paymentDate)}</td>
                     <td><strong>${log.memberId}</strong></td>
                     <td>${memberName}</td>
-                    <td>งวดปี ${log.year}</td>
+                    <td>งวดปี ${log.year + 543}</td>
                     <td>${log.amount} บาท</td>
                     <td><small style="color:var(--text-muted);">${log.recordedBy || 'ระบบ'}</small></td>
                 `;
@@ -671,6 +740,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filteredMembers = members.filter(m => {
             const matchesSearch = m.name.toLowerCase().includes(searchVal) ||
                                   m.id.toLowerCase().includes(searchVal) ||
+                                  (m.nickname && m.nickname.toLowerCase().includes(searchVal)) ||
                                   String(m.generation).includes(searchVal);
             return matchesSearch && m.status !== 'deceased';
         });
@@ -680,7 +750,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        filteredMembers.slice(0, 10).forEach(m => {
+        const displayLimit = searchVal ? 100 : 10;
+        filteredMembers.slice(0, displayLimit).forEach(m => {
             const statusInfo = MembershipEngine.calculateMemberStatus(m, state.systemDate);
             const tr = document.createElement('tr');
             
@@ -701,8 +772,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><strong>${m.id}</strong></td>
                 <td>${m.name} ${m.nickname ? `(${m.nickname})` : ''}</td>
                 <td>รุ่น พ.น. ${m.generation}</td>
-                <td>${m.lastPaymentDate || 'ไม่มีประวัติ'}</td>
-                <td>${statusInfo.renewalDueDate || '-'}</td>
+                <td>${m.lastPaymentDate ? formatCEToBEDate(m.lastPaymentDate) : 'ไม่มีประวัติ'}</td>
+                <td>${formatCEToBEDate(statusInfo.renewalDueDate)}</td>
                 <td><span class="badge ${badgeClass}">${statusInfo.statusText}</span></td>
                 <td>${btnPayHtml}</td>
             `;
@@ -968,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
             claimDate: claimDate,
             amount: amount,
             details: details,
-            recordedBy: state.currentRole === 'welfare_admin' ? 'ผู้ดูแลสวัสดิการ' : 'กรรมการระบบ'
+            recordedBy: state.currentRole === 'welfare_admin' ? 'ผู้ดูแลสวัสดิการ' : (state.currentRole === 'member_admin' ? 'ผู้ดูแลทะเบียนสมาชิก' : 'กรรมการระบบ')
         };
 
         // บันทึกลงฐานข้อมูล
@@ -1046,7 +1117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${w.claimDate}</td>
+                <td>${formatCEToBEDate(w.claimDate)}</td>
                 <td><strong>${name}</strong> <small style="color:var(--text-muted); display:block;">รหัส: ${w.recipientId}</small></td>
                 <td>${w.recipientType === 'member' ? 'สมาชิกชมรม' : 'อาจารย์'}</td>
                 <td><span style="font-weight:600; color:var(--accent-blue);">${wTypeNames[w.welfareType] || w.welfareType}</span></td>
@@ -1054,7 +1125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><small style="color:var(--text-secondary);">${w.details}</small></td>
                 <td><small style="color:var(--text-muted);">${w.recordedBy || 'ระบบ'}</small></td>
                 <td class="no-print">
-                    <button class="icon-btn delete" onclick="deleteWelfareLog('${w.id}')" title="ลบรายการนี้" style="display:${state.currentRole === 'welfare_admin' ? 'inline-flex' : 'none'};"><i class="fa-solid fa-trash"></i></button>
+                    <button class="icon-btn delete" onclick="deleteWelfareLog('${w.id}')" title="ลบรายการนี้" style="display:${state.currentRole === 'welfare_admin' || state.currentRole === 'member_admin' ? 'inline-flex' : 'none'};"><i class="fa-solid fa-trash"></i></button>
                 </td>
             `;
             body.appendChild(tr);
@@ -1110,18 +1181,49 @@ document.addEventListener('DOMContentLoaded', () => {
             controls.innerHTML = `
                 <select id="report-member-status" class="filter-select">
                     <option value="all">ทุกสถานะสมาชิก</option>
+                    <option value="expired">หมดอายุ</option>
                     <option value="active">Active เท่านั้น</option>
                     <option value="unpaid">ค้างชำระทั้งหมด</option>
                     <option value="terminated">สิ้นสภาพแล้ว</option>
+                </select>
+                <select id="report-member-month" class="filter-select" style="display:none; width:150px;">
+                    <option value="all">ทุกเดือน</option>
+                    <option value="1">มกราคม</option>
+                    <option value="2">กุมภาพันธ์</option>
+                    <option value="3">มีนาคม</option>
+                    <option value="4">เมษายน</option>
+                    <option value="5">พฤษภาคม</option>
+                    <option value="6">มิถุนายน</option>
+                    <option value="7">กรกฎาคม</option>
+                    <option value="8">สิงหาคม</option>
+                    <option value="9">กันยายน</option>
+                    <option value="10">ตุลาคม</option>
+                    <option value="11">พฤศจิกายน</option>
+                    <option value="12">ธันวาคม</option>
                 </select>
                 <input type="number" id="report-member-gen" class="filter-select" placeholder="ระบุรุ่น (ว่าง = ทั้งหมด)" style="width:120px;">
             `;
 
             // ดักจับเมื่อผู้ใช้เปลี่ยนตัวกรองในหน้ารายงาน
             const statusSel = document.getElementById('report-member-status');
+            const monthSel = document.getElementById('report-member-month');
             const genInput = document.getElementById('report-member-gen');
             
-            statusSel.addEventListener('change', runMemberReport);
+            // ตั้งค่าเดือนเริ่มต้นตามวันที่ระบบจำลอง
+            const sysDate = new Date(state.systemDate);
+            if (!isNaN(sysDate.getTime())) {
+                monthSel.value = (sysDate.getMonth() + 1).toString();
+            }
+
+            statusSel.addEventListener('change', () => {
+                if (statusSel.value === 'expired') {
+                    monthSel.style.display = 'inline-block';
+                } else {
+                    monthSel.style.display = 'none';
+                }
+                runMemberReport();
+            });
+            monthSel.addEventListener('change', runMemberReport);
             genInput.addEventListener('input', runMemberReport);
 
             runMemberReport();
@@ -1129,6 +1231,7 @@ document.addEventListener('DOMContentLoaded', () => {
             function runMemberReport() {
                 const statusVal = statusSel.value;
                 const genVal = genInput.value;
+                const monthVal = monthSel.value;
 
                 let filtered = members.map(m => {
                     return { ...m, calculated: MembershipEngine.calculateMemberStatus(m, state.systemDate) };
@@ -1140,6 +1243,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     filtered = filtered.filter(m => m.calculated.overdueDays > 0 && m.calculated.statusKey !== 'terminated' && m.calculated.statusKey !== 'deceased');
                 } else if (statusVal === 'terminated') {
                     filtered = filtered.filter(m => m.calculated.statusKey === 'terminated');
+                } else if (statusVal === 'expired') {
+                    filtered = filtered.filter(m => {
+                        if (!m.calculated.renewalDueDate) return false;
+                        if (m.calculated.statusKey === 'deceased') return false;
+                        const dueDate = new Date(m.calculated.renewalDueDate);
+                        if (isNaN(dueDate.getTime())) return false;
+                        const dueMonth = dueDate.getMonth() + 1;
+                        if (monthVal !== 'all' && dueMonth !== parseInt(monthVal)) {
+                            return false;
+                        }
+                        return true;
+                    });
                 }
 
                 if (genVal) {
@@ -1174,8 +1289,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <td>รุ่น ${m.generation}</td>
                                 <td>${m.phone}</td>
                                 <td><small>${m.address || '-'}</small></td>
-                                <td>${m.lastPaymentDate || '-'}</td>
-                                <td>${m.calculated.renewalDueDate || '-'}</td>
+                                <td>${formatCEToBEDate(m.lastPaymentDate)}</td>
+                                <td>${formatCEToBEDate(m.calculated.renewalDueDate)}</td>
                                 <td><strong>${m.calculated.statusText}</strong></td>
                             </tr>
                         `;
@@ -1257,7 +1372,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // ปีการศึกษา/งวดชำระ
             const years = [...new Set(fees.map(f => f.year))].sort((a, b) => b - a);
-            let yearOptions = years.map(y => `<option value="${y}">งวดชำระประจำปี ${y}</option>`).join('');
+            let yearOptions = years.map(y => `<option value="${y}">งวดชำระประจำปี ${y + 543}</option>`).join('');
             
             controls.innerHTML = `
                 <select id="report-fee-year" class="filter-select">
@@ -1307,11 +1422,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         const m = members.find(member => member.id === f.memberId);
                         html += `
                             <tr>
-                                <td>${f.paymentDate}</td>
+                                <td>${formatCEToBEDate(f.paymentDate)}</td>
                                 <td><strong>${f.memberId}</strong></td>
                                 <td>${m ? m.name : 'ไม่พบข้อมูล'}</td>
                                 <td>${m ? `รุ่น ${m.generation}` : '-'}</td>
-                                <td>งวดปี ${f.year}</td>
+                                <td>งวดปี ${f.year + 543}</td>
                                 <td>${f.amount} บาท</td>
                                 <td><small>${f.recordedBy || 'ระบบ'}</small></td>
                             </tr>
@@ -1395,7 +1510,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         html += `
                             <tr>
-                                <td>${w.claimDate}</td>
+                                <td>${formatCEToBEDate(w.claimDate)}</td>
                                 <td><strong>${w.recipientId}</strong></td>
                                 <td>${name}</td>
                                 <td>${w.recipientType === 'member' ? 'สมาชิก' : 'อาจารย์'}</td>
@@ -1414,56 +1529,158 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // 9. แท็บควบคุมจัดการฐานข้อมูลดิบ JSON (Settings Operations)
+    // 9. แท็บควบคุมจัดการฐานข้อมูลผ่านไฟล์ Excel (Settings Operations - Excel Backup & Restore)
     // ==========================================================================
-    const dbRawJson = document.getElementById('db-raw-json');
     const btnExport = document.getElementById('btn-export-db');
     const btnImport = document.getElementById('btn-import-db');
     const btnReset = document.getElementById('btn-reset-db');
 
     function renderSettingsTab() {
-        // อัปเดตข้อมูลกล่องข้อความดิบ JSON
-        const rawObj = db.exportBackup();
-        dbRawJson.value = JSON.stringify(rawObj, null, 2);
+        const membersCount = db.getMembers().length;
+        const teachersCount = db.getTeachers().length;
+        const feesCount = db.getFees().length;
+        const welfaresCount = db.getWelfares().length;
+
+        const summaryBox = document.getElementById('db-summary-info');
+        if (summaryBox) {
+            summaryBox.innerHTML = `
+                • <strong>จำนวนทะเบียนสมาชิก:</strong> ${membersCount} คน<br>
+                • <strong>จำนวนทะเบียนอาจารย์:</strong> ${teachersCount} คน<br>
+                • <strong>ประวัติการรับชำระค่าบำรุง:</strong> ${feesCount} รายการ<br>
+                • <strong>ประวัติการจ่ายเงินสวัสดิการ:</strong> ${welfaresCount} รายการ
+            `;
+        }
     }
 
     btnExport.addEventListener('click', () => {
-        const rawObj = db.exportBackup();
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(rawObj, null, 2));
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `bncc_club_db_backup_${state.systemDate}.json`);
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
-        alert("ดาวน์โหลดไฟล์สำรองข้อมูลสำเสร็จแล้ว");
+        try {
+            const members = db.getMembers();
+            const teachers = db.getTeachers();
+            const fees = db.getFees();
+            const welfares = db.getWelfares();
+            const settings = db.getSettings();
+
+            // สร้าง Workbook
+            const wb = XLSX.utils.book_new();
+
+            // แปลงข้อมูลเป็น Worksheet
+            const wsMembers = XLSX.utils.json_to_sheet(members);
+            const wsTeachers = XLSX.utils.json_to_sheet(teachers);
+            const wsFees = XLSX.utils.json_to_sheet(fees);
+            const wsWelfares = XLSX.utils.json_to_sheet(welfares);
+            const wsSettings = XLSX.utils.json_to_sheet([settings]);
+
+            // บรรจุลงใน Workbook แยกชีตตามแท็บ
+            XLSX.utils.book_append_sheet(wb, wsMembers, "members");
+            XLSX.utils.book_append_sheet(wb, wsTeachers, "teachers");
+            XLSX.utils.book_append_sheet(wb, wsFees, "fees");
+            XLSX.utils.book_append_sheet(wb, wsWelfares, "welfares");
+            XLSX.utils.book_append_sheet(wb, wsSettings, "settings");
+
+            // ดึงชื่อไฟล์ระบุวันที่ปัจจุบัน
+            const fileDate = state.systemDate || new Date().toISOString().slice(0, 10);
+            const fileName = `bncc_club_database_backup_${fileDate}.xlsx`;
+
+            // ดาวน์โหลดไฟล์ Excel (.xlsx)
+            XLSX.writeFile(wb, fileName);
+            alert("ดาวน์โหลดไฟล์สำรองฐานข้อมูล Excel สำเร็จแล้ว");
+        } catch (error) {
+            alert(`เกิดข้อผิดพลาดในการส่งออกไฟล์ Excel: ${error.message}`);
+        }
     });
 
     btnImport.addEventListener('click', () => {
-        const rawJson = dbRawJson.value;
-        if (!rawJson.trim()) {
-            alert("กรุณากรอกข้อมูล RAW JSON ลงในช่อง");
+        const fileInput = document.getElementById('db-import-file');
+        if (!fileInput || fileInput.files.length === 0) {
+            alert("กรุณาเลือกไฟล์ Excel (.xlsx) ที่ต้องการนำเข้าก่อน");
             return;
         }
 
-        if (confirm("คำเตือน: การนำเข้าข้อมูลนี้จะเขียนทับฐานข้อมูลเดิมทั้งหมดบนอุปกรณ์ของคุณ ยืนยันดำเนินการ?")) {
-            const res = db.importBackup(rawJson);
-            if (res.success) {
-                alert("นำเข้าฐานข้อมูลเรียบร้อยแล้ว ระบบจะทำการรีโหลดหน้าจอใหม่");
-                refreshCurrentView();
-            } else {
-                alert(`ล้มเหลวในการนำเข้าข้อมูล: ${res.error}`);
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                // ค้นหาชีตที่ต้องการนำเข้า
+                const sheetNames = workbook.SheetNames;
+                if (!sheetNames.includes("members") || !sheetNames.includes("teachers") || !sheetNames.includes("fees") || !sheetNames.includes("welfares")) {
+                    throw new Error("ไฟล์ Excel ไม่ตรงกับรูปแบบโครงสร้างข้อมูลระบบ (ขาดแผ่นงานชีตที่จำเป็น)");
+                }
+
+                // แปลงข้อมูลจากชีตกลับเป็น JSON
+                const members = XLSX.utils.sheet_to_json(workbook.Sheets["members"]);
+                const teachers = XLSX.utils.sheet_to_json(workbook.Sheets["teachers"]);
+                const fees = XLSX.utils.sheet_to_json(workbook.Sheets["fees"]);
+                const welfares = XLSX.utils.sheet_to_json(workbook.Sheets["welfares"]);
+                
+                // สำหรับแท็บสคริปต์การตั้งค่าระบบ
+                let settings = { systemDate: state.systemDate };
+                if (sheetNames.includes("settings")) {
+                    const settingsArr = XLSX.utils.sheet_to_json(workbook.Sheets["settings"]);
+                    if (settingsArr.length > 0) {
+                        settings = settingsArr[0];
+                    }
+                }
+
+                // ยืนยันการทับข้อมูล
+                if (confirm("คำเตือน: การนำเข้าข้อมูลนี้จะเขียนทับข้อมูลทั้งหมดในระบบเบราว์เซอร์ปัจจุบัน ยืนยันดำเนินการ?")) {
+                    // ทำความสะอาดชนิดข้อมูลก่อนเซฟ (เช่น แปลงปี/จำนวนเงินเป็นตัวเลขให้ถูกต้อง)
+                    const cleanedMembers = members.map(m => {
+                        if (m.generation) m.generation = parseInt(m.generation, 10);
+                        if (m.isDeceased !== undefined) m.isDeceased = String(m.isDeceased).toLowerCase() === 'true';
+                        if (m.isReappliedAfterTermination !== undefined) m.isReappliedAfterTermination = String(m.isReappliedAfterTermination).toLowerCase() === 'true';
+                        return m;
+                    });
+
+                    const cleanedTeachers = teachers.map(t => {
+                        return t;
+                    });
+
+                    const cleanedFees = fees.map(f => {
+                        if (f.amount) f.amount = parseInt(f.amount, 10);
+                        if (f.year) f.year = parseInt(f.year, 10);
+                        return f;
+                    });
+
+                    const cleanedWelfares = welfares.map(w => {
+                        if (w.amount) w.amount = parseInt(w.amount, 10);
+                        return w;
+                    });
+
+                    // บันทึกลงฐานข้อมูล local db
+                    db.saveMembers(cleanedMembers);
+                    db.saveTeachers(cleanedTeachers);
+                    db.saveFees(cleanedFees);
+                    db.saveWelfares(cleanedWelfares);
+                    db.saveSettings(settings);
+
+                    // ซิงค์ระบบวัน
+                    state.systemDate = settings.systemDate;
+                    if (window.syncDateDropdownsFromState) window.syncDateDropdownsFromState();
+
+                    alert("นำเข้าข้อมูลจาก Excel เข้าสู่ระบบเรียบร้อยแล้ว หน้าจอจะรีโหลดใหม่");
+                    fileInput.value = ''; // ล้างช่องเลือกไฟล์
+                    refreshCurrentView();
+                    renderSettingsTab();
+                }
+            } catch (error) {
+                alert(`ล้มเหลวในการนำเข้าข้อมูล: ${error.message}`);
             }
-        }
+        };
+
+        reader.readAsArrayBuffer(file);
     });
 
     btnReset.addEventListener('click', () => {
-        if (confirm("คำเตือนอย่างสูง! คุณแน่ใจหรือไม่ที่จะล้างค่าข้อมูลระบบทั้งหมด? ข้อมูลการชำระเงินและรายการสมาชิกทั้งหมดจะกลับเป็นข้อมูลทดสอบตั้งต้น")) {
+        if (confirm("คุณแน่ใจหรือไม่ที่จะทำการ Update ฐานข้อมูล? การดำเนินการนี้จะคืนค่าฐานข้อมูลสมาชิกและข้อมูลการเงินกลับเป็นข้อมูลตั้งต้นเริ่มต้นสำหรับการทดสอบ")) {
             db.reset();
             const set = db.getSettings();
             state.systemDate = set.systemDate;
-            document.getElementById('system-date-input').value = state.systemDate;
-            alert("ล้างข้อมูลเรียบร้อยแล้วและเขียนข้อมูลทดสอบเริ่มต้นทับแล้ว");
+            if (window.syncDateDropdownsFromState) window.syncDateDropdownsFromState();
+            alert("Update ฐานข้อมูลคืนค่าเริ่มต้นสำเร็จเรียบร้อยแล้ว");
             refreshCurrentView();
         }
     });
@@ -1497,23 +1714,90 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ปุ่มเปิดฟอร์มเพิ่มสมาชิกใหม่
+    
+    
+    function formatCEToBEDate(dateStr) {
+        if (!dateStr) return '-';
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+            const yearCE = parseInt(parts[0], 10);
+            const month = parts[1];
+            const day = parts[2];
+            const yearBE = yearCE + 543;
+            return `${day}/${month}/${yearBE}`;
+        }
+        return dateStr;
+    }
+
+    function getNextMemberId(generation) {
+        const members = db.getMembers();
+        const genStr = String(generation).padStart(2, '0');
+        let maxSeq = 0;
+        members.forEach(m => {
+            if (parseInt(m.generation, 10) === parseInt(generation, 10)) {
+                const match = m.id.match(/\d+$/);
+                if (match) {
+                    const numStr = match[0];
+                    let seqPart = numStr;
+                    if (numStr.startsWith(genStr) && numStr.length > genStr.length) {
+                        seqPart = numStr.substring(genStr.length);
+                    } else if (numStr.startsWith(String(generation)) && numStr.length > String(generation).length) {
+                        seqPart = numStr.substring(String(generation).length);
+                    }
+                    const seq = parseInt(seqPart, 10);
+                    if (!isNaN(seq) && seq > maxSeq) {
+                        maxSeq = seq;
+                    }
+                }
+            }
+        });
+        const nextSeq = maxSeq + 1;
+        return `${genStr}${String(nextSeq).padStart(3, '0')}`;
+    }
+
+    // ควบคุมการเปลี่ยนรุ่นของฟอร์มสมาชิกและคำนวณรหัสสมาชิกอัตโนมัติ
+    setTimeout(() => {
+        const memberInputGen = document.getElementById('member-input-gen');
+        const memberInputId = document.getElementById('member-input-id');
+        if (memberInputGen && memberInputId) {
+            const updateHandler = () => {
+                const genVal = parseInt(memberInputGen.value, 10);
+                const mode = document.getElementById('member-form-mode').value;
+                if (!isNaN(genVal)) {
+                    if (mode === 'add') {
+                        memberInputId.value = getNextMemberId(genVal);
+                    } else if (mode === 'edit' && state.currentEditingMember) {
+                        if (genVal === parseInt(state.currentEditingMember.generation, 10)) {
+                            memberInputId.value = state.currentEditingMember.id;
+                        } else {
+                            memberInputId.value = getNextMemberId(genVal);
+                        }
+                    }
+                }
+            };
+            memberInputGen.addEventListener('input', updateHandler);
+            memberInputGen.addEventListener('change', updateHandler);
+        }
+    }, 100);
+
+
     document.getElementById('btn-add-member').addEventListener('click', () => {
         memberForm.reset();
         selectedBase64Photo = "";
         document.getElementById('member-photo-preview').innerHTML = `<i class="fa-solid fa-user"></i>`;
         document.getElementById('member-modal-title').innerText = "ลงทะเบียนสมัครสมาชิกใหม่";
         document.getElementById('member-form-mode').value = "add";
-        document.getElementById('member-input-id').disabled = false;
+        document.getElementById('member-input-id').disabled = true; // ล็อกไม่ให้กรอกเอง
+        state.currentEditingMember = null;
         
         // กำหนดวันที่เริ่มต้น
         document.getElementById('member-input-apply-date').value = state.systemDate;
         document.getElementById('member-input-last-payment').value = state.systemDate;
         
-        // รันไอดีถัดไปของรุ่นโดยประมาณ
-        const members = db.getMembers();
-        const nextIdNum = members.length + 1;
-        document.getElementById('member-input-id').value = `75${String(nextIdNum).padStart(3, '0')}`;
-        document.getElementById('member-input-gen').value = 75;
+        // รันไอดีถัดไปของรุ่น
+        const defaultGen = 75;
+        document.getElementById('member-input-gen').value = defaultGen;
+        document.getElementById('member-input-id').value = getNextMemberId(defaultGen);
 
         openModal('modal-member-form');
     });
@@ -1523,7 +1807,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const members = db.getMembers();
         const m = members.find(item => item.id === id);
         if (!m) return;
-
+        
+        state.currentEditingMember = m; // บันทึกผู้ใช้ที่กำลังแก้ไข
         memberForm.reset();
         selectedBase64Photo = m.photo || "";
         
@@ -1678,7 +1963,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (m.birthDate) {
             const birthY = new Date(m.birthDate).getFullYear();
             const sysY = new Date(state.systemDate).getFullYear();
-            ageStr = `${sysY - birthY} ปี (${m.birthDate})`;
+            ageStr = `${sysY - birthY} ปี (${formatCEToBEDate(m.birthDate)})`;
         }
         document.getElementById('detail-val-birth').innerText = ageStr;
         document.getElementById('detail-val-phone').innerText = m.phone || '-';
@@ -1689,9 +1974,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('detail-val-education').innerText = m.education ? `${m.education.faculty || '-'}` : '-';
         document.getElementById('detail-val-occupation').innerText = m.occupation || '-';
 
-        document.getElementById('detail-val-apply-date').innerText = m.applyDate || '-';
-        document.getElementById('detail-val-last-payment').innerText = m.lastPaymentDate || 'ไม่มีข้อมูล';
-        document.getElementById('detail-val-renewal-date').innerText = statusInfo.renewalDueDate || 'ไม่ครบกำหนด';
+        document.getElementById('detail-val-apply-date').innerText = formatCEToBEDate(m.applyDate);
+        document.getElementById('detail-val-last-payment').innerText = m.lastPaymentDate ? formatCEToBEDate(m.lastPaymentDate) : 'ไม่มีข้อมูล';
+        document.getElementById('detail-val-renewal-date').innerText = statusInfo.renewalDueDate ? formatCEToBEDate(statusInfo.renewalDueDate) : 'ไม่ครบกำหนด';
         
         // วันเกินกำหนดชำระ
         if (statusInfo.overdueDays > 0) {
@@ -1745,13 +2030,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('payment-form-member-id').value = m.id;
         document.getElementById('payment-confirm-member-name').innerText = m.name;
         document.getElementById('payment-confirm-member-id-display').innerText = `รหัสสมาชิก: ${m.id} | รุ่น พ.น. ${m.generation}`;
-        document.getElementById('payment-confirm-current-renewal').innerText = `รอบต่ออายุเดิม: ${statusInfo.renewalDueDate || 'ยังไม่มีรอบชำระเงิน'}`;
+        document.getElementById('payment-confirm-current-renewal').innerText = `รอบต่ออายุเดิม: ${statusInfo.renewalDueDate ? formatCEToBEDate(statusInfo.renewalDueDate) : 'ยังไม่มีรอบชำระเงิน'}`;
 
         // ตั้งวันจ่ายเป็นวันที่จำลองในวันนี้
         document.getElementById('payment-input-date').value = state.systemDate;
         
         // ตั้งงวดปีตามปีของวันที่จำลองชำระเงิน
-        document.getElementById('payment-input-year').value = new Date(state.systemDate).getFullYear();
+        document.getElementById('payment-input-year').value = new Date(state.systemDate).getFullYear() + 543;
 
         openModal('modal-confirm-payment');
     };
@@ -1761,7 +2046,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const memberId = document.getElementById('payment-form-member-id').value;
         const date = document.getElementById('payment-input-date').value;
-        const year = parseInt(document.getElementById('payment-input-year').value);
+        const yearBE = parseInt(document.getElementById('payment-input-year').value);
+        const yearCE = yearBE - 543;
         const amount = 300;
 
         const newFee = {
@@ -1769,13 +2055,13 @@ document.addEventListener('DOMContentLoaded', () => {
             memberId: memberId,
             paymentDate: date,
             amount: amount,
-            year: year,
+            year: yearCE,
             recordedBy: "ผู้ดูแลทะเบียนสมาชิก"
         };
 
         db.addFee(newFee);
         
-        alert(`บันทึกรับเงินค่าบำรุงของสมาชิกรหัส ${memberId} ประจำงวดปี ${year} เรียบร้อยแล้ว`);
+        alert(`บันทึกรับเงินค่าบำรุงของสมาชิกรหัส ${memberId} ประจำงวดปี ${yearBE} เรียบร้อยแล้ว`);
         closeModal('modal-confirm-payment');
         refreshCurrentView();
     });
@@ -1894,6 +2180,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let roleText = '';
 
             // ตรวจสอบข้อมูลบัญชี
+            const cleanUser = username.toLowerCase();
+            const cleanPass = password.replace(/\s+/g, '');
+
             if (username === 'admin.member' && password === 'member123') {
                 role = 'member_admin';
                 userName = 'คุณนารี ทะเบียนดี';
@@ -1906,6 +2195,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 role = 'executive';
                 userName = 'พล.ต.ต. สุชน ผู้นำพา';
                 roleText = 'ผู้บริหาร/กรรมการชมรม';
+            } else if (cleanUser === 'mdplanner11@gmail.com' && cleanPass === '0624624888') {
+                role = 'member_admin';
+                userName = 'คุณเอ็มดี แพลนเนอร์';
+                roleText = 'ผู้ดูแลทะเบียนสมาชิก';
+            } else if (cleanUser === '0840258242.gm@gmail.com' && cleanPass === '0840258242') {
+                role = 'executive';
+                userName = 'ผู้จัดการทั่วไป (GM)';
+                roleText = 'ผู้บริหาร/กรรมการชมรม';
+            } else if (cleanUser === 'anchalee.rung@gmail.com' && cleanPass === '0812558440') {
+                role = 'member_admin';
+                userName = 'คุณอัญชลี รุ่งเรือง';
+                roleText = 'ผู้ดูแลทะเบียนสมาชิก';
+            } else if (cleanUser === 'boonmay2012@gmail.com' && cleanPass === '0863105785') {
+                role = 'member_admin';
+                userName = 'คุณบุญเมย์';
+                roleText = 'ผู้ดูแลทะเบียนสมาชิก';
             } else {
                 alert('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง');
                 return;
@@ -1958,12 +2263,161 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function initDashboardCardClicks() {
+        const totalCard = document.getElementById('card-total-members');
+        const activeCard = document.getElementById('card-active-members');
+        const graceCard = document.getElementById('card-grace-members');
+        const suspendedCard = document.getElementById('card-suspended-members');
+        const teacherCard = document.getElementById('card-total-teachers');
+        const welfareCard = document.getElementById('card-total-welfare');
+
+        function resetMemberFilters() {
+            const genFilter = document.getElementById('member-filter-gen');
+            if (genFilter) genFilter.value = 'all';
+            const searchInput = document.getElementById('member-search-input');
+            if (searchInput) searchInput.value = '';
+        }
+
+        if (totalCard) {
+            totalCard.addEventListener('click', () => {
+                resetMemberFilters();
+                const statusFilter = document.getElementById('member-filter-status');
+                if (statusFilter) statusFilter.value = 'all';
+                navigateTo('members');
+            });
+        }
+
+        if (activeCard) {
+            activeCard.addEventListener('click', () => {
+                resetMemberFilters();
+                const statusFilter = document.getElementById('member-filter-status');
+                if (statusFilter) statusFilter.value = 'active';
+                navigateTo('members');
+            });
+        }
+
+        if (graceCard) {
+            graceCard.addEventListener('click', () => {
+                navigateTo('fees');
+            });
+        }
+
+        if (suspendedCard) {
+            suspendedCard.addEventListener('click', () => {
+                resetMemberFilters();
+                const statusFilter = document.getElementById('member-filter-status');
+                if (statusFilter) statusFilter.value = 'suspended';
+                navigateTo('members');
+            });
+        }
+
+        if (teacherCard) {
+            teacherCard.addEventListener('click', () => {
+                // สำหรับทะเบียนอาจารย์ เมื่อคลิกแล้วจะเปิดไปที่หน้า "ทะเบียนอาจารย์" (teachers)
+                // พร้อมรีเซ็ตตัวกรองเป็น "ทุกสถานะ"
+                const teacherFilter = document.getElementById('teacher-filter-status');
+                if (teacherFilter) teacherFilter.value = 'all';
+                const teacherSearch = document.getElementById('teacher-search-input');
+                if (teacherSearch) teacherSearch.value = '';
+                navigateTo('teachers');
+            });
+        }
+
+        if (welfareCard) {
+            welfareCard.addEventListener('click', () => {
+                navigateTo('welfare');
+            });
+        }
+    }
+
+    function initThemeToggle() {
+        const themeBtn = document.getElementById('theme-toggle-btn');
+        if (!themeBtn) return;
+
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-theme');
+                themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i> โหมดมืด';
+                themeBtn.title = 'สลับเป็นโหมดมืด';
+            } else {
+                document.body.classList.remove('light-theme');
+                themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i> โหมดสว่าง';
+                themeBtn.title = 'สลับเป็นโหมดสว่าง';
+            }
+            if (state.currentView === 'dashboard') {
+                updateDashboardStats();
+            }
+        }
+
+        const savedTheme = localStorage.getItem('bncc_theme') || 'dark';
+        applyTheme(savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const isLight = document.body.classList.contains('light-theme');
+            const newTheme = isLight ? 'dark' : 'light';
+            localStorage.setItem('bncc_theme', newTheme);
+            applyTheme(newTheme);
+        });
+    }
+
+    window.exportReportToExcel = function() {
+        const reportTitleElement = document.getElementById('report-print-title');
+        const reportTitle = reportTitleElement ? reportTitleElement.innerText.trim() : 'รายงาน';
+        const previewContent = document.getElementById('report-preview-content');
+        
+        if (!previewContent) {
+            alert('ไม่พบตารางรายงานสำหรับการส่งออก');
+            return;
+        }
+
+        const tables = previewContent.getElementsByTagName('table');
+        if (tables.length === 0) {
+            alert('ไม่พบตารางรายงานสำหรับการส่งออก');
+            return;
+        }
+
+        const table = tables[0];
+        let csvContent = '';
+
+        for (let r = 0; r < table.rows.length; r++) {
+            const row = table.rows[r];
+            const rowData = [];
+            
+            for (let c = 0; c < row.cells.length; c++) {
+                const cell = row.cells[c];
+                let text = cell.innerText.trim();
+                text = text.replace(/[\n\r]+/g, " ");
+                text = text.replace(/"/g, '""');
+                rowData.push(`"${text}"`);
+            }
+            
+            csvContent += rowData.join(',') + '\r\n';
+        }
+
+        const BOM = '\uFEFF';
+        const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        const downloadLink = document.createElement('a');
+        const fileDate = state.systemDate || new Date().toISOString().slice(0, 10);
+        downloadLink.href = url;
+        downloadLink.download = `${reportTitle}_${fileDate}.csv`;
+        
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        
+        URL.revokeObjectURL(url);
+    };
+
     // ==========================================================================
     // 11. เริ่มต้นระบบการทำงานทั้งหมด (App Start)
     // ==========================================================================
     initLogin();
     initNavigation();
     initRoleAndDateControls();
+    initDashboardCardClicks();
+    initThemeToggle();
     
     // อัปเดตเริ่มต้นกรณีเข้าใช้งานค้างเซสชันไว้
     if (state.isLoggedIn) {
