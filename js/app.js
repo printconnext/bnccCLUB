@@ -2442,7 +2442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const reportTitleElement = document.getElementById('report-print-title');
         const reportTitle = reportTitleElement ? reportTitleElement.innerText.trim() : 'รายงาน';
         const previewContent = document.getElementById('report-preview-content');
-        
+
         if (!previewContent) {
             alert('ไม่พบตารางรายงานสำหรับการส่งออก');
             return;
@@ -2454,39 +2454,45 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const table = tables[0];
-        let csvContent = '';
+        try {
+            const table = tables[0];
 
-        for (let r = 0; r < table.rows.length; r++) {
-            const row = table.rows[r];
-            const rowData = [];
-            
-            for (let c = 0; c < row.cells.length; c++) {
-                const cell = row.cells[c];
-                let text = cell.innerText.trim();
-                text = text.replace(/[\n\r]+/g, " ");
-                text = text.replace(/"/g, '""');
-                rowData.push(`"${text}"`);
+            // ดึงข้อมูลจากตาราง HTML → array of arrays
+            const data = [];
+            for (let r = 0; r < table.rows.length; r++) {
+                const row = table.rows[r];
+                const rowData = [];
+                for (let c = 0; c < row.cells.length; c++) {
+                    let text = row.cells[c].innerText.trim().replace(/[\n\r]+/g, ' ');
+                    rowData.push(text);
+                }
+                data.push(rowData);
             }
-            
-            csvContent += rowData.join(',') + '\r\n';
-        }
 
-        const BOM = '\uFEFF';
-        const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        
-        const downloadLink = document.createElement('a');
-        const fileDate = state.systemDate || new Date().toISOString().slice(0, 10);
-        downloadLink.href = url;
-        downloadLink.download = `${reportTitle}_${fileDate}.csv`;
-        
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-        
-        URL.revokeObjectURL(url);
+            // สร้าง Worksheet จาก array of arrays
+            const ws = XLSX.utils.aoa_to_sheet(data);
+
+            // ปรับความกว้างคอลัมน์อัตโนมัติ
+            const colWidths = data[0] ? data[0].map((_, colIdx) => ({
+                wch: Math.min(40, Math.max(10, ...data.map(row => (row[colIdx] || '').length)))
+            })) : [];
+            ws['!cols'] = colWidths;
+
+            // สร้าง Workbook และดาวน์โหลด
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'รายงาน');
+
+            const fileDate = state.systemDate || new Date().toISOString().slice(0, 10);
+            const [yearCE, month, day] = fileDate.split('-');
+            const fileDateBE = `${day}-${month}-${parseInt(yearCE) + 543}`;
+            const fileName = `${reportTitle}_${fileDateBE}.xlsx`;
+
+            XLSX.writeFile(wb, fileName);
+        } catch (error) {
+            alert(`เกิดข้อผิดพลาดในการส่งออก Excel: ${error.message}`);
+        }
     };
+
 
     // ==========================================================================
     // 11. เริ่มต้นระบบการทำงานทั้งหมด (App Start)
