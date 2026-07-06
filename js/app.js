@@ -1554,26 +1554,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnExport.addEventListener('click', () => {
         try {
-            const members = db.getMembers();
+            const members  = db.getMembers();
             const teachers = db.getTeachers();
-            const fees = db.getFees();
+            const fees     = db.getFees();
             const welfares = db.getWelfares();
             const settings = db.getSettings();
+
+            // ฟังก์ชันช่วยแปลงวันที่ YYYY-MM-DD (ค.ศ.) → DD/MM/YYYY+543 (พ.ศ.)
+            function ceToBEDisplay(dateStr) {
+                if (!dateStr) return '';
+                const parts = dateStr.split('-');
+                if (parts.length !== 3) return dateStr;
+                return `${parts[2]}/${parts[1]}/${parseInt(parts[0], 10) + 543}`;
+            }
+
+            // ฟังก์ชันแปลง array ของ object โดยระบุชื่อ field ที่เป็นวันที่
+            function convertDatesForExport(records, dateFields) {
+                return records.map(r => {
+                    const row = { ...r };
+                    dateFields.forEach(f => {
+                        if (f in row) row[f] = ceToBEDisplay(row[f]);
+                    });
+                    return row;
+                });
+            }
+
+            // แปลงวันที่ในแต่ละ sheet
+            const membersExport  = convertDatesForExport(members,  ['applyDate', 'birthDate', 'lastPaymentDate']);
+            const teachersExport = convertDatesForExport(teachers,  ['applyDate', 'birthDate', 'lastPaymentDate']);
+            const feesExport     = convertDatesForExport(fees,      ['paymentDate']);
+            const welfaresExport = convertDatesForExport(welfares,  ['claimDate']);
 
             // สร้าง Workbook
             const wb = XLSX.utils.book_new();
 
             // แปลงข้อมูลเป็น Worksheet
-            const wsMembers = XLSX.utils.json_to_sheet(members);
-            const wsTeachers = XLSX.utils.json_to_sheet(teachers);
-            const wsFees = XLSX.utils.json_to_sheet(fees);
-            const wsWelfares = XLSX.utils.json_to_sheet(welfares);
+            const wsMembers  = XLSX.utils.json_to_sheet(membersExport);
+            const wsTeachers = XLSX.utils.json_to_sheet(teachersExport);
+            const wsFees     = XLSX.utils.json_to_sheet(feesExport);
+            const wsWelfares = XLSX.utils.json_to_sheet(welfaresExport);
             const wsSettings = XLSX.utils.json_to_sheet([settings]);
 
             // บรรจุลงใน Workbook แยกชีตตามแท็บ
-            XLSX.utils.book_append_sheet(wb, wsMembers, "members");
+            XLSX.utils.book_append_sheet(wb, wsMembers,  "members");
             XLSX.utils.book_append_sheet(wb, wsTeachers, "teachers");
-            XLSX.utils.book_append_sheet(wb, wsFees, "fees");
+            XLSX.utils.book_append_sheet(wb, wsFees,     "fees");
             XLSX.utils.book_append_sheet(wb, wsWelfares, "welfares");
             XLSX.utils.book_append_sheet(wb, wsSettings, "settings");
 
@@ -1583,11 +1608,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // ดาวน์โหลดไฟล์ Excel (.xlsx)
             XLSX.writeFile(wb, fileName);
-            alert("ดาวน์โหลดไฟล์สำรองฐานข้อมูล Excel สำเร็จแล้ว");
+            alert("ดาวน์โหลดไฟล์สำรองฐานข้อมูล Excel สำเร็จแล้ว (วันที่แสดงเป็น พ.ศ.)");
         } catch (error) {
             alert(`เกิดข้อผิดพลาดในการส่งออกไฟล์ Excel: ${error.message}`);
         }
     });
+
 
     btnImport.addEventListener('click', () => {
         const fileInput = document.getElementById('db-import-file');
