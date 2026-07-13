@@ -117,7 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
             fees: 'ระบบค่าบำรุงสมาชิก (Maintenance Fees)',
             welfare: 'ระบบจัดการสวัสดิการ (Welfare System)',
             reports: 'หน้ารายงานข้อมูลและสรุปสำหรับผู้บริหาร',
-            settings: 'ตั้งค่าระบบ & เครื่องมือสิทธิ์ฐานข้อมูล'
+            settings: 'ตั้งค่าระบบ & เครื่องมือสิทธิ์ฐานข้อมูล',
+            users: 'จัดการผู้ใช้งานระบบ (User Management)'
         };
         DOM.headerTitle.innerText = titles[viewName] || 'ชมรมเพื่อน พ.น.';
 
@@ -148,6 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 'settings':
                 renderSettingsTab();
+                break;
+            case 'users':
+                if (typeof renderUsersTable === 'function') renderUsersTable();
                 break;
         }
     }
