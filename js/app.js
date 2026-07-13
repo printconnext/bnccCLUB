@@ -253,10 +253,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (welfareClaimPanel) welfareClaimPanel.style.display = 'none';
         }
         
-        // 3. เมนูจัดการผู้ใช้งาน (เฉพาะ super_admin)
+        // 3. เมนูจัดการผู้ใช้งาน (อนุญาตให้ทุกคนเข้าได้ แต่ในตารางจะกรองข้อมูลตามสิทธิ์)
         const menuUsers = document.getElementById('menu-users');
         if (menuUsers) {
-            menuUsers.style.display = (role === 'super_admin') ? 'block' : 'none';
+            menuUsers.style.display = 'block';
+        }
+
+        // 4. ปุ่มเพิ่มผู้ใช้ใหม่ (เฉพาะ super_admin และ executive)
+        const btnAddUser = document.getElementById('btn-add-user');
+        if (btnAddUser) {
+            btnAddUser.style.display = (role === 'super_admin' || role === 'executive') ? 'inline-flex' : 'none';
         }
     }
 
@@ -2476,7 +2482,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const usersTableBody = document.getElementById('users-table-body');
         if (!usersTableBody) return;
         
-        const users = db.getUsers();
+        let users = db.getUsers();
+        
+        // กรองตามสิทธิ์
+        if (state.currentRole !== 'super_admin' && state.currentRole !== 'executive') {
+            users = users.filter(u => u.username === state.currentUser);
+        }
+        
         usersTableBody.innerHTML = '';
         
         users.forEach(u => {
@@ -2493,7 +2505,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>
                     <div style="display: flex; gap: 8px;">
                         <button class="icon-btn edit" onclick="window.editUser('${u.id}')" title="แก้ไขผู้ใช้"><i class="fa-solid fa-pen"></i></button>
-                        ${u.username !== 'admin' ? `<button class="icon-btn delete" onclick="window.deleteUser('${u.id}')" title="ลบผู้ใช้"><i class="fa-solid fa-trash"></i></button>` : ''}
+                        ${u.username !== 'admin' && (state.currentRole === 'super_admin' || state.currentRole === 'executive') ? `<button class="icon-btn delete" onclick="window.deleteUser('${u.id}')" title="ลบผู้ใช้"><i class="fa-solid fa-trash"></i></button>` : ''}
                     </div>
                 </td>
             `;
@@ -2505,6 +2517,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('user-modal-title').innerText = 'เพิ่มผู้ใช้งานใหม่';
         document.getElementById('form-user').reset();
         document.getElementById('user-id').value = '';
+        document.getElementById('user-role').disabled = false;
         window.openModal('modal-user-form');
     };
 
@@ -2518,6 +2531,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('user-username').value = user.username;
             document.getElementById('user-password').value = ''; // ว่างไว้เพื่อไม่ต้องเปลี่ยนรหัส
             document.getElementById('user-role').value = user.role;
+            document.getElementById('user-role').disabled = (state.currentRole !== 'super_admin' && state.currentRole !== 'executive');
             window.openModal('modal-user-form');
         }
     };
