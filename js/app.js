@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
         systemDate: '2026-06-22',     // วันที่จำลองระบบ
         selectedWelfareRecipient: null,
         currentEditingMember: null, // เก็บข้อมูลผู้มีสิทธิ์ที่เลือกตอนทำเรื่องสวัสดิการ { id, type, name, status }
-        currentReportTab: 'member_registry'
+        currentReportTab: 'member_registry',
+        currentUser: ''
     };
 
     // โหลดการตั้งค่าตั้งต้นจากฐานข้อมูล
@@ -36,9 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // ตรวจจับประวัติการเข้าใช้งานก่อนหน้าในเซสชันเดียวกัน (Session Persistence)
     const savedLogin = sessionStorage.getItem('bncc_logged_in');
     const savedRole = sessionStorage.getItem('bncc_user_role');
+    const savedName = sessionStorage.getItem('bncc_user_name');
+    const savedUsername = sessionStorage.getItem('bncc_username');
     if (savedLogin === 'true' && savedRole) {
         state.isLoggedIn = true;
         state.currentRole = savedRole;
+        state.currentUser = savedUsername || '';
+        
+        let roleText = savedRole === 'member_admin' ? 'ผู้ดูแลทะเบียนสมาชิก' :
+                       savedRole === 'welfare_admin' ? 'ผู้ดูแลสวัสดิการ' :
+                       savedRole === 'executive' ? 'ผู้บริหาร/กรรมการชมรม' :
+                       savedRole === 'super_admin' ? 'ผู้ดูแลระบบ (Super Admin)' : 'ไม่ทราบสิทธิ์';
+                       
+        if (DOM.sidebarRole) DOM.sidebarRole.innerText = roleText;
+        if (DOM.sidebarUser && savedName) DOM.sidebarUser.innerText = savedName;
+
         setTimeout(() => {
             DOM.loginScreen.style.display = 'none';
             DOM.appContainer.style.display = 'flex';
@@ -2288,12 +2301,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.removeItem('bncc_remembered_password');
             }
             state.currentRole = role;
+            state.currentUser = matchedUser.username;
             sessionStorage.setItem('bncc_logged_in', 'true');
             sessionStorage.setItem('bncc_user_role', role);
+            sessionStorage.setItem('bncc_user_name', userName);
+            sessionStorage.setItem('bncc_username', matchedUser.username);
 
             // อัปเดตข้อมูลผู้ใช้ใน UI
-            DOM.sidebarRole.innerText = roleText;
-            DOM.sidebarUser.innerText = userName;
+            if (DOM.sidebarRole) DOM.sidebarRole.innerText = roleText;
+            if (DOM.sidebarUser) DOM.sidebarUser.innerText = userName;
 
             // ซ่อนหน้าล็อกอินและแสดงหน้าจอหลัก
             DOM.loginScreen.style.opacity = '0';
@@ -2302,8 +2318,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 DOM.appContainer.style.display = 'flex';
                 applyRolePermissions();
                 navigateTo('dashboard');
-                // ทริกเกอร์อัปเดตบทบาทในระบบเพื่อให้ UI อัปเดตเต็มรูปแบบ
-                DOM.roleSelect.dispatchEvent(new Event('change'));
             }, 300);
         });
 
