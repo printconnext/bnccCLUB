@@ -2491,8 +2491,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${u.username}</td>
                 <td><span class="status-badge active">${roleText}</span></td>
                 <td>
-                    <button class="icon-btn edit" onclick="window.editUser('${u.id}')" title="แก้ไขผู้ใช้"><i class="fa-solid fa-pen"></i></button>
-                    ${u.username !== 'admin' ? `<button class="icon-btn delete" onclick="window.deleteUser('${u.id}')" title="ลบผู้ใช้"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    <div style="display: flex; gap: 8px;">
+                        <button class="icon-btn edit" onclick="window.editUser('${u.id}')" title="แก้ไขผู้ใช้"><i class="fa-solid fa-pen"></i></button>
+                        ${u.username !== 'admin' ? `<button class="icon-btn delete" onclick="window.deleteUser('${u.id}')" title="ลบผู้ใช้"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    </div>
                 </td>
             `;
             usersTableBody.appendChild(tr);
@@ -2503,7 +2505,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('user-modal-title').innerText = 'เพิ่มผู้ใช้งานใหม่';
         document.getElementById('form-user').reset();
         document.getElementById('user-id').value = '';
-        document.getElementById('modal-user-form').style.display = 'flex';
+        window.openModal('modal-user-form');
     };
 
     window.editUser = function(id) {
@@ -2516,7 +2518,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('user-username').value = user.username;
             document.getElementById('user-password').value = ''; // ว่างไว้เพื่อไม่ต้องเปลี่ยนรหัส
             document.getElementById('user-role').value = user.role;
-            document.getElementById('modal-user-form').style.display = 'flex';
+            window.openModal('modal-user-form');
         }
     };
 

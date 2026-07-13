@@ -618,11 +618,11 @@
        ========================================================================== -->
 
     <!-- 0. โมดอลเพิ่ม/แก้ไขผู้ใช้งาน (User Add/Edit Modal) -->
-    <div id="modal-user-form" class="modal">
+    <div id="modal-user-form" class="modal-backdrop">
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
                 <h3 id="user-modal-title">เพิ่มผู้ใช้งานใหม่</h3>
-                <span class="close-modal" onclick="document.getElementById('modal-user-form').style.display='none'">&times;</span>
+                <span class="close-modal" onclick="window.closeModal('modal-user-form')">&times;</span>
             </div>
             <form id="form-user" class="modal-body">
                 <input type="hidden" id="user-id">
@@ -648,7 +648,7 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('modal-user-form').style.display='none'">ยกเลิก</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.closeModal('modal-user-form')">ยกเลิก</button>
                     <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
                 </div>
             </form>
