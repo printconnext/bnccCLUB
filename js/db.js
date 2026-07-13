@@ -6,10 +6,18 @@ const DB_KEYS = {
     TEACHERS: 'bncc_club_teachers',
     FEES: 'bncc_club_fees',
     WELFARES: 'bncc_club_welfares',
-    SYSTEM_SETTINGS: 'bncc_club_settings'
+    SYSTEM_SETTINGS: 'bncc_club_settings',
+    USERS: 'bncc_club_users'
 };
 
 // ข้อมูลเริ่มต้นสำหรับทดสอบระบบ (Seed Data)
+const INITIAL_USERS = [
+    { id: '1', username: 'admin', password: 'admin123', name: 'ผู้ดูแลระบบ (Super Admin)', role: 'super_admin' },
+    { id: '2', username: 'admin.member', password: 'member123', name: 'คุณนารี ทะเบียนดี', role: 'member_admin' },
+    { id: '3', username: 'admin.welfare', password: 'welfare123', name: 'นายสวัสดิ์ เกื้อกูล', role: 'welfare_admin' },
+    { id: '4', username: 'executive', password: 'exec123', name: 'ผู้บริหาร/กรรมการชมรม', role: 'executive' }
+];
+
 const INITIAL_MEMBERS = [
     {
         "id": "01083",
@@ -36,7 +44,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-01-30",
+        "lastPaymentDate": "2025-01-29",
         "notes": ""
     },
     {
@@ -64,8 +72,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-02-03",
-        "notes": "ยกเลิกสมาชิก"
+        "lastPaymentDate": "2021-02-02",
+        "notes": "ยกเลิก"
     },
     {
         "id": "07001",
@@ -92,7 +100,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-01-06",
+        "lastPaymentDate": "2569-01-05",
         "notes": ""
     },
     {
@@ -120,7 +128,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-12-01",
+        "lastPaymentDate": "2568-11-30",
         "notes": ""
     },
     {
@@ -129,12 +137,12 @@ const INITIAL_MEMBERS = [
         "name": "คุณนัทธีรา กิตติวังชัย",
         "nickname": "นัท",
         "applyDate": "2016-01-29",
-        "birthDate": "1952-12-05",
+        "birthDate": "2495-12-04",
         "phone": "081-647-2720",
         "lineId": "",
         "facebook": "",
         "email": "Siampatlace@hotmail.com",
-        "address": "100/191 มบ.อมรพันธุ์ 9 ถ.เสนานิคม 1 ซ.42แยก16 ลาดพร้าว ลาดพร้าว กรุงเทพฯ 10230",
+        "address": "100/191 มบ.อมรพันธุ์ 9 ถ.เสนานิคม 1 ซ.42แยก16  ลาดพร้าว ลาดพร้าว กรุงเทพฯ 10230",
         "education": {
             "gen": 1,
             "faculty": "",
@@ -148,8 +156,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-01-11",
-        "notes": "สกุลเดิม/หมายเหตุ: /นิลจรัสวณิช"
+        "lastPaymentDate": "2024-01-10",
+        "notes": ""
     },
     {
         "id": "07002",
@@ -157,12 +165,12 @@ const INITIAL_MEMBERS = [
         "name": "คุณจุไรรัศมี ศรีเพ็ญ",
         "nickname": "จุ",
         "applyDate": "2016-01-29",
-        "birthDate": "1959-05-30",
+        "birthDate": "2502-05-29",
         "phone": "081-335-0329",
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "329 ซ.อ่อนนุช 10 อ่อนนุช สวนหลวง กรุงเทพฯ 10250",
+        "address": "329 ซ.อ่อนนุช 10  อ่อนนุช สวนหลวง กรุงเทพฯ 10250",
         "education": {
             "gen": 7,
             "faculty": "",
@@ -176,7 +184,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-12",
+        "lastPaymentDate": "2569-06-11",
         "notes": ""
     },
     {
@@ -204,7 +212,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-04-02",
+        "lastPaymentDate": "2569-04-01",
         "notes": ""
     },
     {
@@ -212,7 +220,7 @@ const INITIAL_MEMBERS = [
         "generation": 12,
         "name": "คุณสมพร จิรธนาศักดิ์",
         "nickname": "",
-        "applyDate": "2021-08-26",
+        "applyDate": "2021-08-25",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -232,7 +240,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-08-26",
+        "lastPaymentDate": "2021-08-25",
         "notes": ""
     },
     {
@@ -260,7 +268,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-01-31",
+        "lastPaymentDate": "2025-01-30",
         "notes": ""
     },
     {
@@ -288,7 +296,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-02-05",
+        "lastPaymentDate": "2023-02-04",
         "notes": ""
     },
     {
@@ -316,7 +324,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-09",
+        "lastPaymentDate": "2025-06-08",
         "notes": ""
     },
     {
@@ -344,7 +352,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-04",
+        "lastPaymentDate": "2024-06-03",
         "notes": ""
     },
     {
@@ -353,7 +361,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณรัชนี ตปะนียะกุล",
         "nickname": "เล็ก",
         "applyDate": "2016-02-09",
-        "birthDate": "1952-09-07",
+        "birthDate": "2495-09-06",
         "phone": "065-994-9915",
         "lineId": "",
         "facebook": "",
@@ -372,7 +380,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-02-05",
+        "lastPaymentDate": "2569-02-04",
         "notes": ""
     },
     {
@@ -386,7 +394,7 @@ const INITIAL_MEMBERS = [
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "21/ 432 ม.ถาวรนิเวศน์ 2 ซ.บางนา-ตราด 12 ถ.บางนา-ตราด บางนา บางนา กทม 10260",
+        "address": " 21/ 432 ม.ถาวรนิเวศน์ 2 ซ.บางนา-ตราด 12 ถ.บางนา-ตราด บางนา บางนา กทม 10260",
         "education": {
             "gen": 2,
             "faculty": "",
@@ -400,7 +408,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-03-19",
+        "lastPaymentDate": "2024-03-18",
         "notes": ""
     },
     {
@@ -428,7 +436,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-02-13",
+        "lastPaymentDate": "2569-02-12",
         "notes": ""
     },
     {
@@ -456,7 +464,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-03-06",
+        "lastPaymentDate": "2022-03-05",
         "notes": ""
     },
     {
@@ -484,7 +492,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-05-22",
+        "lastPaymentDate": "2024-05-21",
         "notes": ""
     },
     {
@@ -493,12 +501,12 @@ const INITIAL_MEMBERS = [
         "name": "คุณฉันทกร รุจศรีสาคร",
         "nickname": "หมู",
         "applyDate": "2016-02-29",
-        "birthDate": "1953-12-21",
+        "birthDate": "2496-12-20",
         "phone": "081-816-7654",
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "4/65 คลองขวาง ไทรน้อย นนทบุรี 11150",
+        "address": " 4/65 คลองขวาง ไทรน้อย นนทบุรี 11150",
         "education": {
             "gen": 1,
             "faculty": "",
@@ -512,7 +520,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-02-11",
+        "lastPaymentDate": "2024-02-10",
         "notes": ""
     },
     {
@@ -540,8 +548,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-06-04",
-        "notes": "สกุลเดิม/หมายเหตุ: คำรณ"
+        "lastPaymentDate": "ขาดชำระ",
+        "notes": ""
     },
     {
         "id": "03007",
@@ -568,7 +576,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-05-26",
+        "lastPaymentDate": "ขาดชำระ",
         "notes": ""
     },
     {
@@ -596,7 +604,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-02-03",
+        "lastPaymentDate": "ขาดชำระ",
         "notes": ""
     },
     {
@@ -624,8 +632,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-03-24",
-        "notes": "สกุลเดิม/หมายเหตุ: ตั้งพจน์ทวีพร (นามสกุลใหม่)"
+        "lastPaymentDate": "2025-03-23",
+        "notes": ""
     },
     {
         "id": "05005",
@@ -652,7 +660,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-03-13",
+        "lastPaymentDate": "2022-03-12",
         "notes": ""
     },
     {
@@ -680,7 +688,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-04-01",
+        "lastPaymentDate": "2569-03-31",
         "notes": ""
     },
     {
@@ -688,7 +696,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณมนตรี รัฐประเสริฐ",
         "nickname": "*0831",
-        "applyDate": "2021-08-14",
+        "applyDate": "2021-08-13",
         "birthDate": "",
         "phone": "089-754-5799",
         "lineId": "",
@@ -708,7 +716,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-08-14",
+        "lastPaymentDate": "2021-08-13",
         "notes": ""
     },
     {
@@ -736,7 +744,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-03-10",
+        "lastPaymentDate": "2023-03-09",
         "notes": ""
     },
     {
@@ -764,7 +772,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-04-01",
+        "lastPaymentDate": "2569-03-31",
         "notes": ""
     },
     {
@@ -772,7 +780,7 @@ const INITIAL_MEMBERS = [
         "generation": 3,
         "name": "คุณมาโนช จุลสุคนธ์",
         "nickname": "",
-        "applyDate": "2024-03-28",
+        "applyDate": "2024-03-27",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -792,21 +800,21 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-03-28",
+        "lastPaymentDate": "2024-03-27",
         "notes": ""
     },
     {
         "id": "05006",
         "generation": 5,
-        "name": "คุณไพรัตน์ ศรีทา",
+        "name": "คุณไพรัตน์  ศรีทา",
         "nickname": "โกร่ง",
         "applyDate": "2016-04-05",
-        "birthDate": "1957-12-25",
+        "birthDate": "2500-12-24",
         "phone": "091-078-0955",
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "44/1 หมู่ 1 ซ.พร้อมมิตร 5 บางเมือง เมือง สมุทรปราการ 10270",
+        "address": "44/1 หมู่ 1  บางเมือง เมือง สมุทรปราการ 10270",
         "education": {
             "gen": 5,
             "faculty": "",
@@ -820,7 +828,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -848,7 +856,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-04-14",
+        "lastPaymentDate": "2021-04-13",
         "notes": ""
     },
     {
@@ -876,7 +884,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-05-30",
+        "lastPaymentDate": "2021-05-29",
         "notes": ""
     },
     {
@@ -885,11 +893,11 @@ const INITIAL_MEMBERS = [
         "name": "คุณทัศนีย์ ศรีทองเย็น",
         "nickname": "จ๋า",
         "applyDate": "2016-04-25",
-        "birthDate": "1953-03-16",
+        "birthDate": "2496-01-20",
         "phone": "081-499-2754",
-        "lineId": "814992754",
+        "lineId": "",
         "facebook": "",
-        "email": "Thasanee211@gmail.com",
+        "email": "",
         "address": "211 ซ.ลาดพร้าว 109 คลองจั่น บางกะปิ กรุงเทพฯ 10240",
         "education": {
             "gen": 1,
@@ -904,7 +912,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-04-04",
+        "lastPaymentDate": "2569-04-03",
         "notes": ""
     },
     {
@@ -932,10 +940,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-10",
-        "status": "deceased",
-        "isDeceased": true,
-        "notes": "ถึงแก่กรรม"
+        "lastPaymentDate": "2021-09-09",
+        "notes": ""
     },
     {
         "id": "01095",
@@ -962,7 +968,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-11",
+        "lastPaymentDate": "2569-05-10",
         "notes": ""
     },
     {
@@ -990,7 +996,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-11",
+        "lastPaymentDate": "2569-05-10",
         "notes": ""
     },
     {
@@ -1018,7 +1024,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-12",
+        "lastPaymentDate": "2569-05-11",
         "notes": ""
     },
     {
@@ -1027,7 +1033,7 @@ const INITIAL_MEMBERS = [
         "name": "ทนายวิโรจน์ อัศวเสมาชัย",
         "nickname": "ง้วน",
         "applyDate": "2016-05-20",
-        "birthDate": "1957-05-30",
+        "birthDate": "2500-05-29",
         "phone": "081-860-7023",
         "lineId": "",
         "facebook": "",
@@ -1046,7 +1052,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-05-28",
+        "lastPaymentDate": "2024-05-27",
         "notes": ""
     },
     {
@@ -1060,7 +1066,7 @@ const INITIAL_MEMBERS = [
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "Fr.Walailux Volkemer. Blücher str.74. Oberhausen Germany. 46045",
+        "address": "Fr.Walailux Volkemer. Blücher str.74. Oberhausen Germany.   46045",
         "education": {
             "gen": 6,
             "faculty": "",
@@ -1074,7 +1080,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-05-26",
+        "lastPaymentDate": "2021-05-25",
         "notes": ""
     },
     {
@@ -1102,15 +1108,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-05-25",
-        "notes": "สกุลเดิม/หมายเหตุ: /คงธนะ"
+        "lastPaymentDate": "2024-05-24",
+        "notes": ""
     },
     {
         "id": "04003",
         "generation": 4,
         "name": "คุณธีรรัตน์ ดิฏฐโชติ",
         "nickname": "",
-        "applyDate": "2021-05-25",
+        "applyDate": "2021-05-24",
         "birthDate": "",
         "phone": "086-4907799",
         "lineId": "",
@@ -1130,7 +1136,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-05-25",
+        "lastPaymentDate": "2021-05-24",
         "notes": ""
     },
     {
@@ -1138,7 +1144,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณเนาวรัตน์ รัศมีสุขานนท์",
         "nickname": "",
-        "applyDate": "2021-05-25",
+        "applyDate": "2021-05-24",
         "birthDate": "",
         "phone": "093-965-2355",
         "lineId": "",
@@ -1158,7 +1164,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-21",
+        "lastPaymentDate": "2569-05-20",
         "notes": ""
     },
     {
@@ -1167,11 +1173,11 @@ const INITIAL_MEMBERS = [
         "name": "คุณจินดารัตน์  ทัตอุปริตโถ",
         "nickname": "",
         "applyDate": "2015-06-21",
-        "birthDate": "1954-03-20",
+        "birthDate": "2497-01-19",
         "phone": "091-826-4294",
-        "lineId": "jindarat_aia",
+        "lineId": "",
         "facebook": "",
-        "email": "jindarat tatuparittho",
+        "email": "",
         "address": "36 ซ.เพชรเกษม 92 บางแคเหนือ บางแค กรุงเทพฯ 10160",
         "education": {
             "gen": 1,
@@ -1186,7 +1192,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -1194,7 +1200,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณชัยวัฒน์ ปิยะทัต",
         "nickname": "",
-        "applyDate": "2021-06-28",
+        "applyDate": "2021-06-27",
         "birthDate": "",
         "phone": "081-808-9087",
         "lineId": "",
@@ -1214,7 +1220,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-01",
+        "lastPaymentDate": "2023-06-30",
         "notes": ""
     },
     {
@@ -1242,7 +1248,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-05",
+        "lastPaymentDate": "2569-06-04",
         "notes": ""
     },
     {
@@ -1251,7 +1257,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณมงคล หงษ์ยนต์",
         "nickname": "หมง",
         "applyDate": "2015-06-21",
-        "birthDate": "1954-08-05",
+        "birthDate": "2497-08-04",
         "phone": "063-328-2915",
         "lineId": "",
         "facebook": "",
@@ -1270,7 +1276,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-26",
+        "lastPaymentDate": "2025-06-25",
         "notes": ""
     },
     {
@@ -1298,7 +1304,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-04",
+        "lastPaymentDate": "2025-07-03",
         "notes": ""
     },
     {
@@ -1307,7 +1313,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณสมนึก เวณุภูติ",
         "nickname": "",
         "applyDate": "2015-06-21",
-        "birthDate": "1952-06-14",
+        "birthDate": "2495-06-13",
         "phone": "086-560-5252",
         "lineId": "",
         "facebook": "",
@@ -1326,7 +1332,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-15",
+        "lastPaymentDate": "2024-06-14",
         "notes": ""
     },
     {
@@ -1335,12 +1341,12 @@ const INITIAL_MEMBERS = [
         "name": "คุณสุกัญญา จิรอลงกรณ์",
         "nickname": "หน่อย",
         "applyDate": "2015-06-21",
-        "birthDate": "1953-05-10",
+        "birthDate": "2496-05-09",
         "phone": "086-399-2090",
-        "lineId": "0863992090",
+        "lineId": "",
         "facebook": "",
-        "email": "Suanya Jiraalongkorn",
-        "address": "56 มบ.วรางกูล ซ.1 ถ.รังสิต-นครนายก 64 ประชาธิปัตย์ ธัญบุรี ปทุมธานี 12130",
+        "email": "",
+        "address": "56 มบ.วรางกูล ซ.1 ประชาธิปัตย์ ธัญบุรี ปทุมธานี",
         "education": {
             "gen": 1,
             "faculty": "",
@@ -1354,7 +1360,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-17",
+        "lastPaymentDate": "2569-06-16",
         "notes": ""
     },
     {
@@ -1363,7 +1369,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณสุวรรณา ศิริเวชวราวุธ",
         "nickname": "อี้ด",
         "applyDate": "2015-06-21",
-        "birthDate": "1953-10-31",
+        "birthDate": "2496-10-30",
         "phone": "082-839-9911",
         "lineId": "",
         "facebook": "",
@@ -1382,7 +1388,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-17",
+        "lastPaymentDate": "2569-06-16",
         "notes": ""
     },
     {
@@ -1410,7 +1416,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-05-14",
+        "lastPaymentDate": "2024-05-13",
         "notes": ""
     },
     {
@@ -1419,7 +1425,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณไอริน เจียมวิทยานุกูล",
         "nickname": "",
         "applyDate": "2015-06-21",
-        "birthDate": "1954-04-19",
+        "birthDate": "2497-04-18",
         "phone": "085-871-8490",
         "lineId": "",
         "facebook": "",
@@ -1438,7 +1444,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-08",
+        "lastPaymentDate": "2024-06-07",
         "notes": ""
     },
     {
@@ -1447,7 +1453,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณภาสินี บุญชยาอนันต์",
         "nickname": "แป้น",
         "applyDate": "2015-06-21",
-        "birthDate": "1953-04-10",
+        "birthDate": "2496-04-09",
         "phone": "089-049-1875",
         "lineId": "",
         "facebook": "",
@@ -1466,7 +1472,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -1475,7 +1481,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณนิภาพร พิมพ์พรรณชาติ",
         "nickname": "พร",
         "applyDate": "2015-06-21",
-        "birthDate": "1954-11-14",
+        "birthDate": "2497-11-13",
         "phone": "089-127-1417",
         "lineId": "",
         "facebook": "",
@@ -1494,7 +1500,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -1503,11 +1509,11 @@ const INITIAL_MEMBERS = [
         "name": "คุณนงเยาว์ อินทรปรางค์",
         "nickname": "กุ้ง",
         "applyDate": "2015-06-21",
-        "birthDate": "1953-04-14",
+        "birthDate": "2496-04-13",
         "phone": "086-308-2294",
-        "lineId": "0863082294",
+        "lineId": "",
         "facebook": "",
-        "email": "Nongyao Nongyao",
+        "email": "",
         "address": "147 หมู่ 12 บ้านสุขา บ้านธาตุ เพ็ญ อุดรธานี",
         "education": {
             "gen": 1,
@@ -1522,7 +1528,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -1550,8 +1556,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
-        "notes": "สกุลเดิม/หมายเหตุ: /แซ่เจียม"
+        "lastPaymentDate": "2569-06-02",
+        "notes": ""
     },
     {
         "id": "01024",
@@ -1559,7 +1565,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณปรีชา ศิรประภาเดโช",
         "nickname": "",
         "applyDate": "2015-06-30",
-        "birthDate": "1952-12-20",
+        "birthDate": "2495-12-19",
         "phone": "084-465-4925",
         "lineId": "",
         "facebook": "",
@@ -1578,7 +1584,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -1606,7 +1612,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-17",
+        "lastPaymentDate": "2568-07-16",
         "notes": ""
     },
     {
@@ -1634,7 +1640,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-24",
+        "lastPaymentDate": "2022-06-23",
         "notes": ""
     },
     {
@@ -1643,7 +1649,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณดวิษ พงษ์ทองหล่อ",
         "nickname": "บอส",
         "applyDate": "2021-06-07",
-        "birthDate": "1978-11-28",
+        "birthDate": "2521-11-27",
         "phone": "090-965-5199",
         "lineId": "",
         "facebook": "",
@@ -1662,7 +1668,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -1690,7 +1696,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-04-07",
+        "lastPaymentDate": "2021-04-06",
         "notes": ""
     },
     {
@@ -1718,7 +1724,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-27",
+        "lastPaymentDate": "2023-07-26",
         "notes": ""
     },
     {
@@ -1746,7 +1752,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-07-27",
+        "lastPaymentDate": "2021-07-26",
         "notes": ""
     },
     {
@@ -1774,8 +1780,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-07",
-        "notes": "สกุลเดิม/หมายเหตุ: /พรหมมาต"
+        "lastPaymentDate": "2025-07-06",
+        "notes": ""
     },
     {
         "id": "01038",
@@ -1802,7 +1808,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-08-24",
+        "lastPaymentDate": "2021-08-23",
         "notes": ""
     },
     {
@@ -1811,7 +1817,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณสุชาติ ทิพย์พิมล",
         "nickname": "ชาติ",
         "applyDate": "2015-07-17",
-        "birthDate": "1953-06-30",
+        "birthDate": "2496-06-29",
         "phone": "081-893-4602",
         "lineId": "",
         "facebook": "",
@@ -1830,7 +1836,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-08-24",
+        "lastPaymentDate": "2023-08-23",
         "notes": ""
     },
     {
@@ -1858,7 +1864,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-09-28",
+        "lastPaymentDate": "2023-09-27",
         "notes": ""
     },
     {
@@ -1867,7 +1873,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณสุมาลี ศักดิ์จิรพาพงษ์",
         "nickname": "อ๋อย",
         "applyDate": "2015-07-19",
-        "birthDate": "1953-05-15",
+        "birthDate": "2496-05-14",
         "phone": "080-925-3663",
         "lineId": "",
         "facebook": "",
@@ -1886,7 +1892,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-27",
+        "lastPaymentDate": "2023-07-26",
         "notes": ""
     },
     {
@@ -1914,7 +1920,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-26",
+        "lastPaymentDate": "2023-07-25",
         "notes": ""
     },
     {
@@ -1942,7 +1948,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-26",
+        "lastPaymentDate": "2023-07-25",
         "notes": ""
     },
     {
@@ -1970,7 +1976,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-26",
+        "lastPaymentDate": "2023-07-25",
         "notes": ""
     },
     {
@@ -1998,7 +2004,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-26",
+        "lastPaymentDate": "2023-07-25",
         "notes": ""
     },
     {
@@ -2006,7 +2012,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณวิยะนา นาวานุกูล",
         "nickname": "เขียว ชุมพร",
-        "applyDate": "2021-07-23",
+        "applyDate": "2021-07-22",
         "birthDate": "",
         "phone": "081-907-8278",
         "lineId": "",
@@ -2026,7 +2032,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-07-06",
+        "lastPaymentDate": "ไม่ต่อสมาชิก",
         "notes": ""
     },
     {
@@ -2054,7 +2060,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-20",
+        "lastPaymentDate": "2025-07-19",
         "notes": ""
     },
     {
@@ -2062,7 +2068,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณเครือวัลย์  ไข่แก้ว",
         "nickname": "อ๊อด สระบุรี",
-        "applyDate": "2021-07-23",
+        "applyDate": "2021-07-22",
         "birthDate": "",
         "phone": "092-674-8338",
         "lineId": "",
@@ -2082,7 +2088,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-26",
+        "lastPaymentDate": "2023-07-25",
         "notes": ""
     },
     {
@@ -2110,7 +2116,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-27",
+        "lastPaymentDate": "2023-07-26",
         "notes": ""
     },
     {
@@ -2138,7 +2144,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-07-17",
+        "lastPaymentDate": "2022-07-16",
         "notes": ""
     },
     {
@@ -2146,7 +2152,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณประภารัตน์ เกิดศิริ",
         "nickname": "",
-        "applyDate": "2021-07-24",
+        "applyDate": "2021-07-23",
         "birthDate": "",
         "phone": "081-795-3056",
         "lineId": "",
@@ -2166,8 +2172,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-26",
-        "notes": "สกุลเดิม/หมายเหตุ: /บัวหอม"
+        "lastPaymentDate": "2023-07-25",
+        "notes": ""
     },
     {
         "id": "01061",
@@ -2194,7 +2200,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-03",
+        "lastPaymentDate": "2023-07-02",
         "notes": ""
     },
     {
@@ -2202,7 +2208,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณชนานันท์ เกตุผ่อง",
         "nickname": "หมู",
-        "applyDate": "2021-07-02",
+        "applyDate": "2021-07-01",
         "birthDate": "",
         "phone": "065-0525559",
         "lineId": "",
@@ -2222,7 +2228,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-07-12",
+        "lastPaymentDate": "2022-07-11",
         "notes": ""
     },
     {
@@ -2250,7 +2256,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-07-27",
+        "lastPaymentDate": "2022-07-26",
         "notes": ""
     },
     {
@@ -2278,8 +2284,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-27",
-        "notes": "สกุลเดิม/หมายเหตุ: สุพัตรา เทียมรัตน์"
+        "lastPaymentDate": "2023-07-26",
+        "notes": ""
     },
     {
         "id": "04002",
@@ -2287,7 +2293,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณสุพัฒน์ รุ่งเริงสุข",
         "nickname": "จุ๋ง",
         "applyDate": "2018-07-20",
-        "birthDate": "1957-04-18",
+        "birthDate": "2500-04-17",
         "phone": "081-826-2991",
         "lineId": "",
         "facebook": "",
@@ -2306,7 +2312,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-10",
+        "lastPaymentDate": "2025-06-09",
         "notes": ""
     },
     {
@@ -2315,7 +2321,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณอัญชลี อัครพงศ์",
         "nickname": "กบ",
         "applyDate": "2020-07-03",
-        "birthDate": "1954-02-02",
+        "birthDate": "2497-02-01",
         "phone": "097-180-1019",
         "lineId": "",
         "facebook": "",
@@ -2334,7 +2340,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-20",
+        "lastPaymentDate": "2569-07-02",
         "notes": ""
     },
     {
@@ -2362,7 +2368,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-18",
+        "lastPaymentDate": "2569-06-17",
         "notes": ""
     },
     {
@@ -2371,7 +2377,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณกฤติน  ศรีสุนทรไท",
         "nickname": "แอ๊ด",
         "applyDate": "2020-07-27",
-        "birthDate": "1953-08-21",
+        "birthDate": "2496-08-20",
         "phone": "081-566-1195",
         "lineId": "",
         "facebook": "",
@@ -2390,8 +2396,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-05",
-        "notes": "สกุลเดิม/หมายเหตุ: วิชิต"
+        "lastPaymentDate": "2569-07-02",
+        "notes": ""
     },
     {
         "id": "01128",
@@ -2418,7 +2424,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-22",
+        "lastPaymentDate": "2025-07-21",
         "notes": ""
     },
     {
@@ -2446,7 +2452,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-11",
+        "lastPaymentDate": "2025-07-10",
         "notes": ""
     },
     {
@@ -2454,7 +2460,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณสมพร เทียนกระจ่าง",
         "nickname": "",
-        "applyDate": "2020-07-29",
+        "applyDate": "2020-07-28",
         "birthDate": "",
         "phone": "081-371-5509",
         "lineId": "",
@@ -2474,7 +2480,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-24",
+        "lastPaymentDate": "2569-07-03",
         "notes": ""
     },
     {
@@ -2502,7 +2508,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-07-02",
+        "lastPaymentDate": "2021-07-01",
         "notes": ""
     },
     {
@@ -2530,20 +2536,20 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-08-07",
-        "notes": "สกุลเดิม/หมายเหตุ: คุณมยุรี ภูมิสุทธินันท์"
+        "lastPaymentDate": "2023-08-06",
+        "notes": ""
     },
     {
         "id": "01079",
         "generation": 1,
         "name": "คุณกิตติ ธนานุภาพไพศาล",
         "nickname": "ติ",
-        "applyDate": "2021-08-28",
-        "birthDate": "1953-02-23",
+        "applyDate": "2021-08-27",
+        "birthDate": "2496-02-22",
         "phone": "093-010-1611",
         "lineId": "",
         "facebook": "",
-        "email": "kittipaisal23gmail.com",
+        "email": "",
         "address": "559/134 บ้านกลางเมืองรัชดา 36 ซ.เสือใหญ่อุทิศ จันทรเกษม จตุจักร กรุงเทพฯ 10900",
         "education": {
             "gen": 1,
@@ -2558,7 +2564,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-05",
+        "lastPaymentDate": "2025-08-04",
         "notes": ""
     },
     {
@@ -2566,7 +2572,7 @@ const INITIAL_MEMBERS = [
         "generation": 7,
         "name": "คุณยุพิณ โชติเลอศักดิ์",
         "nickname": "",
-        "applyDate": "2021-08-26",
+        "applyDate": "2021-08-25",
         "birthDate": "",
         "phone": "094-925-5529",
         "lineId": "",
@@ -2586,7 +2592,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-08-26",
+        "lastPaymentDate": "2021-08-25",
         "notes": ""
     },
     {
@@ -2614,7 +2620,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-05",
+        "lastPaymentDate": "2025-08-04",
         "notes": ""
     },
     {
@@ -2623,7 +2629,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณลักษณา ลาภสมบุญกมล",
         "nickname": "เล็ก",
         "applyDate": "2021-08-18",
-        "birthDate": "1957-10-03",
+        "birthDate": "2500-10-02",
         "phone": "086-568-2634",
         "lineId": "",
         "facebook": "",
@@ -2642,7 +2648,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-24",
+        "lastPaymentDate": "2025-08-23",
         "notes": ""
     },
     {
@@ -2650,7 +2656,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณวาณี ภัทราวุธสมบูรณ์",
         "nickname": "",
-        "applyDate": "2021-08-27",
+        "applyDate": "2021-08-26",
         "birthDate": "",
         "phone": "081-552-5125",
         "lineId": "",
@@ -2670,7 +2676,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-19",
+        "lastPaymentDate": "2025-06-18",
         "notes": ""
     },
     {
@@ -2698,7 +2704,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-31",
+        "lastPaymentDate": "2025-08-30",
         "notes": ""
     },
     {
@@ -2726,7 +2732,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-05",
+        "lastPaymentDate": "2025-08-04",
         "notes": ""
     },
     {
@@ -2734,7 +2740,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณอนุวัฒน์ ภัทรกรกุล",
         "nickname": "",
-        "applyDate": "2021-08-24",
+        "applyDate": "2021-08-23",
         "birthDate": "",
         "phone": "083-540-4554",
         "lineId": "",
@@ -2754,15 +2760,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-08-24",
+        "lastPaymentDate": "2021-08-23",
         "notes": ""
     },
     {
         "id": "09003",
-        "generation": 20,
+        "generation": 2008,
         "name": "คุณนฤปนาท เกษร",
         "nickname": "",
-        "applyDate": "2021-08-27",
+        "applyDate": "2021-08-26",
         "birthDate": "",
         "phone": "062-452-6165",
         "lineId": "",
@@ -2770,7 +2776,7 @@ const INITIAL_MEMBERS = [
         "email": "",
         "address": "",
         "education": {
-            "gen": 20,
+            "gen": 2008,
             "faculty": "",
             "major": ""
         },
@@ -2782,7 +2788,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-20",
+        "lastPaymentDate": "2025-08-19",
         "notes": ""
     },
     {
@@ -2790,7 +2796,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณนิตยา สรรไพโรจน์",
         "nickname": "",
-        "applyDate": "2021-08-27",
+        "applyDate": "2021-08-26",
         "birthDate": "",
         "phone": "082-076-2999",
         "lineId": "",
@@ -2810,7 +2816,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-08-12",
+        "lastPaymentDate": "2023-08-11",
         "notes": ""
     },
     {
@@ -2818,7 +2824,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณอุทุมพร ชยสิทธิโสภณ",
         "nickname": "",
-        "applyDate": "2021-08-27",
+        "applyDate": "2021-08-26",
         "birthDate": "",
         "phone": "081-654-0345",
         "lineId": "",
@@ -2838,15 +2844,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-08-17",
-        "notes": "สกุลเดิม/หมายเหตุ: ณัฐพร ชยสิทธิโสภณ"
+        "lastPaymentDate": "2023-08-16",
+        "notes": ""
     },
     {
         "id": "09010",
         "generation": 9,
         "name": "คุณยุวดี  สุขมาก",
         "nickname": "",
-        "applyDate": "2021-08-27",
+        "applyDate": "2021-08-26",
         "birthDate": "",
         "phone": "098-369-1926",
         "lineId": "",
@@ -2866,7 +2872,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-08-27",
+        "lastPaymentDate": "2021-08-26",
         "notes": ""
     },
     {
@@ -2894,7 +2900,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-10",
+        "lastPaymentDate": "2021-09-09",
         "notes": ""
     },
     {
@@ -2905,7 +2911,7 @@ const INITIAL_MEMBERS = [
         "applyDate": "2021-09-15",
         "birthDate": "",
         "phone": "089-895-3821",
-        "lineId": "21052507",
+        "lineId": "",
         "facebook": "",
         "email": "",
         "address": "",
@@ -2922,7 +2928,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-02",
+        "lastPaymentDate": "2025-10-01",
         "notes": ""
     },
     {
@@ -2931,12 +2937,12 @@ const INITIAL_MEMBERS = [
         "name": "คุณอัจฉรา รงคะอำพันธุ์",
         "nickname": "อัช",
         "applyDate": "2021-09-30",
-        "birthDate": "1964-05-21",
+        "birthDate": "",
         "phone": "086-478-8184",
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "96/3 มบ.โกลเด้นทาวน์ รามอินทรา-วงแหวนกาญจนาภิเษก",
+        "address": "",
         "education": {
             "gen": 7,
             "faculty": "",
@@ -2950,7 +2956,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-30",
+        "lastPaymentDate": "2021-09-29",
         "notes": ""
     },
     {
@@ -2978,7 +2984,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-28",
+        "lastPaymentDate": "2021-09-27",
         "notes": ""
     },
     {
@@ -3006,7 +3012,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-05-05",
+        "lastPaymentDate": "2025-05-04",
         "notes": ""
     },
     {
@@ -3034,7 +3040,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-11",
+        "lastPaymentDate": "2021-09-10",
         "notes": ""
     },
     {
@@ -3062,7 +3068,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-10",
+        "lastPaymentDate": "2021-09-09",
         "notes": ""
     },
     {
@@ -3090,7 +3096,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-09-09",
+        "lastPaymentDate": "2022-09-08",
         "notes": ""
     },
     {
@@ -3100,7 +3106,7 @@ const INITIAL_MEMBERS = [
         "nickname": "",
         "applyDate": "2021-09-05",
         "birthDate": "",
-        "phone": "081-8380694",
+        "phone": "081-838 0694",
         "lineId": "",
         "facebook": "",
         "email": "",
@@ -3118,8 +3124,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-05",
-        "notes": "สกุลเดิม/หมายเหตุ: /ชื่นประทุม"
+        "lastPaymentDate": "2021-09-04",
+        "notes": ""
     },
     {
         "id": "16004",
@@ -3146,7 +3152,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-12",
+        "lastPaymentDate": "2021-09-11",
         "notes": ""
     },
     {
@@ -3174,7 +3180,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-09-04",
+        "lastPaymentDate": "2023-09-03",
         "notes": ""
     },
     {
@@ -3202,7 +3208,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-15",
+        "lastPaymentDate": "2021-09-14",
         "notes": ""
     },
     {
@@ -3230,7 +3236,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-09-26",
+        "lastPaymentDate": "2022-09-25",
         "notes": ""
     },
     {
@@ -3258,7 +3264,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-10-07",
+        "lastPaymentDate": "2023-10-06",
         "notes": ""
     },
     {
@@ -3286,7 +3292,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-06",
+        "lastPaymentDate": "2025-10-05",
         "notes": ""
     },
     {
@@ -3314,7 +3320,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-13",
+        "lastPaymentDate": "2025-10-12",
         "notes": ""
     },
     {
@@ -3342,7 +3348,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-27",
+        "lastPaymentDate": "2025-10-26",
         "notes": ""
     },
     {
@@ -3370,7 +3376,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2020-10-02",
+        "lastPaymentDate": "2020-10-01",
         "notes": ""
     },
     {
@@ -3398,7 +3404,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-11-05",
+        "lastPaymentDate": "2025-11-04",
         "notes": ""
     },
     {
@@ -3426,7 +3432,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-11-01",
+        "lastPaymentDate": "2022-10-31",
         "notes": ""
     },
     {
@@ -3454,7 +3460,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-01-11",
+        "lastPaymentDate": "2569-01-10",
         "notes": ""
     },
     {
@@ -3462,7 +3468,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณสุพัตรา ลิ้มตระกูล",
         "nickname": "",
-        "applyDate": "2021-09-06",
+        "applyDate": "2021-09-05",
         "birthDate": "",
         "phone": "089-812-4726",
         "lineId": "",
@@ -3482,7 +3488,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-09-03",
+        "lastPaymentDate": "2025-09-02",
         "notes": ""
     },
     {
@@ -3490,7 +3496,7 @@ const INITIAL_MEMBERS = [
         "generation": 11,
         "name": "คุณสุชาดา ศักยะบุตร",
         "nickname": "",
-        "applyDate": "2021-09-08",
+        "applyDate": "2021-09-07",
         "birthDate": "",
         "phone": "081-599-5401",
         "lineId": "",
@@ -3510,7 +3516,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-08",
+        "lastPaymentDate": "2021-09-07",
         "notes": ""
     },
     {
@@ -3518,7 +3524,7 @@ const INITIAL_MEMBERS = [
         "generation": 28,
         "name": "คุณกิตติยา อนันตโชติหิรัญ",
         "nickname": "",
-        "applyDate": "2021-09-08",
+        "applyDate": "2021-09-07",
         "birthDate": "",
         "phone": "085-076-6491",
         "lineId": "",
@@ -3538,7 +3544,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-04-02",
+        "lastPaymentDate": "2569-04-01",
         "notes": ""
     },
     {
@@ -3546,7 +3552,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณสุมาลี โรจนวานิช",
         "nickname": "",
-        "applyDate": "2021-09-08",
+        "applyDate": "2021-09-07",
         "birthDate": "",
         "phone": "086-366-6871",
         "lineId": "",
@@ -3566,7 +3572,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-22",
+        "lastPaymentDate": "2025-06-21",
         "notes": ""
     },
     {
@@ -3574,7 +3580,7 @@ const INITIAL_MEMBERS = [
         "generation": 19,
         "name": "คุณชวลิต ไพรสกุลเดชา",
         "nickname": "",
-        "applyDate": "2021-09-08",
+        "applyDate": "2021-09-07",
         "birthDate": "",
         "phone": "089-022-1467",
         "lineId": "",
@@ -3594,7 +3600,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-09-27",
+        "lastPaymentDate": "2022-09-26",
         "notes": ""
     },
     {
@@ -3602,7 +3608,7 @@ const INITIAL_MEMBERS = [
         "generation": 38,
         "name": "คุณสุรพงศ์ ญาณสิทธิผล",
         "nickname": "",
-        "applyDate": "2021-09-08",
+        "applyDate": "2021-09-07",
         "birthDate": "",
         "phone": "095-792-4920",
         "lineId": "",
@@ -3622,7 +3628,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-08",
+        "lastPaymentDate": "2021-09-07",
         "notes": ""
     },
     {
@@ -3630,7 +3636,7 @@ const INITIAL_MEMBERS = [
         "generation": 34,
         "name": "คุณพัชราภรณ์ ไพรพิบูลยกิจ",
         "nickname": "",
-        "applyDate": "2021-09-08",
+        "applyDate": "2021-09-07",
         "birthDate": "",
         "phone": "098-446-9785",
         "lineId": "",
@@ -3650,7 +3656,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-08",
+        "lastPaymentDate": "2021-09-07",
         "notes": ""
     },
     {
@@ -3658,7 +3664,7 @@ const INITIAL_MEMBERS = [
         "generation": 35,
         "name": "คุณฉัตรชัย เพียงอภิชาติ",
         "nickname": "",
-        "applyDate": "2021-09-09",
+        "applyDate": "2021-09-08",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -3678,7 +3684,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-05-07",
+        "lastPaymentDate": "2025-05-06",
         "notes": ""
     },
     {
@@ -3686,7 +3692,7 @@ const INITIAL_MEMBERS = [
         "generation": 23,
         "name": "คุณฉวีวรรณ มณีแสง",
         "nickname": "",
-        "applyDate": "2021-09-09",
+        "applyDate": "2021-09-08",
         "birthDate": "",
         "phone": "092-939-9166",
         "lineId": "",
@@ -3706,7 +3712,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-29",
+        "lastPaymentDate": "ชำระล่วงหน้า",
         "notes": ""
     },
     {
@@ -3714,7 +3720,7 @@ const INITIAL_MEMBERS = [
         "generation": 34,
         "name": "คุณอาทิตย์ เศรษฐพงศ์",
         "nickname": "",
-        "applyDate": "2021-09-10",
+        "applyDate": "2021-09-09",
         "birthDate": "",
         "phone": "095-447-8991",
         "lineId": "",
@@ -3734,7 +3740,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-10",
+        "lastPaymentDate": "2021-09-09",
         "notes": ""
     },
     {
@@ -3742,7 +3748,7 @@ const INITIAL_MEMBERS = [
         "generation": 32,
         "name": "คุณณารัณวรี โฆษะวีรวัฒน์",
         "nickname": "",
-        "applyDate": "2021-09-10",
+        "applyDate": "2021-09-09",
         "birthDate": "",
         "phone": "063-624-5959",
         "lineId": "",
@@ -3762,7 +3768,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-30",
+        "lastPaymentDate": "2025-06-29",
         "notes": ""
     },
     {
@@ -3770,7 +3776,7 @@ const INITIAL_MEMBERS = [
         "generation": 4,
         "name": "คุณสำพันธ์ วันดี",
         "nickname": "",
-        "applyDate": "2021-09-10",
+        "applyDate": "2021-09-09",
         "birthDate": "",
         "phone": "063-664-9516",
         "lineId": "",
@@ -3790,7 +3796,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-10",
+        "lastPaymentDate": "2025-06-09",
         "notes": ""
     },
     {
@@ -3798,8 +3804,8 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณกุลจิรา ปรีชานนท์",
         "nickname": "ตุ้ม",
-        "applyDate": "2021-09-10",
-        "birthDate": "1961-10-08",
+        "applyDate": "2021-09-09",
+        "birthDate": "2504-10-07",
         "phone": "085-886-6212",
         "lineId": "",
         "facebook": "",
@@ -3818,21 +3824,21 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-31",
+        "lastPaymentDate": "2025-10-30",
         "notes": ""
     },
     {
         "id": "06009",
         "generation": 6,
         "name": "คุณศิริอร โชติสถิตย์ชัย",
-        "nickname": "หน่อย",
-        "applyDate": "2021-09-10",
-        "birthDate": "1957-09-04",
+        "nickname": "",
+        "applyDate": "2021-09-09",
+        "birthDate": "",
         "phone": "089-699-9996",
-        "lineId": "089-699-9996",
+        "lineId": "",
         "facebook": "",
-        "email": "หน่อยทรัพย์บุญชัย",
-        "address": "100/1098 หมู่ 10 บางเมือง เมือง สมุทรปราการ 10270",
+        "email": "",
+        "address": "",
         "education": {
             "gen": 6,
             "faculty": "",
@@ -3846,7 +3852,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-17",
+        "lastPaymentDate": "2569-06-16",
         "notes": ""
     },
     {
@@ -3854,7 +3860,7 @@ const INITIAL_MEMBERS = [
         "generation": 28,
         "name": "คุณจารุณี อาจมุณี",
         "nickname": "",
-        "applyDate": "2021-09-10",
+        "applyDate": "2021-09-09",
         "birthDate": "",
         "phone": "086-355-4983",
         "lineId": "",
@@ -3874,7 +3880,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-25",
+        "lastPaymentDate": "2569-05-24",
         "notes": ""
     },
     {
@@ -3882,7 +3888,7 @@ const INITIAL_MEMBERS = [
         "generation": 13,
         "name": "คุณทรงกลด มั่นสิงห์",
         "nickname": "",
-        "applyDate": "2021-09-12",
+        "applyDate": "2021-09-11",
         "birthDate": "",
         "phone": "098-280-0422",
         "lineId": "",
@@ -3902,7 +3908,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-08-14",
+        "lastPaymentDate": "2024-08-13",
         "notes": ""
     },
     {
@@ -3910,7 +3916,7 @@ const INITIAL_MEMBERS = [
         "generation": 15,
         "name": "คุณสุณีพร ทองสุก",
         "nickname": "",
-        "applyDate": "2021-09-12",
+        "applyDate": "2021-09-11",
         "birthDate": "",
         "phone": "089-183-5645",
         "lineId": "",
@@ -3930,7 +3936,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-12",
+        "lastPaymentDate": "2021-09-11",
         "notes": ""
     },
     {
@@ -3938,7 +3944,7 @@ const INITIAL_MEMBERS = [
         "generation": 14,
         "name": "คุณณัฐชญา เอี่ยมอิ่ม",
         "nickname": "",
-        "applyDate": "2021-09-12",
+        "applyDate": "2021-09-11",
         "birthDate": "",
         "phone": "062-819-6535",
         "lineId": "",
@@ -3958,7 +3964,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-12",
+        "lastPaymentDate": "2021-09-11",
         "notes": ""
     },
     {
@@ -3966,7 +3972,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณสรรพชัย มงคลสุขไพบูลย์",
         "nickname": "",
-        "applyDate": "2021-09-13",
+        "applyDate": "2021-09-12",
         "birthDate": "",
         "phone": "081-923-4857",
         "lineId": "",
@@ -3986,7 +3992,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-13",
+        "lastPaymentDate": "2021-09-12",
         "notes": ""
     },
     {
@@ -3994,7 +4000,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณสมพร อาภาสิริกุล",
         "nickname": "",
-        "applyDate": "2021-09-13",
+        "applyDate": "2021-09-12",
         "birthDate": "",
         "phone": "098-585-9159",
         "lineId": "",
@@ -4014,7 +4020,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-13",
+        "lastPaymentDate": "2021-09-12",
         "notes": ""
     },
     {
@@ -4022,7 +4028,7 @@ const INITIAL_MEMBERS = [
         "generation": 6,
         "name": "คุณชมเดือน คุ้มอนุวงศ์",
         "nickname": "",
-        "applyDate": "2021-09-15",
+        "applyDate": "2021-09-14",
         "birthDate": "",
         "phone": "02-337-4824",
         "lineId": "",
@@ -4042,7 +4048,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-09-07",
+        "lastPaymentDate": "2025-09-06",
         "notes": ""
     },
     {
@@ -4050,7 +4056,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณอารียา ใจอารีย์",
         "nickname": "",
-        "applyDate": "2021-09-15",
+        "applyDate": "2021-09-14",
         "birthDate": "",
         "phone": "081-908-0313",
         "lineId": "",
@@ -4070,7 +4076,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-20",
+        "lastPaymentDate": "2025-06-19",
         "notes": ""
     },
     {
@@ -4078,7 +4084,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณสุหญิง พันธุ์พิพัฒน์",
         "nickname": "",
-        "applyDate": "2021-09-15",
+        "applyDate": "2021-09-14",
         "birthDate": "",
         "phone": "089-870-1001",
         "lineId": "",
@@ -4098,7 +4104,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-15",
+        "lastPaymentDate": "2021-09-14",
         "notes": ""
     },
     {
@@ -4106,7 +4112,7 @@ const INITIAL_MEMBERS = [
         "generation": 5,
         "name": "คุณมลมล ตั้งพงษ์",
         "nickname": "",
-        "applyDate": "2021-09-16",
+        "applyDate": "2021-09-15",
         "birthDate": "",
         "phone": "081-449-3348",
         "lineId": "",
@@ -4126,7 +4132,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-16",
+        "lastPaymentDate": "2021-09-15",
         "notes": ""
     },
     {
@@ -4134,7 +4140,7 @@ const INITIAL_MEMBERS = [
         "generation": 23,
         "name": "คุณยุทาอร เจียรนัย",
         "nickname": "",
-        "applyDate": "2021-09-10",
+        "applyDate": "2021-09-09",
         "birthDate": "",
         "phone": "089-455-5446",
         "lineId": "",
@@ -4154,7 +4160,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-10",
+        "lastPaymentDate": "2021-09-09",
         "notes": ""
     },
     {
@@ -4162,7 +4168,7 @@ const INITIAL_MEMBERS = [
         "generation": 29,
         "name": "คุณณฏฐ์มน สิทธิเจริญธรรม",
         "nickname": "",
-        "applyDate": "2021-09-10",
+        "applyDate": "2021-09-09",
         "birthDate": "",
         "phone": "061-263-5919",
         "lineId": "",
@@ -4182,7 +4188,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-11",
+        "lastPaymentDate": "2025-08-10",
         "notes": ""
     },
     {
@@ -4190,7 +4196,7 @@ const INITIAL_MEMBERS = [
         "generation": 2,
         "name": "คุณสันติ ศรีอินทร์",
         "nickname": "",
-        "applyDate": "2021-09-21",
+        "applyDate": "2021-09-20",
         "birthDate": "",
         "phone": "094-489-6882",
         "lineId": "",
@@ -4210,7 +4216,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-21",
+        "lastPaymentDate": "2021-09-20",
         "notes": ""
     },
     {
@@ -4218,7 +4224,7 @@ const INITIAL_MEMBERS = [
         "generation": 24,
         "name": "คุณขจรศักดิ์ ประดิษฐาน",
         "nickname": "",
-        "applyDate": "2021-09-22",
+        "applyDate": "2021-09-21",
         "birthDate": "",
         "phone": "086-306-4445",
         "lineId": "",
@@ -4238,7 +4244,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-22",
+        "lastPaymentDate": "2021-09-21",
         "notes": ""
     },
     {
@@ -4246,7 +4252,7 @@ const INITIAL_MEMBERS = [
         "generation": 2,
         "name": "คุณสุมลรัตน์ หิรัญพัทรวงศ์",
         "nickname": "",
-        "applyDate": "2021-09-29",
+        "applyDate": "2021-09-28",
         "birthDate": "",
         "phone": "085-901-5222",
         "lineId": "",
@@ -4266,7 +4272,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-29",
+        "lastPaymentDate": "2021-09-28",
         "notes": ""
     },
     {
@@ -4274,7 +4280,7 @@ const INITIAL_MEMBERS = [
         "generation": 7,
         "name": "คุณวลัยลักษณ์ โฟร์เคเมอร์",
         "nickname": "",
-        "applyDate": "2021-09-29",
+        "applyDate": "2021-09-28",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -4294,7 +4300,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-29",
+        "lastPaymentDate": "2021-09-28",
         "notes": ""
     },
     {
@@ -4302,7 +4308,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณจารุนันท์ โรทิตเสถียร",
         "nickname": "",
-        "applyDate": "2021-09-30",
+        "applyDate": "2021-09-29",
         "birthDate": "",
         "phone": "081-903-7854",
         "lineId": "",
@@ -4322,7 +4328,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-09-30",
+        "lastPaymentDate": "2021-09-29",
         "notes": ""
     },
     {
@@ -4330,7 +4336,7 @@ const INITIAL_MEMBERS = [
         "generation": 17,
         "name": "คุณปนัดดา สิริวุฒิ",
         "nickname": "",
-        "applyDate": "2021-10-13",
+        "applyDate": "2021-10-12",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -4350,7 +4356,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-10-13",
+        "lastPaymentDate": "2021-10-12",
         "notes": ""
     },
     {
@@ -4358,7 +4364,7 @@ const INITIAL_MEMBERS = [
         "generation": 18,
         "name": "คุณอัมพร กุ่มเรือง",
         "nickname": "",
-        "applyDate": "2021-11-03",
+        "applyDate": "2021-11-02",
         "birthDate": "",
         "phone": "093-656-6060",
         "lineId": "",
@@ -4378,7 +4384,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-11-03",
+        "lastPaymentDate": "2021-11-02",
         "notes": ""
     },
     {
@@ -4386,7 +4392,7 @@ const INITIAL_MEMBERS = [
         "generation": 3,
         "name": "คุณสุวิทย์ สวมสูง",
         "nickname": "",
-        "applyDate": "2021-11-06",
+        "applyDate": "2021-11-05",
         "birthDate": "",
         "phone": "081-612-3448",
         "lineId": "",
@@ -4406,7 +4412,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -4415,7 +4421,7 @@ const INITIAL_MEMBERS = [
         "name": "คุณพรศรีทรัพย์ พัชระธะนะสุวรรณ",
         "nickname": "ปู",
         "applyDate": "2017-10-17",
-        "birthDate": "1968-05-21",
+        "birthDate": "2511-05-20",
         "phone": "095-949-7956",
         "lineId": "",
         "facebook": "",
@@ -4434,7 +4440,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-11-02",
+        "lastPaymentDate": "2025-11-01",
         "notes": ""
     },
     {
@@ -4442,7 +4448,7 @@ const INITIAL_MEMBERS = [
         "generation": 10,
         "name": "คุณรจนา บุญชู",
         "nickname": "",
-        "applyDate": "2023-10-04",
+        "applyDate": "2023-10-03",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -4462,20 +4468,20 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-29",
-        "notes": "สกุลเดิม/หมายเหตุ: จันทร์เด่น"
+        "lastPaymentDate": "2025-10-28",
+        "notes": ""
     },
     {
         "id": "01143",
         "generation": 1,
         "name": "คุณเสน่ห์ หลสุวรรณ",
         "nickname": "น้อย",
-        "applyDate": "2023-10-08",
-        "birthDate": "1951-06-03",
-        "phone": "084-093-1461",
+        "applyDate": "2023-10-07",
+        "birthDate": "2494-06-02",
+        "phone": "096-596-1078",
         "lineId": "",
         "facebook": "",
-        "email": "เสน่ห์ หลสุวรรณ",
+        "email": "",
         "address": "9/13 ซ.อ่อนนุช 74/4 ถ.อ่อนนุช ประเวศ ประเวศ กรุงเทพฯ 10250",
         "education": {
             "gen": 1,
@@ -4490,7 +4496,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-02-03",
+        "lastPaymentDate": "2569-02-02",
         "notes": ""
     },
     {
@@ -4498,7 +4504,7 @@ const INITIAL_MEMBERS = [
         "generation": 6,
         "name": "คุณสุชาติ สุขวัต",
         "nickname": "",
-        "applyDate": "2021-11-10",
+        "applyDate": "2021-11-09",
         "birthDate": "",
         "phone": "094-727-3303",
         "lineId": "",
@@ -4518,7 +4524,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-11-10",
+        "lastPaymentDate": "2021-11-09",
         "notes": ""
     },
     {
@@ -4526,7 +4532,7 @@ const INITIAL_MEMBERS = [
         "generation": 19,
         "name": "คุณเมทินี สุขคำ",
         "nickname": "",
-        "applyDate": "2021-11-11",
+        "applyDate": "2021-11-10",
         "birthDate": "",
         "phone": "095-504-6408",
         "lineId": "",
@@ -4546,7 +4552,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-11-16",
+        "lastPaymentDate": "2025-11-15",
         "notes": ""
     },
     {
@@ -4554,7 +4560,7 @@ const INITIAL_MEMBERS = [
         "generation": 5,
         "name": "คุณจุฑามาศ เจริญพานิช",
         "nickname": "",
-        "applyDate": "2021-11-11",
+        "applyDate": "2021-11-10",
         "birthDate": "",
         "phone": "094-485-3648",
         "lineId": "",
@@ -4574,15 +4580,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-18",
-        "notes": "สกุลเดิม/หมายเหตุ: เกษแก้ว"
+        "lastPaymentDate": "2569-06-17",
+        "notes": ""
     },
     {
         "id": "09014",
         "generation": 9,
         "name": "คุณอนนต์ มีบุญรอด",
         "nickname": "",
-        "applyDate": "2021-11-11",
+        "applyDate": "2021-11-10",
         "birthDate": "",
         "phone": "061-269-8799",
         "lineId": "",
@@ -4602,7 +4608,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-11-11",
+        "lastPaymentDate": "2021-11-10",
         "notes": ""
     },
     {
@@ -4610,7 +4616,7 @@ const INITIAL_MEMBERS = [
         "generation": 6,
         "name": "คุณพรชนก ระนาท",
         "nickname": "",
-        "applyDate": "2022-11-30",
+        "applyDate": "2022-11-29",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -4630,18 +4636,18 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-11-11",
+        "lastPaymentDate": "2025-11-10",
         "notes": ""
     },
     {
         "id": "06014",
         "generation": 6,
-        "name": "คุณเฉลิมพล ปองจิตเลิศขจร",
+        "name": "คุณเฉลิมพล ดวงจิตเลิศขจร",
         "nickname": "ชาลี",
-        "applyDate": "2022-11-30",
-        "birthDate": "1958-09-18",
+        "applyDate": "2022-11-29",
+        "birthDate": "2501-09-17",
         "phone": "081-564-3196",
-        "lineId": "ch 115888",
+        "lineId": "",
         "facebook": "",
         "email": "",
         "address": "9/8 มบ.เดอสยาม ซ.เฉลิมพระเกียรติ ร.9 ซ.38 ดอกไม้ ประเวศ กรุงเทพฯ 10250",
@@ -4658,7 +4664,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-11-06",
+        "lastPaymentDate": "2025-11-05",
         "notes": ""
     },
     {
@@ -4666,7 +4672,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณสุมนา วงษ์ปราณี",
         "nickname": "",
-        "applyDate": "2021-12-08",
+        "applyDate": "2021-12-07",
         "birthDate": "",
         "phone": "089-926-5400",
         "lineId": "",
@@ -4686,7 +4692,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-12-08",
+        "lastPaymentDate": "2021-12-07",
         "notes": ""
     },
     {
@@ -4694,7 +4700,1435 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณศิริกาญจน์ ขจรรุ่งเรืองชัย",
         "nickname": "",
+        "applyDate": "2022-06-11",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 9,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2025-06-08",
+        "notes": ""
+    },
+    {
+        "id": "18005",
+        "generation": 18,
+        "name": "คุณอัญญ์วริษฐ์ ศิริยงค์",
+        "nickname": "",
+        "applyDate": "2022-06-11",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-11",
+        "notes": ""
+    },
+    {
+        "id": "06012",
+        "generation": 6,
+        "name": "คุณรุ่งนภา บุญยะนันท์",
+        "nickname": "",
+        "applyDate": "2022-06-11",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 6,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2026-06-08",
+        "notes": ""
+    },
+    {
+        "id": "18006",
+        "generation": 18,
+        "name": "คุณอรวรรณ พุ่มผาสุข",
+        "nickname": "",
+        "applyDate": "2022-06-11",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2026-06-02",
+        "notes": ""
+    },
+    {
+        "id": "19005",
+        "generation": 19,
+        "name": "คุณวัลลภา  คล่องแคล่ว",
+        "nickname": "",
+        "applyDate": "2022-06-11",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2026-06-07",
+        "notes": ""
+    },
+    {
+        "id": "19006",
+        "generation": 19,
+        "name": "คุณดิสพงษ์ วิชา",
+        "nickname": "",
+        "applyDate": "2022-06-11",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2026-06-02",
+        "notes": ""
+    },
+    {
+        "id": "18007",
+        "generation": 18,
+        "name": "คุณรุ่งรัตน์ เพชรพงศ์",
+        "nickname": "",
+        "applyDate": "2022-06-11",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-11",
+        "notes": ""
+    },
+    {
+        "id": "18008",
+        "generation": 18,
+        "name": "คุณปราณี ปั้นอุ่น",
+        "nickname": "",
         "applyDate": "2022-06-12",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "084-4334843",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2568-10-05",
+        "notes": ""
+    },
+    {
+        "id": "14012",
+        "generation": 14,
+        "name": "คุณสมบูรณ์ ประชุมพรชัย",
+        "nickname": "",
+        "applyDate": "2022-06-13",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 14,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-13",
+        "notes": ""
+    },
+    {
+        "id": "14013",
+        "generation": 14,
+        "name": "คุณโสภิดา เอี่ยมประเสริฐ",
+        "nickname": "",
+        "applyDate": "2022-06-13",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 14,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-17",
+        "notes": ""
+    },
+    {
+        "id": "18009",
+        "generation": 18,
+        "name": "คุณนุสรา ทองศถุงคลี",
+        "nickname": "",
+        "applyDate": "2022-06-13",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-09",
+        "notes": ""
+    },
+    {
+        "id": "19007",
+        "generation": 19,
+        "name": "คุณอัญชลี รุ่งเรือง",
+        "nickname": "",
+        "applyDate": "2022-06-13",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-08",
+        "notes": ""
+    },
+    {
+        "id": "18010",
+        "generation": 18,
+        "name": "คุณณิชชา พลอยทับทิม",
+        "nickname": "",
+        "applyDate": "2022-06-13",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-17",
+        "notes": ""
+    },
+    {
+        "id": "18011",
+        "generation": 18,
+        "name": "คุณศศิลักษณ์ พจนานนท์",
+        "nickname": "",
+        "applyDate": "2022-06-12",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-14",
+        "notes": ""
+    },
+    {
+        "id": "19008",
+        "generation": 19,
+        "name": "คุณนิภารัตน์ วิลาสพิทยาเลิศ",
+        "nickname": "",
+        "applyDate": "2022-06-14",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-08",
+        "notes": ""
+    },
+    {
+        "id": "19009",
+        "generation": 19,
+        "name": "คุณอรทัย ชวดบัว",
+        "nickname": "",
+        "applyDate": "2022-06-14",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-14",
+        "notes": ""
+    },
+    {
+        "id": "19010",
+        "generation": 19,
+        "name": "คุณวัณรัตน์ กรุดสอน",
+        "nickname": "",
+        "applyDate": "2022-06-14",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-14",
+        "notes": ""
+    },
+    {
+        "id": "42001",
+        "generation": 42,
+        "name": "คุณน้ำผึ้ง เพียวอยู่",
+        "nickname": "",
+        "applyDate": "2022-06-14",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 42,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-18",
+        "notes": ""
+    },
+    {
+        "id": "ส.17001",
+        "generation": 17,
+        "name": "คุณดุสิต แสงสว่าง",
+        "nickname": "",
+        "applyDate": "2022-06-14",
+        "birthDate": "",
+        "phone": "081-622-6144",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 17,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-14",
+        "notes": ""
+    },
+    {
+        "id": "18012",
+        "generation": 18,
+        "name": "คุณพิพัฒน์ โพธิ์ศรี",
+        "nickname": "",
+        "applyDate": "2022-06-15",
+        "birthDate": "",
+        "phone": "093-017-6178",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-16",
+        "notes": ""
+    },
+    {
+        "id": "18013",
+        "generation": 18,
+        "name": "คุณภัททราวดี ฟ้อนงามดี",
+        "nickname": "",
+        "applyDate": "2022-06-15",
+        "birthDate": "",
+        "phone": "084-524-1678",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2566-07-02",
+        "notes": ""
+    },
+    {
+        "id": "07009",
+        "generation": 7,
+        "name": "คุณณัฏฐ์ธนัน โสภณวุฒิไกร",
+        "nickname": "",
+        "applyDate": "2022-06-16",
+        "birthDate": "",
+        "phone": "085-459-5195",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 7,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2023-11-24",
+        "notes": ""
+    },
+    {
+        "id": "ส.17002",
+        "generation": 17,
+        "name": "คุณกิตติศักดิ์ มัธยมจันทร์",
+        "nickname": "กลาง",
+        "applyDate": "2022-06-17",
+        "birthDate": "",
+        "phone": "098-830-7063",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 17,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-04",
+        "notes": ""
+    },
+    {
+        "id": "ส.17003",
+        "generation": 17,
+        "name": "คุณจันทิมา สุทธานี",
+        "nickname": "อ้อ",
+        "applyDate": "2022-06-17",
+        "birthDate": "",
+        "phone": "094-556-9291",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 17,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-04",
+        "notes": ""
+    },
+    {
+        "id": "ส.17004",
+        "generation": 17,
+        "name": "คุณนงลักษณ์ ม่วงแดง",
+        "nickname": "ปู",
+        "applyDate": "2022-06-17",
+        "birthDate": "",
+        "phone": "081-084-9927",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 17,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-17",
+        "notes": ""
+    },
+    {
+        "id": "ส.17005",
+        "generation": 17,
+        "name": "คุณอารีย์ มิ่งศิริวัฒนกุล",
+        "nickname": "รีย์",
+        "applyDate": "2022-06-17",
+        "birthDate": "",
+        "phone": "089-666-3487",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 17,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2023-06-13",
+        "notes": ""
+    },
+    {
+        "id": "ส.17006",
+        "generation": 17,
+        "name": "คุณวิภูวรรธน์ สิทธิโชควงศ์",
+        "nickname": "เอ",
+        "applyDate": "2022-06-17",
+        "birthDate": "",
+        "phone": "082-444-7456",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 17,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-07",
+        "notes": ""
+    },
+    {
+        "id": "ส.17007",
+        "generation": 17,
+        "name": "คุณพัชรี ไม่น้อยทรัพย์",
+        "nickname": "บิ๊ก",
+        "applyDate": "2022-06-17",
+        "birthDate": "",
+        "phone": "084-138-2676",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 17,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-04",
+        "notes": ""
+    },
+    {
+        "id": "19011",
+        "generation": 19,
+        "name": "คุณอุทัยวรรณ  ศุภธนานันท์",
+        "nickname": "แตงไทย",
+        "applyDate": "2022-06-20",
+        "birthDate": "2516-04-12",
+        "phone": "093-098-8884",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "123/688 ม.3  บางปลา บางพลี สมุทรปราการ 10540",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-07",
+        "notes": ""
+    },
+    {
+        "id": "ส.18001",
+        "generation": 18,
+        "name": "คุณณัฐวีณ์  อินทสุวรรณ์",
+        "nickname": "",
+        "applyDate": "2022-06-20",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-02",
+        "notes": ""
+    },
+    {
+        "id": "19012",
+        "generation": 19,
+        "name": "คุณรสสุคนธ์ หน่อเนื้อ",
+        "nickname": "",
+        "applyDate": "2022-06-20",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-02",
+        "notes": ""
+    },
+    {
+        "id": "19013",
+        "generation": 19,
+        "name": "คุณวรัทยา โชติรินทร์",
+        "nickname": "",
+        "applyDate": "2022-06-20",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-02",
+        "notes": ""
+    },
+    {
+        "id": "19014",
+        "generation": 19,
+        "name": "คุณอภิษดา  บัค",
+        "nickname": "",
+        "applyDate": "2022-06-20",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-07-01",
+        "notes": ""
+    },
+    {
+        "id": "18014",
+        "generation": 18,
+        "name": "คุณวรรณภา รัตนจีนะ",
+        "nickname": "กุ้ง",
+        "applyDate": "2022-06-20",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-03",
+        "notes": ""
+    },
+    {
+        "id": "19015",
+        "generation": 19,
+        "name": "คุณนวรัตน์ แสงวัฒน์",
+        "nickname": "",
+        "applyDate": "2022-06-20",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-03-03",
+        "notes": ""
+    },
+    {
+        "id": "19016",
+        "generation": 19,
+        "name": "คุณทิพย์ชนก นิลบัวคลี่",
+        "nickname": "",
+        "applyDate": "2022-06-21",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2025-11-04",
+        "notes": ""
+    },
+    {
+        "id": "19017",
+        "generation": 19,
+        "name": "คุณนิภาภัทร โพธิพุธ",
+        "nickname": "",
+        "applyDate": "2022-06-22",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-19",
+        "notes": ""
+    },
+    {
+        "id": "19018",
+        "generation": 19,
+        "name": "คุณจันทนา ภิญญภาพ",
+        "nickname": "",
+        "applyDate": "2022-06-22",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-12",
+        "notes": ""
+    },
+    {
+        "id": "36001",
+        "generation": 36,
+        "name": "คุณเสาวลักษณ์ นิดหนู",
+        "nickname": "เมย์",
+        "applyDate": "2022-06-22",
+        "birthDate": "",
+        "phone": "091-827-5516",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 36,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-22",
+        "notes": ""
+    },
+    {
+        "id": "ส.170008",
+        "generation": 17,
+        "name": "คุณเสรี โสมานันท์",
+        "nickname": "เป้-เป้ง",
+        "applyDate": "2022-06-22",
+        "birthDate": "",
+        "phone": "086-372-4230",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 17,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-22",
+        "notes": ""
+    },
+    {
+        "id": "19019",
+        "generation": 19,
+        "name": "คุณอรสุมา อาห์หมัด",
+        "nickname": "",
+        "applyDate": "2022-06-22",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2025-07-19",
+        "notes": ""
+    },
+    {
+        "id": "23003",
+        "generation": 23,
+        "name": "คุณไชยพร หน่อเนื้อ",
+        "nickname": "",
+        "applyDate": "2022-06-23",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 23,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-02",
+        "notes": ""
+    },
+    {
+        "id": "19020",
+        "generation": 19,
+        "name": "คุณจินตนา หิรัญรัตนพงศ์",
+        "nickname": "",
+        "applyDate": "2022-06-23",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2025-08-11",
+        "notes": ""
+    },
+    {
+        "id": "ส.18002",
+        "generation": 18,
+        "name": "คุณสลักฤทัย สุคนธ์ภัทร",
+        "nickname": "",
+        "applyDate": "2022-06-25",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 18,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-06-25",
+        "notes": ""
+    },
+    {
+        "id": "19022",
+        "generation": 19,
+        "name": "คุณสุกัญญา มณีกิจ",
+        "nickname": "",
+        "applyDate": "2023-06-15",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-02",
+        "notes": ""
+    },
+    {
+        "id": "19021",
+        "generation": 19,
+        "name": "คุณปทิตตา พินิจพรประภา",
+        "nickname": "",
+        "applyDate": "2022-07-01",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-07-01",
+        "notes": ""
+    },
+    {
+        "id": "36002",
+        "generation": 36,
+        "name": "คุณสุชาติ สอนแสง",
+        "nickname": "",
+        "applyDate": "2022-07-08",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 36,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-08-10",
+        "notes": ""
+    },
+    {
+        "id": "03011",
+        "generation": 3,
+        "name": "คุณประมุก หุ่นสุวรรณ",
+        "nickname": "",
+        "applyDate": "2022-03-20",
+        "birthDate": "",
+        "phone": "089-936-2124",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 3,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-03-20",
+        "notes": ""
+    },
+    {
+        "id": "14014",
+        "generation": 14,
+        "name": "คุณนันท์ประภา  กวินฤทัยปรีดา",
+        "nickname": "",
+        "applyDate": "2022-05-26",
+        "birthDate": "",
+        "phone": "080-442-6269",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 14,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-05-26",
+        "notes": ""
+    },
+    {
+        "id": "24002",
+        "generation": 24,
+        "name": "คุณภาวินี แย้มยิ้ม",
+        "nickname": "",
+        "applyDate": "2022-08-21",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 24,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2025-08-12",
+        "notes": ""
+    },
+    {
+        "id": "16005",
+        "generation": 16,
+        "name": "คุณจตุรพร ชูเดช",
+        "nickname": "",
+        "applyDate": "2022-12-08",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 16,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2022-12-08",
+        "notes": ""
+    },
+    {
+        "id": "09004",
+        "generation": 9,
+        "name": "คุณศรีพัฒน์ สุขอารีย์",
+        "nickname": "",
+        "applyDate": "2024-05-31",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -4718,11 +6152,11 @@ const INITIAL_MEMBERS = [
         "notes": ""
     },
     {
-        "id": "18005",
-        "generation": 18,
-        "name": "คุณอัญญ์วริษฐ์ ศิริยงค์",
+        "id": "01036",
+        "generation": 1,
+        "name": "คุณยาใจ ไพรัศมีพูลกุล",
         "nickname": "",
-        "applyDate": "2022-06-12",
+        "applyDate": "2024-05-31",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -4730,7 +6164,7 @@ const INITIAL_MEMBERS = [
         "email": "",
         "address": "",
         "education": {
-            "gen": 18,
+            "gen": 1,
             "faculty": "",
             "major": ""
         },
@@ -4742,21 +6176,273 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-12",
+        "lastPaymentDate": "2025-06-09",
         "notes": ""
     },
     {
-        "id": "06012",
-        "generation": 6,
-        "name": "คุณรุ่งนภา บุญยะนันท์",
-        "nickname": "รุ่ง",
-        "applyDate": "2022-06-12",
-        "birthDate": "1959-06-19",
-        "phone": "081-376-2733",
+        "id": "35002",
+        "generation": 35,
+        "name": "คุณธนวรรณ น้อยบัว",
+        "nickname": "",
+        "applyDate": "2024-06-03",
+        "birthDate": "",
+        "phone": "",
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "567 ซ.57 ถ.สุขุมวิท 101/1 บางจาก พระโขนง กรุงเทพฯ 10260",
+        "address": "",
+        "education": {
+            "gen": 35,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-03",
+        "notes": ""
+    },
+    {
+        "id": "15002",
+        "generation": 15,
+        "name": "คุณฉัตรชัย นครสุวรรณ",
+        "nickname": "",
+        "applyDate": "2024-06-06",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 15,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2025-06-09",
+        "notes": ""
+    },
+    {
+        "id": "15003",
+        "generation": 15,
+        "name": "คุณนราเศรษฐ์ นิธิกรสุรวงศ์",
+        "nickname": "",
+        "applyDate": "2024-06-06",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 15,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-06",
+        "notes": ""
+    },
+    {
+        "id": "14015",
+        "generation": 14,
+        "name": "คุณอัครเดช รุ่งเรือง",
+        "nickname": "ต่อ",
+        "applyDate": "2024-06-06",
+        "birthDate": "2510-07-01",
+        "phone": "091-882-6535",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "61/237  ลำลูกกา ลำลูกกา ปทุมธานี 12130",
+        "education": {
+            "gen": 14,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-06",
+        "notes": ""
+    },
+    {
+        "id": "01022",
+        "generation": 1,
+        "name": "คุณศักดิ์ชัย ปัญจะพรกุล",
+        "nickname": "ช้าง",
+        "applyDate": "20024-06-10",
+        "birthDate": "2497-07-16",
+        "phone": "087-028-6888",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "848 ถ.กิ่งแก้ว ลาดกระบัง ลาดกระบัง กรุงเทพฯ 10520",
+        "education": {
+            "gen": 1,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-03",
+        "notes": ""
+    },
+    {
+        "id": "19023",
+        "generation": 19,
+        "name": "คุณลภัสรดา กัณหาชาลี",
+        "nickname": "",
+        "applyDate": "2024-06-09",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 19,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-02",
+        "notes": ""
+    },
+    {
+        "id": "01007",
+        "generation": 1,
+        "name": "คุณไพโรจน์ ใจจริงจิตร",
+        "nickname": "",
+        "applyDate": "2024-06-13",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 1,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-03",
+        "notes": ""
+    },
+    {
+        "id": "01020",
+        "generation": 1,
+        "name": "คุณต่อศักดิ์ ปุงคานนท์",
+        "nickname": "ต่อ",
+        "applyDate": "2024-06-12",
+        "birthDate": "2497-06-05",
+        "phone": "062-795-5252",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "58/11 หมู่ 14 บางม่วง บางใหญ่ นนทบุรี",
+        "education": {
+            "gen": 1,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-03",
+        "notes": ""
+    },
+    {
+        "id": "01144",
+        "generation": 1,
+        "name": "คุณวุฒิชัย เนตรงามวงศ์",
+        "nickname": "",
+        "applyDate": "2024-06-12",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 1,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-12",
+        "notes": ""
+    },
+    {
+        "id": "06001",
+        "generation": 6,
+        "name": "คุณนิวิษฐ์ เส้นเศษ",
+        "nickname": "",
+        "applyDate": "2024-06-12",
+        "birthDate": "2498-12-09",
+        "phone": "081-685-5985",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "7/281 ซ.รามคำแหง 152 สะพานสูง สะพานสูง กรุงเทพฯ 10240",
         "education": {
             "gen": 6,
             "faculty": "",
@@ -4770,23 +6456,23 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-09",
+        "lastPaymentDate": "2569-05-20",
         "notes": ""
     },
     {
-        "id": "18006",
-        "generation": 18,
-        "name": "คุณอรวรรณ พุ่มผาสุข",
-        "nickname": "แอน",
-        "applyDate": "2022-06-12",
-        "birthDate": "1972-02-10",
-        "phone": "089-890-4455",
-        "lineId": "annphumphasuk",
+        "id": "08004",
+        "generation": 8,
+        "name": "คุณสุริยันต์ บุตรศรี",
+        "nickname": "",
+        "applyDate": "2024-06-16",
+        "birthDate": "",
+        "phone": "089-681-9010",
+        "lineId": "",
         "facebook": "",
-        "email": "ANN ORAWAN PHUMPHASUK",
-        "address": "35/2 ซ.เชษฐา ถ.สรรพาวุธ บางนาเหนือ บางนา กรุงเทพฯ 10260",
+        "email": "",
+        "address": "",
         "education": {
-            "gen": 18,
+            "gen": 8,
             "faculty": "",
             "major": ""
         },
@@ -4798,15 +6484,267 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-07-01",
         "notes": ""
     },
     {
-        "id": "19005",
-        "generation": 19,
-        "name": "คุณวัลลภา  คล่องแคล่ว",
+        "id": "09019",
+        "generation": 9,
+        "name": "คุณพิมพิภัช เลี๊ยบประเสริฐ",
         "nickname": "",
-        "applyDate": "2022-06-12",
+        "applyDate": "2024-06-23",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 9,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-23",
+        "notes": ""
+    },
+    {
+        "id": "09020",
+        "generation": 9,
+        "name": "คุณสุภาภรณ์ แก้วรัตนะอัมพร",
+        "nickname": "",
+        "applyDate": "2024-06-23",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 9,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2025-06-23",
+        "notes": ""
+    },
+    {
+        "id": "27002",
+        "generation": 27,
+        "name": "คุณภคิน หาญกิตติสกุล",
+        "nickname": "",
+        "applyDate": "2024-06-24",
+        "birthDate": "",
+        "phone": "890-065-4222",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 27,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-24",
+        "notes": ""
+    },
+    {
+        "id": "27003",
+        "generation": 27,
+        "name": "คุณณีรนุช ขาวมีศรี",
+        "nickname": "",
+        "applyDate": "2024-06-24",
+        "birthDate": "",
+        "phone": "081-265-0945",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 27,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-24",
+        "notes": ""
+    },
+    {
+        "id": "05008",
+        "generation": 5,
+        "name": "คุณสิริพงศ์ พัฒนทวีกิจ",
+        "nickname": "",
+        "applyDate": "2024-06-25",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 5,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-25",
+        "notes": ""
+    },
+    {
+        "id": "05009",
+        "generation": 5,
+        "name": "คุณสุชาดา โสมโสรส",
+        "nickname": "",
+        "applyDate": "2024-06-25",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 5,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-25",
+        "notes": ""
+    },
+    {
+        "id": "09013",
+        "generation": 9,
+        "name": "คุณณรงค์ศักดิ์ แสงชาวนา",
+        "nickname": "",
+        "applyDate": "2024-06-25",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 9,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-25",
+        "notes": ""
+    },
+    {
+        "id": "12007",
+        "generation": 12,
+        "name": "คุณวัลลภ สุขเจริญ",
+        "nickname": "",
+        "applyDate": "2024-06-26",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 12,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-06-26",
+        "notes": ""
+    },
+    {
+        "id": "26001",
+        "generation": 26,
+        "name": "คุณศิริรัตน์ วิลาลัย",
+        "nickname": "",
+        "applyDate": "2024-07-13",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 26,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2024-07-13",
+        "notes": ""
+    },
+    {
+        "id": "19024",
+        "generation": 19,
+        "name": "คุณพนอ พวงหิมวันต์",
+        "nickname": "",
+        "applyDate": "2024-07-26",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -4826,15 +6764,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-08",
+        "lastPaymentDate": "2569-07-01",
         "notes": ""
     },
     {
-        "id": "19006",
+        "id": "19025",
         "generation": 19,
-        "name": "คุณดิสพงษ์ วิชา",
+        "name": "คุณดุจเดือน วงษ์บุญหนัก",
         "nickname": "",
-        "applyDate": "2022-06-12",
+        "applyDate": "2024-07-26",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -4854,267 +6792,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-07-01",
         "notes": ""
     },
     {
-        "id": "18007",
-        "generation": 18,
-        "name": "คุณรุ่งรัตน์ เพชรพงศ์",
-        "nickname": "",
-        "applyDate": "2022-06-12",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-12",
-        "notes": ""
-    },
-    {
-        "id": "18008",
-        "generation": 18,
-        "name": "คุณปราณี ปั้นอุ่น",
-        "nickname": "จี๋",
-        "applyDate": "2022-06-13",
-        "birthDate": "1972-01-20",
-        "phone": "084-433-4843",
-        "lineId": "treeinlove",
-        "facebook": "",
-        "email": "Pranee P. Jakajee",
-        "address": "4/78 ถ.คลองสิบ-คลองสิบสี่ คลองสิบสอง หนองจอก กรุงเทพฯ",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-06",
-        "notes": ""
-    },
-    {
-        "id": "14012",
-        "generation": 14,
-        "name": "คุณสมบูรณ์ ประชุมพรชัย",
-        "nickname": "",
-        "applyDate": "2022-06-14",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 14,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-14",
-        "notes": ""
-    },
-    {
-        "id": "14013",
-        "generation": 14,
-        "name": "คุณโสภิดา เอี่ยมประเสริฐ",
-        "nickname": "",
-        "applyDate": "2022-06-14",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 14,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-18",
-        "notes": ""
-    },
-    {
-        "id": "18009",
-        "generation": 18,
-        "name": "คุณนุสรา ทองศถุงคลี",
-        "nickname": "",
-        "applyDate": "2022-06-14",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-10",
-        "notes": ""
-    },
-    {
-        "id": "19007",
+        "id": "19026",
         "generation": 19,
-        "name": "คุณอัญชลี รุ่งเรือง",
-        "nickname": "ตุ๊ก",
-        "applyDate": "2022-06-14",
-        "birthDate": "1972-08-13",
-        "phone": "081-255-8440",
-        "lineId": "0812558440",
-        "facebook": "",
-        "email": "อัญชลี รุ่งเรือง",
-        "address": "55 ซ.อุดมสุข 18 ถ.สุขุมวิท 103 บางนาเหนือ บางนา กรุงเทพฯ 10260",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-09",
-        "notes": ""
-    },
-    {
-        "id": "18010",
-        "generation": 18,
-        "name": "คุณณิชชา พลอยทับทิม",
+        "name": "คุณศศิลักษณ์ หวานฉ่ำ",
         "nickname": "",
-        "applyDate": "2022-06-14",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-18",
-        "notes": ""
-    },
-    {
-        "id": "18011",
-        "generation": 18,
-        "name": "คุณศศิลักษณ์ พจนานนท์",
-        "nickname": "",
-        "applyDate": "2022-06-13",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-15",
-        "notes": ""
-    },
-    {
-        "id": "19008",
-        "generation": 19,
-        "name": "คุณนิภารัตน์ วิลาสพิทยาเลิศ",
-        "nickname": "",
-        "applyDate": "2022-06-15",
-        "birthDate": "1972-08-25",
-        "phone": "085-076-0293",
-        "lineId": "pum_npi0280",
-        "facebook": "",
-        "email": "",
-        "address": "15/189 มบ.เซ็นโทร พระราม 2-พุทธบูชา บางขุนเทียน ท่าข้าม กรุงเทพฯ",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-09",
-        "notes": ""
-    },
-    {
-        "id": "19009",
-        "generation": 19,
-        "name": "คุณอรทัย ชวดบัว",
-        "nickname": "",
-        "applyDate": "2022-06-15",
+        "applyDate": "2024-07-31",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -5134,743 +6820,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-15",
+        "lastPaymentDate": "2025-08-08",
         "notes": ""
     },
     {
-        "id": "19010",
+        "id": "19027",
         "generation": 19,
-        "name": "คุณวัณรัตน์ กรุดสอน",
+        "name": "คุณธนันวัฒน์ ธนบวรสวัสดิ์",
         "nickname": "",
-        "applyDate": "2022-06-15",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-15",
-        "notes": ""
-    },
-    {
-        "id": "42001",
-        "generation": 3,
-        "name": "คุณน้ำผึ้ง เพียวอยู่",
-        "nickname": "",
-        "applyDate": "2022-06-15",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 3,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-19",
-        "notes": ""
-    },
-    {
-        "id": "ส.17001",
-        "generation": 17,
-        "name": "คุณดุสิต แสงสว่าง",
-        "nickname": "",
-        "applyDate": "2022-06-15",
-        "birthDate": "",
-        "phone": "081-622-6144",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 17,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-15",
-        "notes": ""
-    },
-    {
-        "id": "18012",
-        "generation": 18,
-        "name": "คุณพิพัฒน์ โพธิ์ศรี",
-        "nickname": "เอ",
-        "applyDate": "2022-06-16",
-        "birthDate": "1972-03-04",
-        "phone": "093-017-6178",
-        "lineId": "PIPAT-A",
-        "facebook": "",
-        "email": "พิพัฒน์ โพธิ์ศรี",
-        "address": "11/2 หมู่ 13 บางกอบัว พระประแดง สมุทรปราการ 10130",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-17",
-        "notes": ""
-    },
-    {
-        "id": "18013",
-        "generation": 18,
-        "name": "คุณภัททราวดี ฟ้อนงามดี",
-        "nickname": "",
-        "applyDate": "2022-06-16",
-        "birthDate": "",
-        "phone": "084-524-1678",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-07-03",
-        "notes": ""
-    },
-    {
-        "id": "07009",
-        "generation": 7,
-        "name": "คุณณัฏฐ์ธนัน โสภณวุฒิไกร",
-        "nickname": "",
-        "applyDate": "2022-06-17",
-        "birthDate": "",
-        "phone": "085-459-5195",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 7,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-11-25",
-        "notes": ""
-    },
-    {
-        "id": "ส.17002",
-        "generation": 17,
-        "name": "คุณกิตติศักดิ์ มัธยมจันทร์",
-        "nickname": "กลาง",
-        "applyDate": "2022-06-18",
-        "birthDate": "",
-        "phone": "098-830-7063",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 17,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-05",
-        "notes": ""
-    },
-    {
-        "id": "ส.17003",
-        "generation": 17,
-        "name": "คุณจันทิมา สุทธานี",
-        "nickname": "อ้อ",
-        "applyDate": "2022-06-18",
-        "birthDate": "",
-        "phone": "094-556-9291",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 17,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-05",
-        "notes": ""
-    },
-    {
-        "id": "ส.17004",
-        "generation": 17,
-        "name": "คุณนงลักษณ์ ม่วงแดง",
-        "nickname": "ปู",
-        "applyDate": "2022-06-18",
-        "birthDate": "",
-        "phone": "081-084-9927",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 17,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-18",
-        "notes": "สกุลเดิม/หมายเหตุ: สกุลเดิม คำนวณ"
-    },
-    {
-        "id": "ส.17005",
-        "generation": 17,
-        "name": "คุณอารีย์ มิ่งศิริวัฒนกุล",
-        "nickname": "รีย์",
-        "applyDate": "2022-06-18",
-        "birthDate": "",
-        "phone": "089-666-3487",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 17,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2023-06-14",
-        "notes": "สกุลเดิม/หมายเหตุ: สกุลเดิม บูรณะกนก"
-    },
-    {
-        "id": "ส.17006",
-        "generation": 17,
-        "name": "คุณวิภูวรรธน์ สิทธิโชควงศ์",
-        "nickname": "เอ",
-        "applyDate": "2022-06-18",
-        "birthDate": "",
-        "phone": "082-444-7456",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 17,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-08",
-        "notes": ""
-    },
-    {
-        "id": "ส.17007",
-        "generation": 17,
-        "name": "คุณพัชรี ไม่น้อยทรัพย์",
-        "nickname": "บิ๊ก",
-        "applyDate": "2022-06-18",
-        "birthDate": "",
-        "phone": "084-138-2676",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 17,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-05",
-        "notes": ""
-    },
-    {
-        "id": "19011",
-        "generation": 19,
-        "name": "คุณอุทัยวรรณ  ศุภธนานันท์",
-        "nickname": "แตงไทย",
-        "applyDate": "2022-06-21",
-        "birthDate": "1973-04-13",
-        "phone": "093-098-8884",
-        "lineId": "0930988884",
-        "facebook": "",
-        "email": "Uthaiwan Su",
-        "address": "123/688 ม.3 บางปลา บางพลี สมุทรปราการ 10540",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-08",
-        "notes": ""
-    },
-    {
-        "id": "ส.18001",
-        "generation": 18,
-        "name": "คุณณัฐวีณ์  อินทสุวรรณ์",
-        "nickname": "",
-        "applyDate": "2022-06-21",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
-        "notes": ""
-    },
-    {
-        "id": "19012",
-        "generation": 19,
-        "name": "คุณรสสุคนธ์ หน่อเนื้อ",
-        "nickname": "",
-        "applyDate": "2022-06-21",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
-        "notes": ""
-    },
-    {
-        "id": "19013",
-        "generation": 19,
-        "name": "คุณวรัทยา โชติรินทร์",
-        "nickname": "",
-        "applyDate": "2022-06-21",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
-        "notes": ""
-    },
-    {
-        "id": "19014",
-        "generation": 19,
-        "name": "คุณอภิษดา  บัค",
-        "nickname": "",
-        "applyDate": "2022-06-21",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-10",
-        "notes": ""
-    },
-    {
-        "id": "18014",
-        "generation": 18,
-        "name": "คุณวรรณภา รัตนจีนะ",
-        "nickname": "กุ้ง",
-        "applyDate": "2022-06-21",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-04",
-        "notes": ""
-    },
-    {
-        "id": "19015",
-        "generation": 19,
-        "name": "คุณนวรัตน์ แสงวัฒน์",
-        "nickname": "",
-        "applyDate": "2022-06-21",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-03-04",
-        "notes": ""
-    },
-    {
-        "id": "19016",
-        "generation": 19,
-        "name": "คุณทิพย์ชนก นิลบัวคลี่",
-        "nickname": "",
-        "applyDate": "2022-06-22",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-11-05",
-        "notes": ""
-    },
-    {
-        "id": "19017",
-        "generation": 19,
-        "name": "คุณนิภาภัทร โพธิพุธ",
-        "nickname": "",
-        "applyDate": "2022-06-23",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-20",
-        "notes": ""
-    },
-    {
-        "id": "19018",
-        "generation": 19,
-        "name": "คุณจันทนา ภิญญภาพ",
-        "nickname": "",
-        "applyDate": "2022-06-23",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-13",
-        "notes": ""
-    },
-    {
-        "id": "36001",
-        "generation": 36,
-        "name": "คุณเสาวลักษณ์ นิดหนู",
-        "nickname": "เมย์",
-        "applyDate": "2022-06-23",
-        "birthDate": "",
-        "phone": "091-827-5516",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 36,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-23",
-        "notes": ""
-    },
-    {
-        "id": "ส.170008",
-        "generation": 17,
-        "name": "คุณเสรี โสมานันท์",
-        "nickname": "เป้-เป้ง",
-        "applyDate": "2022-06-23",
-        "birthDate": "",
-        "phone": "086-372-4230",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 17,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-23",
-        "notes": ""
-    },
-    {
-        "id": "19019",
-        "generation": 19,
-        "name": "คุณอรสุมา อาห์หมัด",
-        "nickname": "",
-        "applyDate": "2022-06-23",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-20",
-        "notes": ""
-    },
-    {
-        "id": "23003",
-        "generation": 23,
-        "name": "คุณไชยพร หน่อเนื้อ",
-        "nickname": "",
-        "applyDate": "2022-06-24",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 23,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
-        "notes": ""
-    },
-    {
-        "id": "19020",
-        "generation": 19,
-        "name": "คุณจินตนา หิรัญรัตนพงศ์",
-        "nickname": "",
-        "applyDate": "2022-06-24",
+        "applyDate": "2024-08-07",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -5894,963 +6852,11 @@ const INITIAL_MEMBERS = [
         "notes": ""
     },
     {
-        "id": "ส.18002",
-        "generation": 18,
-        "name": "คุณสลักฤทัย สุคนธ์ภัทร",
-        "nickname": "",
-        "applyDate": "2022-06-26",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 18,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-06-26",
-        "notes": ""
-    },
-    {
-        "id": "19022",
-        "generation": 19,
-        "name": "คุณสุกัญญา มณีกิจ",
-        "nickname": "แจ๊ว",
-        "applyDate": "2023-06-16",
-        "birthDate": "1972-08-11",
-        "phone": "095-954-2916",
-        "lineId": "jaewsukanya",
-        "facebook": "",
-        "email": "Sukanya Maneekit",
-        "address": "41/39 ซ.59 ถ.พระราม 3 ช่องนนทรี ยานนาวา กรุงเทพฯ 10120",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
-        "notes": ""
-    },
-    {
-        "id": "19021",
-        "generation": 19,
-        "name": "คุณปทิตตา พินิจพรประภา",
-        "nickname": "",
-        "applyDate": "2022-07-02",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-07-02",
-        "notes": ""
-    },
-    {
-        "id": "36002",
-        "generation": 36,
-        "name": "คุณสุชาติ สอนแสง",
-        "nickname": "",
-        "applyDate": "2022-07-09",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 36,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-08-11",
-        "notes": ""
-    },
-    {
-        "id": "03011",
-        "generation": 3,
-        "name": "คุณประมุก หุ่นสุวรรณ",
-        "nickname": "",
-        "applyDate": "2022-03-21",
-        "birthDate": "",
-        "phone": "089-936-2124",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 3,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-03-21",
-        "notes": ""
-    },
-    {
-        "id": "14014",
-        "generation": 14,
-        "name": "คุณนันท์ประภา  กวินฤทัยปรีดา",
-        "nickname": "",
-        "applyDate": "2022-05-27",
-        "birthDate": "",
-        "phone": "080-442-6269",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 14,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-05-27",
-        "notes": ""
-    },
-    {
-        "id": "24002",
-        "generation": 24,
-        "name": "คุณภาวินี แย้มยิ้ม",
-        "nickname": "",
-        "applyDate": "2022-08-22",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 24,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-13",
-        "notes": "สกุลเดิม/หมายเหตุ: เดือนหญิง"
-    },
-    {
-        "id": "16005",
-        "generation": 16,
-        "name": "คุณจตุรพร ชูเดช",
-        "nickname": "",
-        "applyDate": "2022-12-09",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 16,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2022-12-09",
-        "notes": ""
-    },
-    {
-        "id": "09004",
-        "generation": 9,
-        "name": "คุณศรีพัฒน์ สุขอารีย์",
-        "nickname": "",
-        "applyDate": "2024-06-01",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 9,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-10",
-        "notes": ""
-    },
-    {
-        "id": "01036",
-        "generation": 1,
-        "name": "คุณยาใจ ไพรัศมีพูลกุล",
-        "nickname": "",
-        "applyDate": "2024-06-01",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 1,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-10",
-        "notes": ""
-    },
-    {
-        "id": "35002",
-        "generation": 35,
-        "name": "คุณธนวรรณ น้อยบัว",
-        "nickname": "",
-        "applyDate": "2024-06-04",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 35,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-04",
-        "notes": ""
-    },
-    {
-        "id": "15002",
-        "generation": 15,
-        "name": "คุณฉัตรชัย นครสุวรรณ",
-        "nickname": "",
-        "applyDate": "2024-06-07",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 15,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-10",
-        "notes": ""
-    },
-    {
-        "id": "15003",
-        "generation": 15,
-        "name": "คุณนราเศรษฐ์ นิธิกรสุรวงศ์",
-        "nickname": "",
-        "applyDate": "2024-06-07",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 15,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-07",
-        "notes": ""
-    },
-    {
-        "id": "14015",
-        "generation": 14,
-        "name": "คุณอัครเดช รุ่งเรือง",
-        "nickname": "ต่อ",
-        "applyDate": "2024-06-07",
-        "birthDate": "1967-07-02",
-        "phone": "091-882-6535",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "61/237 ลำลูกกา ลำลูกกา ปทุมธานี 12130",
-        "education": {
-            "gen": 14,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-07",
-        "notes": ""
-    },
-    {
-        "id": "01022",
-        "generation": 1,
-        "name": "คุณศักดิ์ชัย ปัญจะพรกุล",
-        "nickname": "ช้าง",
-        "applyDate": "20024-06-10",
-        "birthDate": "1954-07-17",
-        "phone": "087-028-6888",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "848 ถ.กิ่งแก้ว ลาดกระบัง ลาดกระบัง กรุงเทพฯ 10520",
-        "education": {
-            "gen": 1,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-04",
-        "notes": ""
-    },
-    {
-        "id": "19023",
-        "generation": 19,
-        "name": "คุณลภัสรดา กัณหาชาลี",
-        "nickname": "",
-        "applyDate": "2024-06-10",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
-        "notes": ""
-    },
-    {
-        "id": "01007",
-        "generation": 1,
-        "name": "คุณไพโรจน์ ใจจริงจิตร",
-        "nickname": "เหลียง",
-        "applyDate": "2024-06-14",
-        "birthDate": "1952-11-16",
-        "phone": "081-526-2475",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "1006 ถ.สามเสน ถนนนครไชยศรี ดุสิต กรุงเทพฯ 10300",
-        "education": {
-            "gen": 1,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-04",
-        "notes": ""
-    },
-    {
-        "id": "01020",
-        "generation": 1,
-        "name": "คุณต่อศักดิ์ ปุงคานนท์",
-        "nickname": "ต่อ",
-        "applyDate": "2024-06-13",
-        "birthDate": "1954-06-06",
-        "phone": "062-795-5252",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "58/11 หมู่ 14 บางม่วง บางใหญ่ นนทบุรี",
-        "education": {
-            "gen": 1,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-04",
-        "notes": ""
-    },
-    {
-        "id": "01144",
-        "generation": 1,
-        "name": "คุณวุฒิชัย เนตรงามวงศ์",
-        "nickname": "",
-        "applyDate": "2024-06-13",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 1,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-13",
-        "notes": ""
-    },
-    {
-        "id": "06001",
-        "generation": 6,
-        "name": "คุณนิวิษฐ์ เส้นเศษ",
-        "nickname": "",
-        "applyDate": "2024-06-13",
-        "birthDate": "1955-12-10",
-        "phone": "081-685-5985",
-        "lineId": "nivid5985",
-        "facebook": "",
-        "email": "",
-        "address": "7/281 ซ.รามคำแหง 152 สะพานสูง สะพานสูง กรุงเทพฯ 10240",
-        "education": {
-            "gen": 6,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-21",
-        "notes": ""
-    },
-    {
-        "id": "08004",
-        "generation": 8,
-        "name": "คุณสุริยันต์ บุตรศรี",
-        "nickname": "",
-        "applyDate": "2024-06-17",
-        "birthDate": "",
-        "phone": "089-681-9010",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 8,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-15",
-        "notes": ""
-    },
-    {
-        "id": "09019",
-        "generation": 9,
-        "name": "คุณพิมพิภัช เลี๊ยบประเสริฐ",
-        "nickname": "",
-        "applyDate": "2024-06-24",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 9,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-24",
-        "notes": ""
-    },
-    {
-        "id": "09020",
-        "generation": 9,
-        "name": "คุณสุภาภรณ์ แก้วรัตนะอัมพร",
-        "nickname": "",
-        "applyDate": "2024-06-24",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 9,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-06-24",
-        "notes": ""
-    },
-    {
-        "id": "27002",
-        "generation": 27,
-        "name": "คุณภคิน หาญกิตติสกุล",
-        "nickname": "",
-        "applyDate": "2024-06-25",
-        "birthDate": "",
-        "phone": "890-065-4222",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 27,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-25",
-        "notes": ""
-    },
-    {
-        "id": "27003",
-        "generation": 27,
-        "name": "คุณณีรนุช ขาวมีศรี",
-        "nickname": "",
-        "applyDate": "2024-06-25",
-        "birthDate": "",
-        "phone": "081-265-0945",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 27,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-25",
-        "notes": ""
-    },
-    {
-        "id": "05008",
-        "generation": 5,
-        "name": "คุณสิริพงศ์ พัฒนทวีกิจ",
-        "nickname": "",
-        "applyDate": "2024-06-26",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 5,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-26",
-        "notes": ""
-    },
-    {
-        "id": "05009",
-        "generation": 5,
-        "name": "คุณสุชาดา โสมโสรส",
-        "nickname": "",
-        "applyDate": "2024-06-26",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 5,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-26",
-        "notes": ""
-    },
-    {
-        "id": "09013",
-        "generation": 9,
-        "name": "คุณณรงค์ศักดิ์ แสงชาวนา",
-        "nickname": "",
-        "applyDate": "2024-06-26",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 9,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-26",
-        "notes": ""
-    },
-    {
-        "id": "12007",
-        "generation": 12,
-        "name": "คุณวัลลภ สุขเจริญ",
-        "nickname": "",
-        "applyDate": "2024-06-27",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 12,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-06-27",
-        "notes": ""
-    },
-    {
-        "id": "26001",
-        "generation": 26,
-        "name": "คุณศิริรัตน์ วิลาลัย",
-        "nickname": "",
-        "applyDate": "2024-07-14",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 26,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-07-14",
-        "notes": ""
-    },
-    {
-        "id": "19024",
-        "generation": 19,
-        "name": "คุณพนอ พวงหิมวันต์",
-        "nickname": "",
-        "applyDate": "2024-07-27",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-05",
-        "notes": ""
-    },
-    {
-        "id": "19025",
-        "generation": 19,
-        "name": "คุณดุจเดือน วงษ์บุญหนัก",
-        "nickname": "",
-        "applyDate": "2024-07-27",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-07-05",
-        "notes": ""
-    },
-    {
-        "id": "19026",
-        "generation": 19,
-        "name": "คุณศศิลักษณ์ หวานฉ่ำ",
-        "nickname": "",
-        "applyDate": "2024-08-01",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-09",
-        "notes": ""
-    },
-    {
-        "id": "19027",
-        "generation": 19,
-        "name": "คุณธนันวัฒน์ ธนบวรสวัสดิ์",
-        "nickname": "",
-        "applyDate": "2024-08-08",
-        "birthDate": "",
-        "phone": "",
-        "lineId": "",
-        "facebook": "",
-        "email": "",
-        "address": "",
-        "education": {
-            "gen": 19,
-            "faculty": "",
-            "major": ""
-        },
-        "emergencyContact": {
-            "name": "",
-            "relationship": "",
-            "phone": ""
-        },
-        "occupation": "",
-        "photo": "",
-        "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-13",
-        "notes": ""
-    },
-    {
         "id": "35003",
         "generation": 35,
         "name": "คุณนิยากรณ์ แวววงษ์",
         "nickname": "",
-        "applyDate": "2024-08-11",
+        "applyDate": "2024-08-10",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -6870,7 +6876,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-09-12",
+        "lastPaymentDate": "2025-09-11",
         "notes": ""
     },
     {
@@ -6878,7 +6884,7 @@ const INITIAL_MEMBERS = [
         "generation": 39,
         "name": "คุณบุรินธร ศิริชุมพันธ์",
         "nickname": "",
-        "applyDate": "2024-08-14",
+        "applyDate": "2024-08-13",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -6898,7 +6904,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-08-14",
+        "lastPaymentDate": "2024-08-13",
         "notes": ""
     },
     {
@@ -6906,7 +6912,7 @@ const INITIAL_MEMBERS = [
         "generation": 15,
         "name": "คุณบุญชัย สิริสิทธิกรสกุล",
         "nickname": "",
-        "applyDate": "2024-08-15",
+        "applyDate": "2024-08-14",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -6926,7 +6932,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-16",
+        "lastPaymentDate": "2025-08-15",
         "notes": ""
     },
     {
@@ -6934,7 +6940,7 @@ const INITIAL_MEMBERS = [
         "generation": 18,
         "name": "คุณกุลรัตน์ หมั่นเสดาะ",
         "nickname": "กุ๊งกิ๊ง",
-        "applyDate": "2024-10-06",
+        "applyDate": "2024-10-05",
         "birthDate": "",
         "phone": "063-453-9265",
         "lineId": "kungkingda",
@@ -6954,7 +6960,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-29",
+        "lastPaymentDate": "2025-10-28",
         "notes": ""
     },
     {
@@ -6962,7 +6968,7 @@ const INITIAL_MEMBERS = [
         "generation": 2,
         "name": "คุณสมศิริ คุ้มปิยะผล",
         "nickname": "",
-        "applyDate": "2024-10-07",
+        "applyDate": "2024-10-06",
         "birthDate": "",
         "phone": "081-956-4604",
         "lineId": "",
@@ -6982,7 +6988,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-04",
+        "lastPaymentDate": "2025-10-03",
         "notes": ""
     },
     {
@@ -6990,7 +6996,7 @@ const INITIAL_MEMBERS = [
         "generation": 7,
         "name": "คุณวิเชียร มาลัยทอง",
         "nickname": "",
-        "applyDate": "2024-10-08",
+        "applyDate": "2024-10-07",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7010,7 +7016,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-10-08",
+        "lastPaymentDate": "2024-10-07",
         "notes": ""
     },
     {
@@ -7018,7 +7024,7 @@ const INITIAL_MEMBERS = [
         "generation": 19,
         "name": "คุณศิริวรรณ ตระหง่าน",
         "nickname": "",
-        "applyDate": "2024-11-07",
+        "applyDate": "2024-11-06",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7038,7 +7044,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-11-07",
+        "lastPaymentDate": "2024-11-06",
         "notes": ""
     },
     {
@@ -7046,7 +7052,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณผุษดี จำเริญทอง",
         "nickname": "ปี๊ด",
-        "applyDate": "2024-11-08",
+        "applyDate": "2024-11-07",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7066,7 +7072,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-11-08",
+        "lastPaymentDate": "2024-11-07",
         "notes": ""
     },
     {
@@ -7074,7 +7080,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณกิตติยา ทองเอี่ยม",
         "nickname": "ตุ๊ก",
-        "applyDate": "2024-11-08",
+        "applyDate": "2024-11-07",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7094,7 +7100,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2024-11-08",
+        "lastPaymentDate": "2024-11-07",
         "notes": ""
     },
     {
@@ -7102,7 +7108,7 @@ const INITIAL_MEMBERS = [
         "generation": 22,
         "name": "คุณพิสิษฐ์ จิรานนท์สุภนิจ",
         "nickname": "ก้อง",
-        "applyDate": "2024-11-27",
+        "applyDate": "2024-11-26",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7122,7 +7128,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-11-25",
+        "lastPaymentDate": "2025-11-24",
         "notes": ""
     },
     {
@@ -7130,7 +7136,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณดวงเดือน เพียรพิจารณ์",
         "nickname": "ปุ๊",
-        "applyDate": "2025-02-15",
+        "applyDate": "2025-02-14",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7150,21 +7156,21 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-01-08",
+        "lastPaymentDate": "2569-01-07",
         "notes": ""
     },
     {
         "id": "06015",
         "generation": 6,
-        "name": "คุณสุรีย์รัตน์ สวัสดี",
-        "nickname": "",
-        "applyDate": "2025-02-21",
-        "birthDate": "1959-11-20",
+        "name": "คุณสุรีรัตน์ สวัสดี",
+        "nickname": "สุ",
+        "applyDate": "2025-02-20",
+        "birthDate": "2502-11-19",
         "phone": "089-876-4899",
-        "lineId": "0898764899",
+        "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "869 มบ.บดินทรรักษา ถ.ลาดพร้าว พลับพลา วังทองหลาง กรุงเทพฯ 10310",
+        "address": "",
         "education": {
             "gen": 6,
             "faculty": "",
@@ -7178,7 +7184,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-02-03",
+        "lastPaymentDate": "2569-02-02",
         "notes": ""
     },
     {
@@ -7186,7 +7192,7 @@ const INITIAL_MEMBERS = [
         "generation": 19,
         "name": "คุณกิ่งกมล ขำรักษ์",
         "nickname": "กิ่ง",
-        "applyDate": "2025-04-05",
+        "applyDate": "2025-04-04",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7206,21 +7212,21 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-11",
+        "lastPaymentDate": "2569-05-10",
         "notes": ""
     },
     {
         "id": "02020",
         "generation": 2,
-        "name": "คุณวนิดา รุ่งสถิรมน",
-        "nickname": "ดา",
-        "applyDate": "2025-04-18",
-        "birthDate": "1953-10-28",
-        "phone": "081-346-1855",
-        "lineId": "0813461855",
+        "name": "คุณวนิดา  รุ่งสถิรมน",
+        "nickname": "",
+        "applyDate": "2025-04-17",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "190/17 หมู่ 16 บางเสาธง บางเสาธง สมุทรปราการ 10540",
+        "address": "",
         "education": {
             "gen": 2,
             "faculty": "",
@@ -7234,7 +7240,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-04-04",
+        "lastPaymentDate": "2569-04-03",
         "notes": ""
     },
     {
@@ -7242,7 +7248,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณสุนทร ปลื้มมนู",
         "nickname": "",
-        "applyDate": "2025-04-24",
+        "applyDate": "2025-04-23",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7262,7 +7268,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-04-24",
+        "lastPaymentDate": "2025-04-23",
         "notes": ""
     },
     {
@@ -7270,7 +7276,7 @@ const INITIAL_MEMBERS = [
         "generation": 9,
         "name": "คุณอรัชฌา เงินวิลัย",
         "nickname": "",
-        "applyDate": "2025-04-26",
+        "applyDate": "2025-04-25",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7290,7 +7296,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-04-01",
+        "lastPaymentDate": "2569-03-31",
         "notes": ""
     },
     {
@@ -7298,7 +7304,7 @@ const INITIAL_MEMBERS = [
         "generation": 24,
         "name": "คุณนิรมล ยะมานนท์",
         "nickname": "",
-        "applyDate": "2025-05-05",
+        "applyDate": "2025-05-04",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7318,7 +7324,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-14",
+        "lastPaymentDate": "2569-05-13",
         "notes": ""
     },
     {
@@ -7326,7 +7332,7 @@ const INITIAL_MEMBERS = [
         "generation": 14,
         "name": "คุณอุรวี กอบสันเทียะ",
         "nickname": "",
-        "applyDate": "2025-05-05",
+        "applyDate": "2025-05-04",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7346,15 +7352,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-10",
+        "lastPaymentDate": "2569-05-09",
         "notes": ""
     },
     {
         "id": "34003",
         "generation": 34,
         "name": "คุณธภาภัค คงกระพันธ์",
-        "nickname": "",
-        "applyDate": "2025-05-06",
+        "nickname": "เม็ดนุ่น",
+        "applyDate": "2025-05-05",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7374,21 +7380,21 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-05-06",
+        "lastPaymentDate": "2569-06-21",
         "notes": ""
     },
     {
         "id": "02021",
         "generation": 2,
         "name": "คุณจันทร์เพ็ญ สิทธิพจน์",
-        "nickname": "เพ็ญ",
-        "applyDate": "2025-05-08",
-        "birthDate": "1955-02-04",
-        "phone": "080-457-8461",
-        "lineId": "804578461",
+        "nickname": "",
+        "applyDate": "2025-05-07",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "109/118 หมู่ 9 มบ.อินดี้ 2 (บางนา กม.7) บางแก้ว บางพลี สมุทรปราการ 10540",
+        "address": "",
         "education": {
             "gen": 2,
             "faculty": "",
@@ -7402,7 +7408,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-03",
+        "lastPaymentDate": "2569-05-02",
         "notes": ""
     },
     {
@@ -7410,7 +7416,7 @@ const INITIAL_MEMBERS = [
         "generation": 20,
         "name": "คุณศตณัฎ ญาณโช",
         "nickname": "",
-        "applyDate": "2025-05-10",
+        "applyDate": "2025-05-09",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7430,7 +7436,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-11",
+        "lastPaymentDate": "2569-05-10",
         "notes": ""
     },
     {
@@ -7438,7 +7444,7 @@ const INITIAL_MEMBERS = [
         "generation": 19,
         "name": "คุณเมธาพร นรจีน",
         "nickname": "",
-        "applyDate": "2025-06-09",
+        "applyDate": "2025-06-08",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7458,7 +7464,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-03",
+        "lastPaymentDate": "2569-06-02",
         "notes": ""
     },
     {
@@ -7466,7 +7472,7 @@ const INITIAL_MEMBERS = [
         "generation": 1,
         "name": "คุณสันทนา ว่องวุฒิจริยา",
         "nickname": "",
-        "applyDate": "2025-08-25",
+        "applyDate": "2025-08-24",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7486,7 +7492,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-08-25",
+        "lastPaymentDate": "2025-08-24",
         "notes": ""
     },
     {
@@ -7494,8 +7500,8 @@ const INITIAL_MEMBERS = [
         "generation": 29,
         "name": "คุณวิรณัฐ์ เรืองรังสรรค์",
         "nickname": "นา",
-        "applyDate": "2025-10-05",
-        "birthDate": "1983-09-14",
+        "applyDate": "2025-10-04",
+        "birthDate": "2526-09-13",
         "phone": "085-153-0795",
         "lineId": "",
         "facebook": "",
@@ -7514,7 +7520,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-05",
+        "lastPaymentDate": "2025-10-04",
         "notes": ""
     },
     {
@@ -7522,7 +7528,7 @@ const INITIAL_MEMBERS = [
         "generation": 19,
         "name": "คุณสาธิดา สอนทะ",
         "nickname": "",
-        "applyDate": "2025-10-05",
+        "applyDate": "2025-10-04",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7542,7 +7548,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-05",
+        "lastPaymentDate": "2025-10-04",
         "notes": ""
     },
     {
@@ -7550,7 +7556,7 @@ const INITIAL_MEMBERS = [
         "generation": 17,
         "name": "คุณนิสาชล ไกรฤกษ์",
         "nickname": "หร่อย",
-        "applyDate": "2025-10-23",
+        "applyDate": "2025-10-22",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7570,7 +7576,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-23",
+        "lastPaymentDate": "2025-10-22",
         "notes": ""
     },
     {
@@ -7578,7 +7584,7 @@ const INITIAL_MEMBERS = [
         "generation": 24,
         "name": "คุณถวิล เฉลยวาเรศ",
         "nickname": "",
-        "applyDate": "2025-10-19",
+        "applyDate": "2025-10-18",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7598,7 +7604,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-19",
+        "lastPaymentDate": "2025-10-18",
         "notes": ""
     },
     {
@@ -7626,7 +7632,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-10-29",
+        "lastPaymentDate": "2025-10-28",
         "notes": ""
     },
     {
@@ -7634,7 +7640,7 @@ const INITIAL_MEMBERS = [
         "generation": 30,
         "name": "คุณอารีรัตน์ แข็งขัน",
         "nickname": "",
-        "applyDate": "2025-11-15",
+        "applyDate": "2025-11-14",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7654,7 +7660,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2025-11-15",
+        "lastPaymentDate": "2025-11-14",
         "notes": ""
     },
     {
@@ -7662,7 +7668,7 @@ const INITIAL_MEMBERS = [
         "generation": 19,
         "name": "คุณบุษบง นาคสุวรรณ",
         "nickname": "",
-        "applyDate": "2026-03-04",
+        "applyDate": "2026-03-03",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7682,7 +7688,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-03-04",
+        "lastPaymentDate": "2569-03-03",
         "notes": ""
     },
     {
@@ -7690,7 +7696,7 @@ const INITIAL_MEMBERS = [
         "generation": 3,
         "name": "คุณสุดารัตน์ อนุภาษ",
         "nickname": "",
-        "applyDate": "2026-03-18",
+        "applyDate": "2026-03-17",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7710,7 +7716,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-03-18",
+        "lastPaymentDate": "2569-03-17",
         "notes": ""
     },
     {
@@ -7718,7 +7724,7 @@ const INITIAL_MEMBERS = [
         "generation": 37,
         "name": "คุณเสฐียรพงษ์ สำแดงสุข",
         "nickname": "เพชร",
-        "applyDate": "2026-05-22",
+        "applyDate": "2026-05-21",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7738,21 +7744,21 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-22",
+        "lastPaymentDate": "2569-05-21",
         "notes": ""
     },
     {
         "id": "06016",
         "generation": 6,
         "name": "คุณจุติมา เชิดชู",
-        "nickname": "ต้อย",
-        "applyDate": "2026-05-31",
-        "birthDate": "1958-10-29",
-        "phone": "085-178-7519",
+        "nickname": "",
+        "applyDate": "2026-05-30",
+        "birthDate": "",
+        "phone": "",
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "53 ถ.รามคำแหง 44 แยก 2 หัวหมาก บางกะปิ กรุงเทพฯ 10240",
+        "address": "",
         "education": {
             "gen": 6,
             "faculty": "",
@@ -7766,21 +7772,21 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-05-31",
+        "lastPaymentDate": "2569-05-30",
         "notes": ""
     },
     {
         "id": "01101",
         "generation": 1,
         "name": "คุณสมทรง อุ้ยพันธ์",
-        "nickname": "น้อย",
+        "nickname": "",
         "applyDate": "2016-05-28",
-        "birthDate": "1952-01-01",
-        "phone": "061-712-0534",
-        "lineId": "0825798153",
+        "birthDate": "",
+        "phone": "082 579-8153",
+        "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "112 ซ.นุ่มอุทิศ ถ.คลองเรียน 1 หาดใหญ่ หาดใหญ่ สงขลา",
+        "address": "",
         "education": {
             "gen": 1,
             "faculty": "",
@@ -7794,15 +7800,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-05",
-        "notes": "สกุลเดิม/หมายเหตุ: วงศ์วัชรินทร์"
+        "lastPaymentDate": "2569-06-04",
+        "notes": ""
     },
     {
         "id": "42002",
         "generation": 42,
         "name": "คุณสมัชชา ณ พัทลุง",
         "nickname": "",
-        "applyDate": "2026-06-17",
+        "applyDate": "2026-06-16",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7822,7 +7828,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-17",
+        "lastPaymentDate": "2569-06-16",
         "notes": ""
     },
     {
@@ -7830,7 +7836,7 @@ const INITIAL_MEMBERS = [
         "generation": 10,
         "name": "คุณสมบัติ หรรษาพันธุ์",
         "nickname": "",
-        "applyDate": "2026-06-15",
+        "applyDate": "2026-06-14",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7850,7 +7856,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-15",
+        "lastPaymentDate": "2569-06-14",
         "notes": ""
     },
     {
@@ -7858,7 +7864,7 @@ const INITIAL_MEMBERS = [
         "generation": 30,
         "name": "พระชัยณรงค์ พรหมทอง",
         "nickname": "",
-        "applyDate": "2026-06-15",
+        "applyDate": "2026-06-14",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7878,7 +7884,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-15",
+        "lastPaymentDate": "2569-06-14",
         "notes": ""
     },
     {
@@ -7886,7 +7892,7 @@ const INITIAL_MEMBERS = [
         "generation": 40,
         "name": "คุณกิตติพงศ์ อินทรสันติ์",
         "nickname": "",
-        "applyDate": "2026-06-13",
+        "applyDate": "2026-06-12",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7906,7 +7912,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-13",
+        "lastPaymentDate": "2569-06-12",
         "notes": ""
     },
     {
@@ -7914,7 +7920,7 @@ const INITIAL_MEMBERS = [
         "generation": 4,
         "name": "คุณชัยรัตน์ เหล็กเพ็ชร",
         "nickname": "",
-        "applyDate": "2026-06-13",
+        "applyDate": "2026-06-12",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7934,7 +7940,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-13",
+        "lastPaymentDate": "2569-06-12",
         "notes": ""
     },
     {
@@ -7942,7 +7948,7 @@ const INITIAL_MEMBERS = [
         "generation": 6,
         "name": "คุณยุวดี บุญใส",
         "nickname": "",
-        "applyDate": "2026-06-20",
+        "applyDate": "2026-06-19",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7962,7 +7968,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-20",
+        "lastPaymentDate": "2569-06-19",
         "notes": ""
     },
     {
@@ -7970,7 +7976,7 @@ const INITIAL_MEMBERS = [
         "generation": 20,
         "name": "คุณภูวญา วงศ์ทยานิธิ",
         "nickname": "",
-        "applyDate": "2026-06-20",
+        "applyDate": "2026-06-19",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -7990,15 +7996,15 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-20",
-        "notes": "สกุลเดิม/หมายเหตุ: สุชาดา"
+        "lastPaymentDate": "2569-06-19",
+        "notes": ""
     },
     {
         "id": "24005",
         "generation": 24,
         "name": "คุณทิตชญา ตันตยานนท์",
         "nickname": "",
-        "applyDate": "2026-06-16",
+        "applyDate": "2026-06-15",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -8018,7 +8024,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-16",
+        "lastPaymentDate": "2569-06-15",
         "notes": ""
     },
     {
@@ -8026,7 +8032,7 @@ const INITIAL_MEMBERS = [
         "generation": 33,
         "name": "คุณพิพัฒน์ วิเชียรทัศน์",
         "nickname": "",
-        "applyDate": "2026-06-21",
+        "applyDate": "2026-06-20",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -8046,7 +8052,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-21",
+        "lastPaymentDate": "2569-06-20",
         "notes": ""
     },
     {
@@ -8054,7 +8060,7 @@ const INITIAL_MEMBERS = [
         "generation": 33,
         "name": "คุณอนุวัตร แดงน้อย",
         "nickname": "",
-        "applyDate": "2026-06-21",
+        "applyDate": "2026-06-20",
         "birthDate": "",
         "phone": "",
         "lineId": "",
@@ -8074,7 +8080,147 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2026-06-21",
+        "lastPaymentDate": "2569-06-20",
+        "notes": ""
+    },
+    {
+        "id": "15005",
+        "generation": 15,
+        "name": "คุณลักขณา วิญญา",
+        "nickname": "",
+        "applyDate": "2026-06-22",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 15,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-22",
+        "notes": ""
+    },
+    {
+        "id": "07021",
+        "generation": 7,
+        "name": "คุณสุพรชัย คงบุญช่วย",
+        "nickname": "",
+        "applyDate": "2026-06-22",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 7,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-22",
+        "notes": ""
+    },
+    {
+        "id": "06018",
+        "generation": 6,
+        "name": "คุณสหพล วิทิตศานต์",
+        "nickname": "",
+        "applyDate": "2026-06-24",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 6,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-24",
+        "notes": ""
+    },
+    {
+        "id": "06019",
+        "generation": 6,
+        "name": "น.อ.(ญ) ปวีณา อยู่สุธา",
+        "nickname": "",
+        "applyDate": "2026-06-25",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 6,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-06-25",
+        "notes": ""
+    },
+    {
+        "id": "01147",
+        "generation": 1,
+        "name": "คุณทวีสุข อัญชลีนุกูล",
+        "nickname": "",
+        "applyDate": "2026-07-06",
+        "birthDate": "",
+        "phone": "",
+        "lineId": "",
+        "facebook": "",
+        "email": "",
+        "address": "",
+        "education": {
+            "gen": 1,
+            "faculty": "",
+            "major": ""
+        },
+        "emergencyContact": {
+            "name": "",
+            "relationship": "",
+            "phone": ""
+        },
+        "occupation": "",
+        "photo": "",
+        "isReappliedAfterTermination": false,
+        "lastPaymentDate": "2569-07-06",
         "notes": ""
     },
     {
@@ -8102,7 +8248,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-11",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8130,7 +8276,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-03-06",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8158,7 +8304,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-05-23",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8186,7 +8332,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2020-05-20",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8214,7 +8360,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-05-30",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8242,7 +8388,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-06-30",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8270,7 +8416,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-06-21",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8298,7 +8444,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-20",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8326,8 +8472,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-20",
-        "notes": "สกุลเดิม/หมายเหตุ: อนุกูล รัตนโกศล"
+        "lastPaymentDate": "",
+        "notes": ""
     },
     {
         "id": "01123",
@@ -8354,7 +8500,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2019-07-11",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8382,7 +8528,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2020-08-08",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8410,7 +8556,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2020-08-09",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8438,7 +8584,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2020-09-11",
+        "lastPaymentDate": "2020-09-10",
         "notes": ""
     },
     {
@@ -8466,7 +8612,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2020-09-12",
+        "lastPaymentDate": "2020-09-11",
         "notes": ""
     },
     {
@@ -8494,7 +8640,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-06-21",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8522,7 +8668,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-06-21",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8550,7 +8696,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-10",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8578,7 +8724,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-11",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8606,7 +8752,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-16",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8634,7 +8780,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-17",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8662,7 +8808,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-27",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8690,7 +8836,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-10-02",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8718,7 +8864,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-31",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8746,7 +8892,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-09-21",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8774,7 +8920,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-02-07",
+        "lastPaymentDate": "2021-02-06",
         "notes": ""
     },
     {
@@ -8802,7 +8948,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2021-06-06",
+        "lastPaymentDate": "2021-06-05",
         "notes": ""
     },
     {
@@ -8830,7 +8976,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-06-21",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8858,7 +9004,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-06-21",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8886,7 +9032,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-06-21",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8914,7 +9060,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-06-28",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8942,7 +9088,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8970,7 +9116,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -8998,7 +9144,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9026,7 +9172,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9054,7 +9200,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9082,7 +9228,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9110,7 +9256,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-20",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9138,7 +9284,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-20",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9166,7 +9312,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-20",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9194,7 +9340,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-20",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9222,7 +9368,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-20",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9250,7 +9396,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-20",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9278,7 +9424,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-28",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9306,7 +9452,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-07-28",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9334,7 +9480,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9362,7 +9508,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-07",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9390,7 +9536,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-11",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9418,7 +9564,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-24",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9446,7 +9592,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-26",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9474,7 +9620,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-08-27",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9502,7 +9648,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-09-16",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9530,7 +9676,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2015-10-10",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9558,7 +9704,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-26",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9586,7 +9732,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-26",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9614,7 +9760,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-26",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9642,7 +9788,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-28",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9670,7 +9816,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-28",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9698,8 +9844,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-26",
-        "notes": "สกุลเดิม/หมายเหตุ: /บุนนาค"
+        "lastPaymentDate": "",
+        "notes": ""
     },
     {
         "id": "03005",
@@ -9726,7 +9872,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-29",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9754,7 +9900,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-01-30",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9782,7 +9928,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-03",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9810,7 +9956,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9838,7 +9984,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-08",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9866,7 +10012,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-09",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9894,7 +10040,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-10",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9922,7 +10068,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-10",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9950,7 +10096,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-10",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -9978,7 +10124,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-10",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10006,7 +10152,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-11",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10034,7 +10180,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-11",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10062,7 +10208,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-16",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10090,7 +10236,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-19",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10118,7 +10264,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-19",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10146,7 +10292,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-19",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10174,7 +10320,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-22",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10202,7 +10348,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-02-22",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10230,7 +10376,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-03-02",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10258,7 +10404,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-03-03",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10286,7 +10432,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-03-05",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10314,7 +10460,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-03-13",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10342,7 +10488,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-03-13",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10356,7 +10502,7 @@ const INITIAL_MEMBERS = [
         "lineId": "",
         "facebook": "",
         "email": "",
-        "address": "40 ถ.สุขุมวทิ ซอย 97 บางจาก พระโขนง กทม",
+        "address": "40 ถ.สุขุมวทิ ซอย 97  บางจาก พระโขนง กทม",
         "education": {
             "gen": 18,
             "faculty": "",
@@ -10370,7 +10516,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-03-13",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10398,7 +10544,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-04-04",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10426,7 +10572,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-04-22",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10454,7 +10600,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-05-04",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10482,7 +10628,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-05-15",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10510,7 +10656,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-05-16",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10538,7 +10684,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-05-23",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10566,7 +10712,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-05-23",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10594,7 +10740,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-06-17",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10622,7 +10768,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-06-18",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10650,7 +10796,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-06-22",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10678,7 +10824,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-06-24",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10706,7 +10852,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-06-27",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10734,7 +10880,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-06-27",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10762,7 +10908,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-07-25",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10790,7 +10936,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-07-25",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10818,7 +10964,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-07-25",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10846,7 +10992,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-08-01",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10874,7 +11020,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-08-01",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10902,7 +11048,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-08-01",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10930,7 +11076,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-08-21",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10958,7 +11104,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-10-26",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -10986,7 +11132,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-10-26",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11014,7 +11160,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-10-26",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11022,7 +11168,7 @@ const INITIAL_MEMBERS = [
         "generation": 13,
         "name": "คูณณิชชา  วิศาลเมธี",
         "nickname": "",
-        "applyDate": "2016-11-30",
+        "applyDate": "2016-11-29",
         "birthDate": "",
         "phone": "081-809-9822",
         "lineId": "",
@@ -11042,7 +11188,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-11-30",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11050,7 +11196,7 @@ const INITIAL_MEMBERS = [
         "generation": 11,
         "name": "คุณอาภรณ์  หนูห้อง",
         "nickname": "",
-        "applyDate": "2016-12-19",
+        "applyDate": "2016-12-18",
         "birthDate": "",
         "phone": "089-762-7671",
         "lineId": "",
@@ -11070,7 +11216,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2016-12-19",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11098,7 +11244,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2017-01-23",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11126,7 +11272,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2017-03-04",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11154,7 +11300,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2017-03-04",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11182,7 +11328,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2017-03-04",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11192,7 +11338,7 @@ const INITIAL_MEMBERS = [
         "nickname": "",
         "applyDate": "2017-03-14",
         "birthDate": "",
-        "phone": "0813272198",
+        "phone": "081 327 2198",
         "lineId": "",
         "facebook": "",
         "email": "",
@@ -11210,7 +11356,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2017-03-14",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11238,8 +11384,8 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2017-11-08",
-        "notes": "สกุลเดิม/หมายเหตุ: จันทนา ดำเก็งรัตน์"
+        "lastPaymentDate": "",
+        "notes": ""
     },
     {
         "id": "03010",
@@ -11266,7 +11412,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2018-03-13",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11294,7 +11440,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2018-03-31",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11322,7 +11468,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2018-03-31",
+        "lastPaymentDate": "-",
         "notes": ""
     },
     {
@@ -11350,7 +11496,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2018-10-08",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11378,7 +11524,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2018-11-04",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11406,7 +11552,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2019-01-06",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11434,7 +11580,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2019-01-06",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11462,7 +11608,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2019-01-06",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11490,7 +11636,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2019-01-08",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11518,7 +11664,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2019-04-01",
+        "lastPaymentDate": "",
         "notes": ""
     },
     {
@@ -11546,7 +11692,7 @@ const INITIAL_MEMBERS = [
         "occupation": "",
         "photo": "",
         "isReappliedAfterTermination": false,
-        "lastPaymentDate": "2019-07-11",
+        "lastPaymentDate": "",
         "notes": ""
     }
 ];
@@ -19983,6 +20129,9 @@ class Database {
         if (!localStorage.getItem(DB_KEYS.WELFARES)) {
             localStorage.setItem(DB_KEYS.WELFARES, JSON.stringify(INITIAL_WELFARES));
         }
+        if (!localStorage.getItem(DB_KEYS.USERS)) {
+            localStorage.setItem(DB_KEYS.USERS, JSON.stringify(INITIAL_USERS));
+        }
     }
 
     // ล้างข้อมูลกลับไปเป็นค่าเริ่มต้น
@@ -19992,7 +20141,41 @@ class Database {
         localStorage.removeItem(DB_KEYS.TEACHERS);
         localStorage.removeItem(DB_KEYS.FEES);
         localStorage.removeItem(DB_KEYS.WELFARES);
+        localStorage.removeItem(DB_KEYS.USERS);
         this.init();
+    }
+
+    // ส่วนของ Users
+    getUsers() {
+        return JSON.parse(localStorage.getItem(DB_KEYS.USERS)) || [];
+    }
+
+    saveUsers(users) {
+        localStorage.setItem(DB_KEYS.USERS, JSON.stringify(users));
+        window.dispatchEvent(new Event('db_updated'));
+    }
+
+    addUser(user) {
+        const users = this.getUsers();
+        users.push(user);
+        this.saveUsers(users);
+    }
+
+    updateUser(updatedUser) {
+        const users = this.getUsers();
+        const index = users.findIndex(u => u.id === updatedUser.id);
+        if (index !== -1) {
+            users[index] = updatedUser;
+            this.saveUsers(users);
+            return true;
+        }
+        return false;
+    }
+
+    deleteUser(id) {
+        let users = this.getUsers();
+        users = users.filter(u => u.id !== id);
+        this.saveUsers(users);
     }
 
     // ส่วนของ Settings

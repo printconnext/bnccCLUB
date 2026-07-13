@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const DOM = {
         menuItems: document.querySelectorAll('.sidebar-menu .menu-item'),
         pageViews: document.querySelectorAll('.page-view'),
-        roleSelect: document.getElementById('user-role-select'),
         dateDaySelect: document.getElementById('system-date-day'),
         dateMonthSelect: document.getElementById('system-date-month'),
         dateYearSelect: document.getElementById('system-date-year'),
@@ -41,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         state.isLoggedIn = true;
         state.currentRole = savedRole;
         setTimeout(() => {
-            DOM.roleSelect.value = savedRole;
             DOM.loginScreen.style.display = 'none';
             DOM.appContainer.style.display = 'flex';
         }, 50);
@@ -145,26 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. ระบบจัดการสิทธิ์การใช้งาน (Role Permissions) และกลไกย้อนเวลา (System Date)
     // ==========================================================================
     function initRoleAndDateControls() {
-        // จัดการเมื่อเปลี่ยนสิทธิ์บทบาทผู้ใช้
-        DOM.roleSelect.addEventListener('change', (e) => {
-            state.currentRole = e.target.value;
-            
-            // อัปเดตข้อความแสดงผู้ใช้งานใน Sidebar
-            const rolesInfo = {
-                member_admin: { name: 'คุณนารี ทะเบียนดี', title: 'ผู้ดูแลทะเบียนสมาชิก' },
-                welfare_admin: { name: 'นายสวัสดิ์ เกื้อกูล', title: 'ผู้ดูแลสวัสดิการ' },
-                executive: { name: 'พล.ต.ต. สุชน ผู้นำพา', title: 'ผู้บริหาร/กรรมการชมรม' }
-            };
-            
-            const info = rolesInfo[state.currentRole];
-            DOM.sidebarRole.innerText = info.title;
-            DOM.sidebarUser.innerText = info.name;
-
-            // จัดการเปิด/ปิดองค์ประกอบและปุ่มทำรายการใน UI
-            applyRolePermissions();
-            refreshCurrentView();
-        });
-
         // ฟังก์ชันสร้างตัวเลือกใน dropdown ของระบบจำลองวัน (พ.ศ.)
         function initSystemDateDropdowns() {
             const daySelect = DOM.dateDaySelect;
@@ -255,25 +233,30 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyRolePermissions() {
         const role = state.currentRole;
         
-        // 1. ปุ่มสำหรับการเพิ่มสมาชิก/อาจารย์ (เฉพาะ member_admin)
+        // 1. ปุ่มสำหรับการเพิ่มสมาชิก/อาจารย์ (เฉพาะ member_admin, super_admin)
         const btnAddMember = document.getElementById('btn-add-member');
         const btnAddTeacher = document.getElementById('btn-add-teacher');
         
-        if (role === 'member_admin') {
-            btnAddMember.style.display = 'inline-flex';
-            btnAddTeacher.style.display = 'inline-flex';
+        if (role === 'member_admin' || role === 'super_admin') {
+            if (btnAddMember) btnAddMember.style.display = 'inline-flex';
+            if (btnAddTeacher) btnAddTeacher.style.display = 'inline-flex';
         } else {
-            btnAddMember.style.display = 'none';
-            btnAddTeacher.style.display = 'none';
+            if (btnAddMember) btnAddMember.style.display = 'none';
+            if (btnAddTeacher) btnAddTeacher.style.display = 'none';
         }
 
-        // 2. การควบคุมสิทธิ์เบิกสวัสดิการ (เฉพาะ welfare_admin และ member_admin ที่สามารถบันทึกได้)
+        // 2. การควบคุมสิทธิ์เบิกสวัสดิการ (เฉพาะ welfare_admin, member_admin, super_admin)
         const welfareClaimPanel = document.getElementById('welfare-claim-form-panel');
-        if (role === 'welfare_admin' || role === 'member_admin') {
-            welfareClaimPanel.style.display = 'block';
+        if (role === 'welfare_admin' || role === 'member_admin' || role === 'super_admin') {
+            if (welfareClaimPanel) welfareClaimPanel.style.display = 'block';
         } else {
-            // ซ่อนหรือปิดฟังก์ชันบันทึกเคลมสวัสดิการถ้าไม่ใช่ผู้ดูแลสวัสดิการ/ผู้ดูแลทะเบียน
-            welfareClaimPanel.style.display = 'none';
+            if (welfareClaimPanel) welfareClaimPanel.style.display = 'none';
+        }
+        
+        // 3. เมนูจัดการผู้ใช้งาน (เฉพาะ super_admin)
+        const menuUsers = document.getElementById('menu-users');
+        if (menuUsers) {
+            menuUsers.style.display = (role === 'super_admin') ? 'block' : 'none';
         }
     }
 
@@ -306,8 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'deceased': deceasedCount++; break;
             }
 
-            // นับจำนวนผู้ค้างชำระ (สถานะเป็น Grace Period หรือ Suspended)
-            if (statusInfo.overdueDays > 0 && statusInfo.statusKey !== 'terminated' && statusInfo.statusKey !== 'deceased') {
+            // นับจำนวนผู้ค้างชำระ (เฉพาะ Active/Grace Period)
+            if (statusInfo.statusKey === 'grace_period') {
                 unpaidCount++;
             }
         });
@@ -681,7 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let unpaidCount = 0;
         members.forEach(m => {
             const statusInfo = MembershipEngine.calculateMemberStatus(m, state.systemDate);
-            if (statusInfo.overdueDays > 0 && statusInfo.statusKey !== 'terminated' && statusInfo.statusKey !== 'deceased') {
+            if (statusInfo.statusKey === 'grace_period') {
                 unpaidCount++;
                 const tr = document.createElement('tr');
                 
@@ -1240,7 +1223,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (statusVal === 'active') {
                     filtered = filtered.filter(m => m.calculated.statusKey === 'active' || m.calculated.statusKey === 'active_new');
                 } else if (statusVal === 'unpaid') {
-                    filtered = filtered.filter(m => m.calculated.overdueDays > 0 && m.calculated.statusKey !== 'terminated' && m.calculated.statusKey !== 'deceased');
+                    // เฉพาะ Active (Grace Period) ที่ค้างชำระ
+                    filtered = filtered.filter(m => m.calculated.statusKey === 'grace_period');
                 } else if (statusVal === 'terminated') {
                     filtered = filtered.filter(m => m.calculated.statusKey === 'terminated');
                 } else if (statusVal === 'expired') {
@@ -1261,6 +1245,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     filtered = filtered.filter(m => String(m.generation) === genVal);
                 }
 
+                const isUnpaidReport = statusVal === 'unpaid';
+
                 let html = `
                     <table class="print-table">
                         <thead>
@@ -1268,18 +1254,21 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <th>รหัสสมาชิก</th>
                                 <th>ชื่อ-นามสกุล (ชื่อเล่น)</th>
                                 <th>รุ่น พ.น.</th>
+                                ${!isUnpaidReport ? `
                                 <th>เบอร์โทรศัพท์</th>
                                 <th>ที่อยู่ปัจจุบัน</th>
+                                ` : ''}
                                 <th>ชำระล่าสุด</th>
                                 <th>วันครบกำหนดรอบ</th>
-                                <th>สถานะสมาชิก</th>
+                                ${!isUnpaidReport ? `<th>สถานะสมาชิก</th>` : ''}
                             </tr>
                         </thead>
                         <tbody>
                 `;
 
                 if (filtered.length === 0) {
-                    html += `<tr><td colspan="8" style="text-align:center; padding:20px;">ไม่พบรายการสมาชิกร่วมในเงื่อนไขการพิมพ์รายงาน</td></tr>`;
+                    const colSpan = isUnpaidReport ? 5 : 8;
+                    html += `<tr><td colspan="${colSpan}" style="text-align:center; padding:20px;">ไม่พบรายการสมาชิกร่วมในเงื่อนไขการพิมพ์รายงาน</td></tr>`;
                 } else {
                     filtered.forEach(m => {
                         html += `
@@ -1287,11 +1276,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <td><strong>${m.id}</strong></td>
                                 <td>${m.name} ${m.nickname ? `(${m.nickname})` : ''}</td>
                                 <td>รุ่น ${m.generation}</td>
+                                ${!isUnpaidReport ? `
                                 <td>${m.phone}</td>
                                 <td><small>${m.address || '-'}</small></td>
+                                ` : ''}
                                 <td>${formatCEToBEDate(m.lastPaymentDate)}</td>
                                 <td>${formatCEToBEDate(m.calculated.renewalDueDate)}</td>
-                                <td><strong>${m.calculated.statusText}</strong></td>
+                                ${!isUnpaidReport ? `<td><strong>${m.calculated.statusText}</strong></td>` : ''}
                             </tr>
                         `;
                     });
@@ -2259,40 +2250,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // ตรวจสอบข้อมูลบัญชี
             const cleanUser = username.toLowerCase();
-            const cleanPass = password.replace(/\s+/g, '');
+            const cleanPass = password;
 
-            if (username === 'admin.member' && password === 'member123') {
-                role = 'member_admin';
-                userName = 'คุณนารี ทะเบียนดี';
-                roleText = 'ผู้ดูแลทะเบียนสมาชิก';
-            } else if (username === 'admin.welfare' && password === 'welfare123') {
-                role = 'welfare_admin';
-                userName = 'นายสวัสดิ์ เกื้อกูล';
-                roleText = 'ผู้ดูแลสวัสดิการ';
-            } else if (username === 'executive' && password === 'exec123') {
-                role = 'executive';
-                userName = 'พล.ต.ต. สุชน ผู้นำพา';
-                roleText = 'ผู้บริหาร/กรรมการชมรม';
-            } else if (cleanUser === 'mdplanner11@gmail.com' && cleanPass === '0624624888') {
-                role = 'member_admin';
-                userName = 'คุณเอ็มดี แพลนเนอร์';
-                roleText = 'ผู้ดูแลทะเบียนสมาชิก';
-            } else if (cleanUser === '0840258242.gm@gmail.com' && cleanPass === '0840258242') {
-                role = 'executive';
-                userName = 'ผู้จัดการทั่วไป (GM)';
-                roleText = 'ผู้บริหาร/กรรมการชมรม';
-            } else if (cleanUser === 'anchalee.rung@gmail.com' && cleanPass === '0812558440') {
-                role = 'member_admin';
-                userName = 'คุณอัญชลี รุ่งเรือง';
-                roleText = 'ผู้ดูแลทะเบียนสมาชิก';
-            } else if (cleanUser === 'boonmay2012@gmail.com' && cleanPass === '0863105785') {
-                role = 'member_admin';
-                userName = 'คุณบุญเมย์';
-                roleText = 'ผู้ดูแลทะเบียนสมาชิก';
-            } else {
+            const users = db.getUsers();
+            let matchedUser = users.find(u => 
+                u.username.toLowerCase() === cleanUser && u.password === cleanPass
+            );
+
+            if (!matchedUser) {
                 alert('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง');
                 return;
             }
+
+            role = matchedUser.role;
+            userName = matchedUser.name;
+            roleText = role === 'member_admin' ? 'ผู้ดูแลทะเบียนสมาชิก' :
+                       role === 'welfare_admin' ? 'ผู้ดูแลสวัสดิการ' :
+                       role === 'executive' ? 'ผู้บริหาร/กรรมการชมรม' :
+                       role === 'super_admin' ? 'ผู้ดูแลระบบ (Super Admin)' : 'ไม่ทราบสิทธิ์';
+
 
             // บันทึกสถานะ Login
             state.isLoggedIn = true;
@@ -2310,7 +2286,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.setItem('bncc_user_role', role);
 
             // อัปเดตข้อมูลผู้ใช้ใน UI
-            DOM.roleSelect.value = role;
             DOM.sidebarRole.innerText = roleText;
             DOM.sidebarUser.innerText = userName;
 
@@ -2495,6 +2470,106 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==========================================================================
+    // 10.5 ระบบจัดการผู้ใช้งาน (User Management)
+    // ==========================================================================
+    function renderUsersTable() {
+        const usersTableBody = document.getElementById('users-table-body');
+        if (!usersTableBody) return;
+        
+        const users = db.getUsers();
+        usersTableBody.innerHTML = '';
+        
+        users.forEach(u => {
+            const roleText = u.role === 'member_admin' ? 'ผู้ดูแลทะเบียนสมาชิก' :
+                             u.role === 'welfare_admin' ? 'ผู้ดูแลสวัสดิการ' :
+                             u.role === 'executive' ? 'ผู้บริหาร/กรรมการชมรม' :
+                             u.role === 'super_admin' ? 'ผู้ดูแลระบบ (Super Admin)' : 'ไม่ระบุ';
+                             
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${u.name}</td>
+                <td>${u.username}</td>
+                <td><span class="status-badge active">${roleText}</span></td>
+                <td>
+                    <button class="icon-btn edit" onclick="window.editUser('${u.id}')" title="แก้ไขผู้ใช้"><i class="fa-solid fa-pen"></i></button>
+                    ${u.username !== 'admin' ? `<button class="icon-btn delete" onclick="window.deleteUser('${u.id}')" title="ลบผู้ใช้"><i class="fa-solid fa-trash"></i></button>` : ''}
+                </td>
+            `;
+            usersTableBody.appendChild(tr);
+        });
+    }
+
+    window.openUserModal = function() {
+        document.getElementById('user-modal-title').innerText = 'เพิ่มผู้ใช้งานใหม่';
+        document.getElementById('form-user').reset();
+        document.getElementById('user-id').value = '';
+        document.getElementById('modal-user-form').style.display = 'flex';
+    };
+
+    window.editUser = function(id) {
+        const users = db.getUsers();
+        const user = users.find(u => u.id === id);
+        if (user) {
+            document.getElementById('user-modal-title').innerText = 'แก้ไขผู้ใช้งาน';
+            document.getElementById('user-id').value = user.id;
+            document.getElementById('user-name').value = user.name;
+            document.getElementById('user-username').value = user.username;
+            document.getElementById('user-password').value = ''; // ว่างไว้เพื่อไม่ต้องเปลี่ยนรหัส
+            document.getElementById('user-role').value = user.role;
+            document.getElementById('modal-user-form').style.display = 'flex';
+        }
+    };
+
+    window.deleteUser = function(id) {
+        if (confirm('คุณต้องการลบผู้ใช้งานนี้ใช่หรือไม่?')) {
+            db.deleteUser(id);
+            renderUsersTable();
+            alert('ลบผู้ใช้งานเรียบร้อยแล้ว');
+        }
+    };
+
+    const formUser = document.getElementById('form-user');
+    if (formUser) {
+        formUser.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('user-id').value;
+            const name = document.getElementById('user-name').value.trim();
+            const username = document.getElementById('user-username').value.trim();
+            const password = document.getElementById('user-password').value.trim();
+            const role = document.getElementById('user-role').value;
+            
+            if (id) {
+                const users = db.getUsers();
+                const existing = users.find(u => u.id === id);
+                if (existing) {
+                    existing.name = name;
+                    existing.username = username;
+                    if (password) existing.password = password;
+                    existing.role = role;
+                    db.updateUser(existing);
+                    alert('แก้ไขข้อมูลเรียบร้อยแล้ว');
+                }
+            } else {
+                if (!password) {
+                    alert('กรุณากรอกรหัสผ่านสำหรับผู้ใช้ใหม่');
+                    return;
+                }
+                const newUser = {
+                    id: 'U' + Date.now(),
+                    name: name,
+                    username: username,
+                    password: password,
+                    role: role
+                };
+                db.addUser(newUser);
+                alert('เพิ่มผู้ใช้ใหม่เรียบร้อยแล้ว');
+            }
+            document.getElementById('modal-user-form').style.display = 'none';
+            renderUsersTable();
+        });
+    }
+
+    // ==========================================================================
     // 11. เริ่มต้นระบบการทำงานทั้งหมด (App Start)
     // ==========================================================================
     initLogin();
@@ -2502,6 +2577,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initRoleAndDateControls();
     initDashboardCardClicks();
     initThemeToggle();
+    renderUsersTable();
 
     // เริ่มต้น Date Dropdowns ทุกฟอร์ม (พ.ศ.)
     initDateDropdowns('member-apply',    2500, 2580);
@@ -2521,8 +2597,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // อัปเดตเริ่มต้นกรณีเข้าใช้งานค้างเซสชันไว้
     if (state.isLoggedIn) {
         applyRolePermissions();
-        setTimeout(() => {
-            DOM.roleSelect.dispatchEvent(new Event('change'));
-        }, 100);
     }
 });

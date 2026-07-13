@@ -88,6 +88,9 @@
                 <li class="menu-item" data-view="settings">
                     <a href="#settings"><i class="fa-solid fa-database"></i><span>ตั้งค่า & จัดการข้อมูล</span></a>
                 </li>
+                <li class="menu-item" data-view="users" id="menu-users" style="display: none;">
+                    <a href="#users"><i class="fa-solid fa-users-cog"></i><span>จัดการผู้ใช้งาน</span></a>
+                </li>
             </ul>
             
             <!-- ส่วนแสดงบทบาทผู้ใช้งานใน Sidebar -->
@@ -118,17 +121,7 @@
                         <select id="system-date-year" class="input-date" style="width: 80px; padding: 4px;"></select>
                     </div>
                     
-                    <!-- เครื่องมือสลับบทบาท -->
-                    <div class="role-selector-wrapper">
-                        <label for="user-role-select"><i class="fa-solid fa-user-gear"></i> สิทธิ์ผู้ใช้:</label>
-                        <select id="user-role-select" class="select-role">
-                            <option value="member_admin">ผู้ดูแลทะเบียนสมาชิก</option>
-                            <option value="welfare_admin">ผู้ดูแลสวัสดิการ</option>
-                            <option value="executive">ผู้บริหาร/คณะกรรมการ</option>
-                        </select>
-                    </div>
-
-                    <!-- เครื่องมือสลับธีม -->
+                    <!-- ซ่อนเครื่องมือสลับบทบาทเนื่องจากใช้ระบบ Login จริงแล้ว -->                    <!-- เครื่องมือสลับธีม -->
                     <button id="theme-toggle-btn" class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.85rem; height: 38px; display: inline-flex; align-items: center; gap: 6px;" title="สลับโหมดมืด/สว่าง">
                         <i class="fa-solid fa-sun"></i> โหมดสว่าง
                     </button>
@@ -589,6 +582,33 @@
                     </div>
                 </div>
 
+                <!-- ==================== หน้า 8: จัดการผู้ใช้งาน ==================== -->
+                <div id="view-users" class="page-view">
+                    <div class="panel">
+                        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 class="panel-title"><i class="fa-solid fa-users-cog" style="color: var(--status-active);"></i> รายชื่อผู้ใช้งานระบบ</h3>
+                            <button class="btn btn-primary" onclick="window.openUserModal()">
+                                <i class="fa-solid fa-user-plus"></i> เพิ่มผู้ใช้ใหม่
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ชื่อ-นามสกุล</th>
+                                        <th>ชื่อผู้ใช้งาน (Username)</th>
+                                        <th>สิทธิ์การใช้งาน</th>
+                                        <th style="width: 100px;">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <!-- ข้อมูลผู้ใช้จะแสดงที่นี่ -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
@@ -596,6 +616,44 @@
     <!-- ==========================================================================
        ป๊อปอัพฟอร์มแก้ไขข้อมูลและดูรายละเอียด (MODALS & POPUPS)
        ========================================================================== -->
+
+    <!-- 0. โมดอลเพิ่ม/แก้ไขผู้ใช้งาน (User Add/Edit Modal) -->
+    <div id="modal-user-form" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 id="user-modal-title">เพิ่มผู้ใช้งานใหม่</h3>
+                <span class="close-modal" onclick="document.getElementById('modal-user-form').style.display='none'">&times;</span>
+            </div>
+            <form id="form-user" class="modal-body">
+                <input type="hidden" id="user-id">
+                <div class="form-group">
+                    <label>ชื่อ-นามสกุล <span>*</span></label>
+                    <input type="text" id="user-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>ชื่อผู้ใช้งาน (Username) <span>*</span></label>
+                    <input type="text" id="user-username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>รหัสผ่าน <span>*</span></label>
+                    <input type="password" id="user-password" class="form-control" placeholder="ปล่อยว่างหากไม่ต้องการเปลี่ยนรหัสผ่าน (กรณีแก้ไข)">
+                </div>
+                <div class="form-group">
+                    <label>สิทธิ์การใช้งาน <span>*</span></label>
+                    <select id="user-role" class="form-control" required>
+                        <option value="member_admin">ผู้ดูแลทะเบียนสมาชิก</option>
+                        <option value="welfare_admin">ผู้ดูแลสวัสดิการ</option>
+                        <option value="executive">ผู้บริหาร/คณะกรรมการ</option>
+                        <option value="super_admin">ผู้ดูแลระบบ (Super Admin)</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('modal-user-form').style.display='none'">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- 1. โมดอลเพิ่ม/แก้ไขสมาชิก (Member Add/Edit Modal) -->
     <div id="modal-member-form" class="modal-backdrop">
@@ -712,7 +770,7 @@
                         <div class="form-group" style="display:flex; align-items:center; margin-top:28px;">
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
                                 <input type="checkbox" id="member-input-reapplied" style="width:18px; height:18px;">
-                                <span>เป็นสมาชิกสมัครใหม่หลังสิ้นสภาพ (เงื่อนไขรอสิทธิ์ 30 วัน)</span>
+                                <span>ต่ออายุ เป็นสมาชิกสมัครใหม่หลังสิ้นสภาพ (เงื่อนไขรอสิทธิ์ 30 วัน)</span>
                             </label>
                         </div>
                     </div>
