@@ -31,7 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm: document.getElementById('login-form'),
         loginScreen: document.getElementById('login-screen'),
         appContainer: document.querySelector('.app-container'),
-        btnLogout: document.getElementById('btn-logout')
+        btnLogout: document.getElementById('btn-logout'),
+        mobileMenuBtn: document.getElementById('mobile-menu-btn'),
+        sidebarOverlay: document.getElementById('sidebar-overlay'),
+        sidebar: document.querySelector('.sidebar')
     };
 
     // ตรวจจับประวัติการเข้าใช้งานก่อนหน้าในเซสชันเดียวกัน (Session Persistence)
@@ -62,11 +65,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. ระบบจัดการเส้นทาง (Routing) และการสลับหน้าจอ (SPA)
     // ==========================================================================
     function initNavigation() {
+        // Mobile Sidebar Toggle
+        if (DOM.mobileMenuBtn) {
+            DOM.mobileMenuBtn.addEventListener('click', () => {
+                DOM.sidebar.classList.add('sidebar-open');
+                if (DOM.sidebarOverlay) DOM.sidebarOverlay.classList.add('active');
+            });
+        }
+        if (DOM.sidebarOverlay) {
+            DOM.sidebarOverlay.addEventListener('click', () => {
+                DOM.sidebar.classList.remove('sidebar-open');
+                DOM.sidebarOverlay.classList.remove('active');
+            });
+        }
+
         DOM.menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const view = item.getAttribute('data-view');
                 navigateTo(view);
+                
+                // Close sidebar on mobile after clicking a link
+                if (window.innerWidth <= 768) {
+                    DOM.sidebar.classList.remove('sidebar-open');
+                    if (DOM.sidebarOverlay) DOM.sidebarOverlay.classList.remove('active');
+                }
             });
         });
 

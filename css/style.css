@@ -1275,3 +1275,75 @@ body.light-theme .main-header {
 body.light-theme .sidebar-user {
     background-color: rgba(0, 0, 0, 0.03);
 }
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ========================================================================== */
+
+/* ให้ตารางเลื่อนซ้ายขวาได้ในจอมือถือ */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Sidebar Overlay พื้นหลังทึบเวลาเปิดเมนูมือถือ */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    /* แสดงปุ่มเมนูมือถือ */
+    .mobile-menu-btn {
+        display: inline-flex !important;
+    }
+
+    /* ซ่อน sidebar ไปทางซ้าย */
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    /* เลื่อน sidebar ออกมาเมื่อเปิด */
+    .sidebar.sidebar-open {
+        transform: translateX(0);
+        box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    }
+
+    /* ขยายเนื้อหาหลักให้เต็มจอ */
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* ให้หัวข้อหน้าต่างและปุ่มตัดขึ้นบรรทัดใหม่ถ้ายาวเกิน */
+    .panel-header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    /* ให้ปุ่มบนหัวข้อมีความกว้างเต็มที่ หรือยืดหยุ่น */
+    .panel-header .btn {
+        flex-grow: 1;
+        justify-content: center;
+    }
+
+    /* ขยายฟอร์ม modal ให้เกือบเต็มจอ */
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+        margin: 10px;
+    }
+}
