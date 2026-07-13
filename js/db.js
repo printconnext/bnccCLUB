@@ -1,6 +1,9 @@
 // js/db.js
 // ระบบฐานข้อมูลจำลองโดยใช้ localStorage สำหรับชมรมเพื่อน พ.น.
 
+// js/db.js
+// ระบบฐานข้อมูลจำลองโดยใช้ localStorage สำหรับชมรมเพื่อน พ.น.
+
 const DB_KEYS = {
     MEMBERS: 'bncc_club_members',
     TEACHERS: 'bncc_club_teachers',
@@ -15,7 +18,11 @@ const INITIAL_USERS = [
     { id: '1', username: 'admin', password: 'admin123', name: 'ผู้ดูแลระบบ (Super Admin)', role: 'super_admin' },
     { id: '2', username: 'admin.member', password: 'member123', name: 'คุณนารี ทะเบียนดี', role: 'member_admin' },
     { id: '3', username: 'admin.welfare', password: 'welfare123', name: 'นายสวัสดิ์ เกื้อกูล', role: 'welfare_admin' },
-    { id: '4', username: 'executive', password: 'exec123', name: 'ผู้บริหาร/กรรมการชมรม', role: 'executive' }
+    { id: '4', username: 'executive', password: 'exec123', name: 'ผู้บริหาร/กรรมการชมรม', role: 'executive' },
+    { id: '5', username: 'mdplanner11@gmail.com', password: '0624624888', name: 'นายฐานิสร์พงศ์ ศุภธนานันท์', role: 'member_admin' },
+    { id: '6', username: '0840258242.gm@gmail.com', password: '0840258242', name: 'นางวัลลภา คล่องแคล่ว', role: 'member_admin' },
+    { id: '7', username: 'anchalee.rung@gmail.com', password: '0812558440', name: 'คุณอัญชลี รุ่งเรือง', role: 'member_admin' },
+    { id: '8', username: 'boonmay2012@gmail.com', password: '0863105785', name: 'นางเมทินี สุขคำ', role: 'member_admin' }
 ];
 
 const INITIAL_MEMBERS = [
