@@ -1188,12 +1188,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const controls = document.getElementById('report-controls-container');
         const printTitle = document.getElementById('report-print-title');
         const printDateSpan = document.getElementById('report-print-date');
+        const printDateLabel = document.getElementById('report-print-date-label');
         const content = document.getElementById('report-preview-content');
 
         // จัดรูปแบบวันเวลา
         const now = new Date(state.systemDate);
         const formatThaiDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
         printDateSpan.innerText = formatThaiDate;
+        
+        if (printDateLabel) {
+            printDateLabel.innerText = "วันที่พิมพ์ข้อมูลเอกสาร:";
+        }
 
         const members = db.getMembers();
         const teachers = db.getTeachers();
@@ -1261,6 +1266,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const statusVal = statusSel.value;
                 const genVal = genInput.value;
                 const monthVal = monthSel.value;
+                
+                const printDateLabel = document.getElementById('report-print-date-label');
+                if (printDateLabel) {
+                    if (statusVal === 'unpaid') {
+                        printDateLabel.innerText = "ชำระภายในวันที่:";
+                    } else {
+                        printDateLabel.innerText = "วันที่พิมพ์ข้อมูลเอกสาร:";
+                    }
+                }
 
                 let filtered = members.map(m => {
                     return { ...m, calculated: MembershipEngine.calculateMemberStatus(m, state.systemDate) };
